@@ -28,7 +28,7 @@ export default function LoginForm({ setUser, showSignUp, setShowSignUp }) {
   }
 
   return (
-    <div>
+    <div className="auth-body">
       <h3>Log in to MockStocks </h3>
       <div className="auth-form-container">
         <form autoComplete="off" onSubmit={handleSubmit}>
