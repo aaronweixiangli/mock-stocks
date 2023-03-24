@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import * as usersService from '../../utilities/users-service';
 
-export default function LoginForm({ setUser }) {
+export default function LoginForm({ setUser, showSignUp, setShowSignUp }) {
   const [credentials, setCredentials] = useState({
     email: '',
     password: ''
@@ -29,7 +29,8 @@ export default function LoginForm({ setUser }) {
 
   return (
     <div>
-      <div className="form-container">
+      <h3>Log in to MockStocks </h3>
+      <div className="auth-form-container">
         <form autoComplete="off" onSubmit={handleSubmit}>
           <label>Email</label>
           <input type="text" name="email" value={credentials.email} onChange={handleChange} required />
@@ -38,6 +39,7 @@ export default function LoginForm({ setUser }) {
           <button type="submit">LOG IN</button>
         </form>
       </div>
+      <button className="auth-switch-btn" onClick={() => setShowSignUp(!showSignUp)}>{showSignUp ? 'Already have an account? Log In' : 'Not On MockStocks? Create an account'}</button>
       <p className="error-message">&nbsp;{error}</p>
     </div>
   );

@@ -38,7 +38,8 @@ export default class SignUpForm extends Component {
     const disable = this.state.password !== this.state.confirm;
     return (
       <div>
-        <div className="form-container">
+        <h3>Sign up for MockStocks </h3>
+        <div className="auth-form-container">
           <form autoComplete="off" onSubmit={this.handleSubmit}>
             <label>Name</label>
             <input type="text" name="name" value={this.state.name} onChange={this.handleChange} required />
@@ -51,8 +52,10 @@ export default class SignUpForm extends Component {
             <button type="submit" disabled={disable}>SIGN UP</button>
           </form>
         </div>
+        <button className="auth-switch-btn" onClick={() => this.props.setShowSignUp(!this.props.showSignUp)}>{this.props.showSignUp ? 'Already have an account? Log In' : 'Not On MockStocks? Create an account'}</button>
         <p className="error-message">&nbsp;{this.state.error}</p>
       </div>
+      
     );
   }
 }
