@@ -1,0 +1,171 @@
+.HomePage {
+    padding: 10vmin 65vmin 10vmin 30vmin;
+}
+
+/* WatchList Component */
+
+/* For Chrome and Safari */
+.watchlist::-webkit-scrollbar { 
+    display: none !important; 
+}
+
+.watchlist {
+    position: fixed;
+    top: 12vmin;
+    right: 13vmin;
+    height: 80vh;
+    width: 35vmin;
+    overflow-y: scroll;
+    /* hide scrollbar */
+    scrollbar-width: none; /* For modern browsers */
+    -ms-overflow-style: none;  /* IE and Edge */
+    box-shadow: 0px 0px 5px rgba(255, 254, 254, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    z-index: 0;
+}
+
+.watchlist ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.watchlist li {
+    width: 100%;
+    padding: 1vmin;
+    text-align: center;
+}
+
+.watchlist-title {
+    font-size: 3vmin;
+}
+
+.stock-watchlist {
+    border-bottom: 0.1vmin solid white;
+    font-size: 2vmin;
+}
+
+.crypto-watchlist, .stock-watchlist {
+    border-bottom: 0.1vmin solid rgba(256, 256, 256, 0.2);
+    border-top: 0.1vmin solid rgba(256, 256, 256, 0.8);
+    font-size: 2.5vmin;
+}
+
+/* End WatchList Component */
+
+img {
+    width: 100%;
+}
+
+h1 {
+    border-bottom: 0.1vmin solid white;
+    padding-bottom: 1.5vmin;
+}
+
+/* BuyingPower Component */
+.buying-power-content {
+    display: flex;
+    justify-content: space-between;
+    border-top: 0.1vmin solid rgba(256, 256, 256, 0.2);
+    border-bottom: 0.1vmin solid rgba(256, 256, 256, 0.2);
+    padding: 0 2vmin;
+}
+
+.buying-power-container:hover {
+    background-color: #222121;
+}
+
+#buying-power-section {
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 0.1vmin solid rgba(256, 256, 256, 0.2);
+    padding-bottom: 2vmin;
+    display: none;
+}
+
+.right-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 8vmin;
+    font-size: 2.5vmin;
+}
+
+.show-modal-btn {
+    margin-left: 6vmin;
+    margin-top: 3vmin;
+    width: 80%;
+    border-radius: 50vmin;
+}
+
+.show-modal-btn:hover {
+    background-color: dimgray;
+}
+
+.show-section {
+    display: grid !important;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.show-modal {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s;
+    z-index: 2;
+}
+
+.modal > .deposit-form {
+    height: 52vmin;
+    width: 50vmin;
+    display: flex;
+    flex-direction: column;
+    background-color:rgb(41, 40, 40);
+    padding: 4vmin;
+    box-shadow: 0 0 3vmin 0.5vmin white;
+    border-radius: 2vmin;
+}
+
+.deposit-form span {
+    font-size: 3vmin;
+    margin-bottom: 1vmin;
+}
+
+.deposit-form-content {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    margin-top: 3vmin;
+}
+
+.deposit-form input, .deposit-form select {
+    height: 4vmin;
+    width: 28vmin;
+    font-size: 2vmin;
+}
+
+.deposit-form button {
+    margin: 4vmin 0;
+    border-radius: 50vmin;
+    background-color: black;
+}
+
+.deposit-form button:hover {
+    background-color: dimgray;
+    cursor: pointer;
+}

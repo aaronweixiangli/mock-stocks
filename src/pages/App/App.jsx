@@ -4,7 +4,7 @@ import { getUser } from '../../utilities/users-service';
 import './App.css';
 import AuthPage from '../AuthPage/AuthPage';
 import NewOrderPage from '../NewOrderPage/NewOrderPage';
-import OrderHistoryPage from '../OrderHistoryPage/OrderHistoryPage';
+import HomePage from '../HomePage/HomePage';
 import NavBar from '../../components/NavBar/NavBar';
 
 export default function App() {
@@ -18,7 +18,7 @@ export default function App() {
             <Routes>
               {/* Route components in here */}
               <Route path="/orders/new" element={<NewOrderPage />} />
-              <Route path="/orders" element={<OrderHistoryPage />} />
+              <Route path="/" element={<HomePage user={user} setUser={setUser}/>} />
             </Routes>
           </>
           :

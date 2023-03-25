@@ -5,7 +5,21 @@ const User = require('../../models/user');
 module.exports = {
   create,
   login,
+  deposit
 };
+
+async function deposit(req, res) {
+  try {
+    // update the user's balance
+    const user = await User.findOne({_id: req.user._id});
+    // round the balance up to two decimal digits
+    user.balance = (user.balance + parseFloat(req.body.amount)).toFixed(2);
+    user.save();
+    res.json(user);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+}
 
 async function create(req, res) {
   try {

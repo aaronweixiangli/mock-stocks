@@ -47,12 +47,13 @@ body {
 }
 
 .main-nav {
-  margin: 2vmin 4vmin 0 4vmin;
+  padding: 2vmin 6vmin 0 6vmin;
   font-size: 2vmin;
   color: white;
   position: fixed;
   top: 0;
-  width: 96.5vw;
+  width: 100vw;
+  z-index: 1;
 }
 
 .main-nav a {
@@ -95,13 +96,13 @@ body {
 .dropdown-content {
   display: none;
   position: absolute;
-  z-index: 1;
+  z-index: 2 !important;
   top: 160%;
   right: 0;
   min-width: 25vmin;
   padding: 1vmin 0;
   background-color: #fff;
-  box-shadow: -0.4vmin 0.6vmin 2vmin 0.5vmin rgba(255, 255, 255, 0.6);
+  box-shadow: -0.4vmin 0.6vmin 1vmin 0.1vmin rgba(255, 255, 255, 0.6);
 }
 
 .dropdown-content a {
@@ -109,6 +110,7 @@ body {
   padding: 1.5vmin 3vmin;
   display: block;
   cursor: pointer;
+  z-index: 3;
 }
 
 a div {
