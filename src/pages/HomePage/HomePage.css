@@ -1,5 +1,5 @@
 .HomePage {
-    padding: 10vmin 65vmin 10vmin 30vmin;
+    padding: 6vmin 65vmin 10vmin 26vmin;
 }
 
 /* WatchList Component */
@@ -65,7 +65,8 @@ img {
 h1 {
     border-bottom: 0.1vmin solid white;
     padding-bottom: 1.5vmin;
-    margin-top: 3vmin;
+    margin-top: 5vmin;
+    font-size: 3vmin;
 }
 
 /* BuyingPower Component */
@@ -210,7 +211,7 @@ h1 {
     font-size: 1.8vmin;
 }
 
-.news-content-left a {
+.news-ticker span {
     color: white;
     background-color:rgba(248, 246, 189, 0.5);
     height: 2.6vmin;
@@ -221,7 +222,7 @@ h1 {
     font-size: 1.5vmin;
 }
 
-.news-content-left a:hover {
+.news-ticker span:hover {
     background-color:blanchedalmond;
     color: black;
 }
@@ -245,4 +246,126 @@ h1 {
 .news-content-right img {
     height: 13vmin;
     width: 25vmin;
+}
+
+/* End NewsHome Component */
+
+/* LearnInvesting Component */
+.cards-container {
+    display: flex;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* hide the scrollbar for modern browsers */
+    -ms-overflow-style: none;  /* IE and Edge */
+}
+
+/* For Chrome and Safari */
+.cards-container::-webkit-scrollbar { 
+    display: none !important; 
+}
+  
+.card {
+    flex: 0 0 22vmin;
+    margin-right: 3vmin;
+    height: 18vmin;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    text-decoration: none;
+    color: white;
+    opacity: 0.9;
+}
+
+.card:hover {
+    opacity: 1;
+}
+
+.card-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.card-title span {
+    padding-left: 1.2vmin;
+    width: 10vmin;
+    font-size: 1.6vmin;
+    margin-bottom: 2vmin;
+}
+
+.card img {
+    height: 18vmin;
+    width: 10vmin;
+}
+
+.card-scroll-left-btn,
+.card-scroll-right-btn {
+    position: absolute;
+    height: 4vmin;
+    width: 4vmin;
+    top: 90vmin;
+    border: 0.1vmin solid rgba(256, 256, 256, 0.5);
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.card-scroll-left-btn {
+    display: none;
+}
+
+.card-scroll-left-btn:hover,
+.card-scroll-right-btn:hover {
+    background-color: #222121;;
+}
+
+.card-scroll-left-btn {
+  left: 22.5vmin;
+}
+
+.card-scroll-right-btn {
+  right: 61.5vmin;
+}
+
+.card1 {
+    background-color: rgb(35, 135, 88);
+}
+
+.card2 {
+    background-color: rgb(0, 42, 81);
+}
+
+.card3 {
+    background-color: rgb(82, 20, 43);
+}
+
+.card4 {
+    background-color: rgb(105, 77, 0);
+}
+
+.card5 {
+    background-color: rgb(0, 42, 81);
+}
+
+.card6 {
+    background-color: rgb(0, 64, 34);
+}
+
+.card7 {
+    background-color: rgb(0, 127, 245);
+}
+
+.card8 {
+    background-color: rgb(36, 30, 51);
+}
+
+.card9 {
+    background-color: rgb(1, 82, 44);
+}
+
+.card10 {
+    background-color: rgb(36, 30, 51);
 }

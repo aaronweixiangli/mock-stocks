@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as newsAPI from "../../utilities/news-api";
 
 export default function NewsHome() {
@@ -54,12 +54,21 @@ export default function NewsHome() {
         return `${publishedTimePDT} PDT`;
     }
 
-    const news_card = news.map((n) => 
-        <a href={n.url} className="news-container">
+    const navigate = useNavigate();
+
+    function handleClick(evt, ticker) {
+        // Prevent navigating to the news article url
+        evt.preventDefault();
+        // navigate to stock detail page
+        navigate(`/stocks/${ticker}`);
+    }
+
+    const news_card = news.map((n, index) => 
+        <a href={n.url} className="news-container" key={index}>
             <div className="news-content-left">
                 <span className="news-time">{n.source} &nbsp; {getTimeDiff(n.time_published)}</span>
                 <p>{n.title}</p>
-                <div className="news-ticker">{ n.ticker_sentiment.map((t) => <Link to="/" className="ticker_sentiment" >{t.ticker}</Link>)}</div>
+                <div className="news-ticker">{ n.ticker_sentiment.map((t, idx) => <span className="ticker_sentiment" key={idx} onClick={(evt) => handleClick(evt, t.ticker)}>{t.ticker}</span>)}</div>
                 <div>{ n.topics.map((t,idx) => <span className="topic" key={idx}>{t.topic}</span>)}</div>
             </div>
             <div className="news-content-right">

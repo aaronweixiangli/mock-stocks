@@ -2,6 +2,7 @@ import "./HomePage.css"
 import WatchList from "../../components/WatchList/WatchList";
 import BuyingPower from "../../components/BuyingPower/BuyingPower";
 import NewsHome from "../../components/NewsHome/NewsHome";
+import LearnInvesting from "../../components/LearnInvesting/LearnInvesting";
 
 export default function HomePage({ user, setUser }) {
   return (
@@ -11,6 +12,8 @@ export default function HomePage({ user, setUser }) {
       <img src="https://cdn.robinhood.com/assets/generated_assets/webapp/web-platform-prefetch-sdp/member/04a63fd4f116951d91ad9b6037b42ee1.svg" alt="homepage-img" />
       <h1>Welcome to MockStocks</h1>
       <BuyingPower user={user} setUser={setUser}/>
+      <h1>Learn About Investing</h1>
+      <LearnInvesting />
       <h1>News</h1>
       <NewsHome />
     </main>
