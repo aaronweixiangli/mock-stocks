@@ -10,15 +10,12 @@ export default function NavBar({ user, setUser }) {
     document.getElementById("dropdown").classList.toggle("show");
   }
 
+  // if the clicked elemetn does not match dropbtn, remove show class
   window.onclick = function(event) {
     if (!event.target.matches('.dropbtn')) {
-      var dropdowns = document.getElementsByClassName("dropdown-content");
-      var i;
-      for (i = 0; i < dropdowns.length; i++) {
-        var openDropdown = dropdowns[i];
-        if (openDropdown.classList.contains('show')) {
-          openDropdown.classList.remove('show');
-        }
+      var dropdown = document.getElementsByClassName("dropdown-content")[0];
+      if (dropdown.classList.contains('show')) {
+        dropdown.classList.remove('show');
       }
     }
   }

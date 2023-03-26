@@ -19,7 +19,8 @@
     /* hide scrollbar */
     scrollbar-width: none; /* For modern browsers */
     -ms-overflow-style: none;  /* IE and Edge */
-    box-shadow: 0px 0px 5px rgba(255, 254, 254, 0.2);
+    box-shadow: 0px 0px 1vmin 0.5vmin rgba(255, 254, 254, 0.2);
+    border: 0.1vmin solid white;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -64,6 +65,7 @@ img {
 h1 {
     border-bottom: 0.1vmin solid white;
     padding-bottom: 1.5vmin;
+    margin-top: 3vmin;
 }
 
 /* BuyingPower Component */
@@ -168,4 +170,79 @@ h1 {
 .deposit-form button:hover {
     background-color: dimgray;
     cursor: pointer;
+}
+
+/* End BuyingPower Component */
+
+/* NewsHome Component */
+.news-container {
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    color: white;
+    padding: 2.5vmin 2vmin;
+    text-decoration: none;
+    border-top: 0.1vmin solid rgba(256, 256, 256, 0.2);
+    border-bottom: 0.1vmin solid rgba(256, 256, 256, 0.2);
+}
+
+.news-container:hover {
+    background-color: #222121;
+}
+
+.news-content-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2.5vmin;
+    padding-right: 5vmin;
+}
+
+.news-time {
+    font-size: 1.6vmin;
+}
+
+.news-ticker {
+    flex-wrap: wrap;
+}
+
+.news-content-left p {
+    margin: 0;
+    font-size: 1.8vmin;
+}
+
+.news-content-left a {
+    color: white;
+    background-color:rgba(248, 246, 189, 0.5);
+    height: 2.6vmin;
+    padding: 0.2vmin 2.5vmin;
+    border-radius: 50vmin;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1.5vmin;
+}
+
+.news-content-left a:hover {
+    background-color:blanchedalmond;
+    color: black;
+}
+
+.topic {
+    background-color:rgba(256, 256, 256, 0.3);
+    color: white;
+    text-align: center;
+    border-radius: 1vmin;
+    height: 2.5vmin;
+    padding: 0.2vmin 1vmin;
+    font-size: 1.5vmin;
+}
+
+.news-content-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.news-content-right img {
+    height: 13vmin;
+    width: 25vmin;
 }

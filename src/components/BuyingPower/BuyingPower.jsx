@@ -7,11 +7,11 @@ export default function BuyingPower({ user, setUser }) {
     const [amount, setAmount] = useState('');
 
     function toggleSection() {
-        console.log("toggleSection() called"); // Debugging statement
         document.getElementById("buying-power-section").classList.toggle("show-section");
     }
 
     function toggleModal(evt) {
+        // Guard. Prevent this evt from propagating to the window.onclick event listener
         evt.stopPropagation();
         document.getElementsByClassName("modal")[0].classList.toggle("show-modal");
     }
@@ -23,6 +23,13 @@ export default function BuyingPower({ user, setUser }) {
             var modal = document.getElementsByClassName('modal')[0];
             if (modal.classList.contains("show-modal")) {
                 modal.classList.remove("show-modal");
+            }
+        }
+        // Also check if the clicked element matches the dropbtn. If not, remove show class
+        if (!evt.target.matches('.dropbtn')) {
+            var dropdown = document.getElementsByClassName("dropdown-content")[0];
+            if (dropdown.classList.contains('show')) {
+              dropdown.classList.remove('show');
             }
         }
     }
