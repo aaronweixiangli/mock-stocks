@@ -13,7 +13,6 @@ export default function NewsHome() {
             setNews(news);
         }
         getNews();
-
     },[])
 
     function getTimeDiff(timePublished) {
@@ -84,7 +83,7 @@ export default function NewsHome() {
             <>  
                 {news_card}
             </>
-            : <p>News are still loading. Try rephrash the page.</p>}
+            : <p>News are still loading. Try refreshing the page.</p>}
         </>
     )
 }

@@ -330,6 +330,10 @@ h1 {
   right: 61.5vmin;
 }
 
+.btn-move-down {
+    top: 112.5vmin !important;
+}
+
 .card1 {
     background-color: rgb(35, 135, 88);
 }

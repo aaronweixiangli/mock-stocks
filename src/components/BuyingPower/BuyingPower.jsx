@@ -8,6 +8,9 @@ export default function BuyingPower({ user, setUser }) {
 
     function toggleSection() {
         document.getElementById("buying-power-section").classList.toggle("show-section");
+        // adjust the location of the scroll btns in 'Learn About Investing' section
+        document.getElementsByClassName("card-scroll-right-btn")[0].classList.toggle("btn-move-down");
+        document.getElementsByClassName("card-scroll-left-btn")[0].classList.toggle("btn-move-down");
     }
 
     function toggleModal(evt) {

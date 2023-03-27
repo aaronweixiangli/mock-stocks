@@ -1,0 +1,15 @@
+.StockPage {
+    padding: 6vmin 70vmin 10vmin 26vmin;
+}
+
+#stock-chart {
+    height: 50vmin !important;
+}
+
+#chart-container {
+    padding-right: 3vmin;
+}
+
+#chart-container p {
+    font-size: 3vmin;
+}

@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import * as userService from '../../utilities/users-service';
 
 export default function NavBar({ user, setUser }) {
@@ -20,13 +21,26 @@ export default function NavBar({ user, setUser }) {
     }
   }
 
+  const [symbol, setSymbol] = useState('');
+  const navigate = useNavigate();
+  
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    navigate(`/stocks/${symbol}`);
+    setSymbol('');
+  }
+
+  function handleChange(evt) {
+    setSymbol(evt.target.value);
+  }
+
   return (
     <nav className="main-nav">
       <div className="logo">LOGO</div>
       <div className="search-bar-container">
-        <form className="search-bar">
+        <form className="search-bar" onSubmit={handleSubmit}>
           <i className="material-icons">search</i>
-          <input type="text" placeholder="symbol" name="symbol" />
+          <input type="text" placeholder="symbol (example: AAPL)" name="symbol" value={symbol} onChange={handleChange}/>
           <button type='submit'>Search</button>
         </form>
       </div>
