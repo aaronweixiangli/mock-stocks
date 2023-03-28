@@ -1,4 +1,3 @@
-// const request = require('request');
 const Alpha_Vantage_API_Key = process.env.Alpha_Vantage_API_Key;
 
 module.exports = {

@@ -1,7 +1,9 @@
 const Twelve_Data_API_Key = process.env.Twelve_Data_API_Key;
+const Alpha_Vantage_API_Key = process.env.Alpha_Vantage_API_Key;
 
 module.exports = {
-    getStock
+    getStock,
+    getStockInfo,
 };
 
 async function getStock(req, res) {
@@ -16,6 +18,16 @@ async function getStock(req, res) {
         console.log('stock.value type', typeof(stock.values));
         console.log(Array.isArray(stock.values));
         res.json(stock);
+    } catch (err) {
+        res.status(400).json(err);
+    }
+}
+
+async function getStockInfo(req, res) {
+    try {
+        const symbol = req.params.symbol;
+        const stockInfo = await fetch(`https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=${Alpha_Vantage_API_Key}`).then(res => res.json());
+        res.json(stockInfo);
     } catch (err) {
         res.status(400).json(err);
     }

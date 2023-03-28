@@ -1,11 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Chart from "chart.js/auto";
-import { CategoryScale, Tooltip } from "chart.js";
 import "./StockPage.css";
-import StockChart from "../../components/StockChart/StockChart";
 import * as stocksAPI from "../../utilities/stocks-api";
-import { set } from "mongoose";
+import StockChart from "../../components/StockChart/StockChart";
+import StockOverview from "../../components/StockOverview/StockOverview";
 
 export default function StockPage() {
   const { symbol } = useParams();
@@ -14,7 +12,9 @@ export default function StockPage() {
   const [interval, setInterval] = useState('1min');
   const [error, setError] = useState(false);
   const [chartBtn, setChartBtn] = useState('1D');
+  const [stockInfo, setStockInfo] = useState(null);
 
+  // Get stock price data
   useEffect(function() {
     async function getData() {
       try {
@@ -30,6 +30,17 @@ export default function StockPage() {
     }
     getData();
   }, [symbol, dataStartDate])
+
+  // Get stock info data
+  useEffect(function() {
+    async function getStockInfo() {
+      const infoData = await stocksAPI.getStockInfo(symbol);
+      console.log("Overview", infoData)
+      setStockInfo(infoData);
+    }
+    getStockInfo();
+  }, [symbol])
+
 
   function getStartDate_1D() {
     const today = new Date();
@@ -225,6 +236,7 @@ export default function StockPage() {
             <button className={ `chart-btn ${chartBtn === '1Y' ? 'active' : ''}` } onClick={handleOneYear}>1Y</button>
             <button className={ `chart-btn ${chartBtn === '5Y' ? 'active' : ''}` } onClick={handleFiveYears}>5Y</button>
           </div>
+          <StockOverview stockInfo={stockInfo}/>
         </>
           :
           <p>Loading...</p>

@@ -1,10 +1,10 @@
 .StockPage {
-    padding: 6vmin 75vmin 10vmin 26vmin;
+    padding: 6vmin 75vmin 10vmin 24vmin;
 }
 
 /* StockChart Component */
 #stock-chart {
-    height: 50vmin !important;
+    height: 40vmin !important;
 }
 
 #chart-container {
@@ -41,3 +41,111 @@
     border-bottom: 0.2vmin solid rgb(75, 192, 192);
     color: rgb(75, 192, 192);
 }
+
+/* StockOverview Component */
+.stock-overview-content {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1.6fr;
+    margin-bottom: 1vmin;
+}
+
+.stock-overview-content span {
+    margin-right: 0.5vmin;
+    color:rgb(75, 192, 192, 0.8);
+}
+
+.stock-overview-container {
+    font-size: 1.8vmin;
+}
+
+.stock-overview-content p {
+    margin: 0;
+}
+
+.stock-description {
+    margin-top: 2vmin;
+    line-height: 3vmin;
+    letter-spacing: 0.08vmin;
+}
+
+.stock-stats-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1.2fr;
+    margin-bottom: 1.1vmin;
+}
+
+.stock-stats {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    font-size: 1.6vmin;
+}
+
+.stock-stats-content span {
+    margin-bottom: 0.7vmin;
+    color:rgb(75, 192, 192, 0.7);
+    font-size: 1.7vmin;
+}
+
+.info-title {
+    display: flex;
+    align-items: center;
+}
+
+.info-detail {
+    font-size: 1.6vmin;
+    margin-left: 0.8vmin;
+    opacity: 0.5;
+    cursor: default;
+    border-radius: 50%;
+    background-color: rgb(75, 192, 192);
+    width: 1.5vmin;
+    height: 1.5vmin;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.5vmin !important;
+    position: relative;
+}
+
+.info-detail:hover {
+    opacity: 1;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    position: absolute;
+    z-index: 3;
+    width: 35vmin;
+    color: white !important;
+    font-size: 18px;
+    background-color: rgba(25, 39, 51, 0.8);
+    border-radius: 2vmin;
+    padding: 1.5vmin;
+    opacity: 1 !important;
+}
+
+.tooltip-text::before {
+    content: "";
+    position: absolute;
+    padding: 5px;
+    z-index: 2;
+}
+
+.info-detail:hover .tooltip-text {
+    visibility: visible;
+}
+
+#right {
+    top: -2vmin;
+    left: 200%;
+}
+  
+#right::before {
+    top: 35%;
+    left: -2%;
+}
+
+
+

@@ -13,3 +13,7 @@ export async function getStockData(symbol, startDate, interval) {
     // since they do not need to send any data to the server.
     return sendRequest(`${BASE_URL}/${symbol}`, 'POST', { startDate, interval });
 }
+
+export async function getStockInfo(symbol) {
+    return sendRequest(`${BASE_URL}/${symbol}/info`);
+}
