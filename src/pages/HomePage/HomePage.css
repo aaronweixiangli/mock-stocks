@@ -51,8 +51,8 @@
 }
 
 .crypto-watchlist, .stock-watchlist {
-    border-bottom: 0.1vmin solid rgba(256, 256, 256, 0.2);
-    border-top: 0.1vmin solid rgba(256, 256, 256, 0.8);
+    border-bottom: 0.1vmin solid rgba(255, 255, 255, 0.2);
+    border-top: 0.1vmin solid rgba(255, 255, 255, 0.8);
     font-size: 2.5vmin;
 }
 
@@ -73,8 +73,8 @@ h1 {
 .buying-power-content {
     display: flex;
     justify-content: space-between;
-    border-top: 0.1vmin solid rgba(256, 256, 256, 0.2);
-    border-bottom: 0.1vmin solid rgba(256, 256, 256, 0.2);
+    border-top: 0.1vmin solid rgba(255, 255, 255, 0.2);
+    border-bottom: 0.1vmin solid rgba(255, 255, 255, 0.2);
     padding: 0 2vmin;
 }
 
@@ -84,7 +84,7 @@ h1 {
 
 #buying-power-section {
     grid-template-columns: 1fr 1fr;
-    border-bottom: 0.1vmin solid rgba(256, 256, 256, 0.2);
+    border-bottom: 0.1vmin solid rgba(255, 255, 255, 0.2);
     padding-bottom: 2vmin;
     display: none;
 }
@@ -182,8 +182,8 @@ h1 {
     color: white;
     padding: 2.5vmin 2vmin;
     text-decoration: none;
-    border-top: 0.1vmin solid rgba(256, 256, 256, 0.2);
-    border-bottom: 0.1vmin solid rgba(256, 256, 256, 0.2);
+    border-top: 0.1vmin solid rgba(255, 255, 255, 0.2);
+    border-bottom: 0.1vmin solid rgba(255, 255, 255, 0.2);
 }
 
 .news-container:hover {
@@ -228,7 +228,7 @@ h1 {
 }
 
 .topic {
-    background-color:rgba(256, 256, 256, 0.3);
+    background-color:rgba(255, 255, 255, 0.3);
     color: white;
     text-align: center;
     border-radius: 1vmin;
@@ -303,7 +303,7 @@ h1 {
     height: 4vmin;
     width: 4vmin;
     top: 90vmin;
-    border: 0.1vmin solid rgba(256, 256, 256, 0.5);
+    border: 0.1vmin solid rgba(255, 255, 255, 0.5);
     background-color: black;
     color: white;
     cursor: pointer;

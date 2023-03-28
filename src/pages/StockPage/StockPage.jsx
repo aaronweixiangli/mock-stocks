@@ -5,6 +5,7 @@ import { CategoryScale, Tooltip } from "chart.js";
 import "./StockPage.css";
 import StockChart from "../../components/StockChart/StockChart";
 import * as stocksAPI from "../../utilities/stocks-api";
+import { set } from "mongoose";
 
 export default function StockPage() {
   const { symbol } = useParams();
@@ -12,6 +13,7 @@ export default function StockPage() {
   const [dataStartDate, setDataStartDate] = useState(getStartDate_1D());
   const [interval, setInterval] = useState('1min');
   const [error, setError] = useState(false);
+  const [chartBtn, setChartBtn] = useState('1D');
 
   useEffect(function() {
     async function getData() {
@@ -44,12 +46,12 @@ export default function StockPage() {
       // If today is Weekday(except Monday) before 6:30 AM, set the start date to the previous day
       today.setDate(today.getDate() - 1);
     }
-    // Set the start time to 6:30 AM PDT
+    // Set the start time to 6:30 AM PDT. Store them as constant for getStartDate functions
     const startHour = 6;
     const startMinute = 30;
     const startSecond = 0;
     const startMillisecond = 0;
-    // Set the timezone to PDT
+    // Set the statrDate to be a date object
     const startDate = new Date(
         today.getFullYear(),
         today.getMonth(),
@@ -63,24 +65,166 @@ export default function StockPage() {
     const dateString = startDate.toISOString().substring(0, 10); // Get the date part of the ISO string
     const timeString = startDate.toTimeString().substring(0, 8); // Get the time part of the time string
     const startDateStr = `${dateString} ${timeString}`; // Combine the date and time parts
-
     return startDateStr;
   }
 
+  function getStartDate_1W() {
+    const today = new Date();
+    // Subtract one week from today's date
+    const startDate = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() - 7,
+        6,30,0,0 //6:30 AM
+    );
+    // Convert the start date to a string in this format: YYYY-MM-DD HH:mm:ss
+    const dateString = startDate.toISOString().substring(0, 10); // Get the date part of the ISO string
+    const timeString = startDate.toTimeString().substring(0, 8); // Get the time part of the time string
+    const startDateStr = `${dateString} ${timeString}`; // Combine the date and time parts
+    return startDateStr;
+  }
+
+  function getStartDate_1M() {
+    const today = new Date();
+    // Subtract one month from today's date
+    const startDate = new Date(
+        today.getFullYear(),
+        today.getMonth() - 1,
+        today.getDate(),
+        6,30,0,0 //6:30 AM
+    );
+    // Convert the start date to a string in this format: YYYY-MM-DD HH:mm:ss
+    const dateString = startDate.toISOString().substring(0, 10); // Get the date part of the ISO string
+    const timeString = startDate.toTimeString().substring(0, 8); // Get the time part of the time string
+    const startDateStr = `${dateString} ${timeString}`; // Combine the date and time parts
+    return startDateStr;
+  }
+
+  function getStartDate_3M() {
+    const today = new Date();
+    // Subtract three month from today's date
+    const startDate = new Date(
+        today.getFullYear(),
+        today.getMonth() - 3,
+        today.getDate(),
+        6,30,0,0 //6:30 AM
+    );
+    // Convert the start date to a string in this format: YYYY-MM-DD HH:mm:ss
+    const dateString = startDate.toISOString().substring(0, 10); // Get the date part of the ISO string
+    const timeString = startDate.toTimeString().substring(0, 8); // Get the time part of the time string
+    const startDateStr = `${dateString} ${timeString}`; // Combine the date and time parts
+    return startDateStr;
+  }
+
+  function getStartDate_1Y() {
+    const today = new Date();
+    // Subtract three month from today's date
+    const startDate = new Date(
+        today.getFullYear() - 1,
+        today.getMonth(),
+        today.getDate(),
+        6,30,0,0 //6:30 AM
+    );
+    // Convert the start date to a string in this format: YYYY-MM-DD HH:mm:ss
+    const dateString = startDate.toISOString().substring(0, 10); // Get the date part of the ISO string
+    const timeString = startDate.toTimeString().substring(0, 8); // Get the time part of the time string
+    const startDateStr = `${dateString} ${timeString}`; // Combine the date and time parts
+    return startDateStr;
+  }
+
+  function getStartDate_5Y() {
+    const today = new Date();
+    // Subtract three month from today's date
+    const startDate = new Date(
+        today.getFullYear() - 5,
+        today.getMonth(),
+        today.getDate(),
+        6,30,0,0 //6:30 AM
+    );
+    // Convert the start date to a string in this format: YYYY-MM-DD HH:mm:ss
+    const dateString = startDate.toISOString().substring(0, 10); // Get the date part of the ISO string
+    const timeString = startDate.toTimeString().substring(0, 8); // Get the time part of the time string
+    const startDateStr = `${dateString} ${timeString}`; // Combine the date and time parts
+    return startDateStr;
+  }
+
+  function handleOneDay() {
+    setDataStartDate(getStartDate_1D());
+    setInterval('1min');
+    const chartBtns = document.getElementsByClassName('chart-btn');
+    // remove 'active' class for all chartBtns
+    chartBtns.forEach(btn => btn.classList.remove('active'));
+    chartBtns[0].classList.add('active');
+  }
+
+  function handleOneWeek() {
+    setDataStartDate(getStartDate_1W());
+    setInterval('5min');
+    const chartBtns = [...document.getElementsByClassName('chart-btn')];
+    chartBtns.forEach(btn => btn.classList.remove('active'));
+    chartBtns[1].classList.add('active');
+  }
+
+  function handleOneMonth() {
+    setDataStartDate(getStartDate_1M());
+    setInterval('1h');
+    const chartBtns = [...document.getElementsByClassName('chart-btn')];
+    chartBtns.forEach(btn => btn.classList.remove('active'));
+    chartBtns[2].classList.add('active');
+  }
+
+  function handleThreeMonths() {
+    setDataStartDate(getStartDate_3M());
+    setInterval('1day');
+    const chartBtns = [...document.getElementsByClassName('chart-btn')];
+    chartBtns.forEach(btn => btn.classList.remove('active'));
+    chartBtns[3].classList.add('active');
+  }
+
+  function handleOneYear() {
+    setDataStartDate(getStartDate_1Y());
+    setInterval('1day');
+    const chartBtns = [...document.getElementsByClassName('chart-btn')];
+    chartBtns.forEach(btn => btn.classList.remove('active'));
+    chartBtns[4].classList.add('active');
+  }
+
+  function handleFiveYears() {
+    setDataStartDate(getStartDate_5Y());
+    setInterval('1week');
+    const chartBtns = [...document.getElementsByClassName('chart-btn')];
+    chartBtns.forEach(btn => btn.classList.remove('active'));
+    chartBtns[5].classList.add('active');
+  }
+
+
   if (error) return (
     <main className="StockPage">
-      <h2>Invalid Symbol. {symbol} is not found. Please double check and do another search.</h2>
+      <h1>{symbol}</h1>
+      <h2>Symbol not found. <br/><br/>Invalid input: {symbol}. <br/><br/>Please double-check and try again. <br/><br/>Remember to enter the stock symbol instead of the company name. For example, instead of searching for APPLE, use the stock symbol AAPL.</h2>
     </main>
   )
-
   return (
     <main className="StockPage">
       <h1>{symbol}</h1>
       { stockData 
         ? 
         <>
-          <span>Exchange: {stockData.meta.exchange}</span>
+          <div className="stock-info">
+            <span>Type: {stockData.meta.type}</span>
+            <span>Exchange: {stockData.meta.exchange}</span>
+            <span>Exchange Timezone: {stockData.meta.exchange_timezone}</span>
+            <span>Chart Timezone: America/Los_Angeles</span>
+          </div>
           <StockChart stockData={stockData}/>
+          <div className="chart-btns-container">
+            <button className={ `chart-btn ${chartBtn === '1D' ? 'active' : ''}` } onClick={handleOneDay}>1D</button>
+            <button className={ `chart-btn ${chartBtn === '1W' ? 'active' : ''}` } onClick={handleOneWeek}>1W</button>
+            <button className={ `chart-btn ${chartBtn === '1M' ? 'active' : ''}` } onClick={handleOneMonth}>1M</button>
+            <button className={ `chart-btn ${chartBtn === '3M' ? 'active' : ''}` } onClick={handleThreeMonths}>3M</button>
+            <button className={ `chart-btn ${chartBtn === '1Y' ? 'active' : ''}` } onClick={handleOneYear}>1Y</button>
+            <button className={ `chart-btn ${chartBtn === '5Y' ? 'active' : ''}` } onClick={handleFiveYears}>5Y</button>
+          </div>
         </>
           :
           <p>Loading...</p>

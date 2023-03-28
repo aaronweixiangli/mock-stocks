@@ -1,7 +1,8 @@
 .StockPage {
-    padding: 6vmin 70vmin 10vmin 26vmin;
+    padding: 6vmin 75vmin 10vmin 26vmin;
 }
 
+/* StockChart Component */
 #stock-chart {
     height: 50vmin !important;
 }
@@ -11,5 +12,32 @@
 }
 
 #chart-container p {
-    font-size: 3vmin;
+    font-size: 3.5vmin;
+}
+/* End StockChart Component */
+
+.stock-info {
+    display: flex;
+    gap: 4vmin;
+}
+
+.chart-btns-container {
+    display: flex;
+    gap: 3vmin;
+    padding: 0.2vmin 3vmin;
+    border-bottom: 0.1vmin solid rgba(255,255,255,0.5);
+}
+
+.chart-btn {
+    border: none;
+    font-size: 1.5vmin;
+}
+
+.chart-btn:hover {
+    color: rgb(75, 192, 192);
+}
+
+.chart-btns-container .active {
+    border-bottom: 0.2vmin solid rgb(75, 192, 192);
+    color: rgb(75, 192, 192);
 }
