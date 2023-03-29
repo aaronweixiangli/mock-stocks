@@ -206,6 +206,10 @@ h1 {
     flex-wrap: wrap;
 }
 
+.news-topic {
+    flex-wrap: wrap;
+}
+
 .news-content-left p {
     margin: 0;
     font-size: 1.8vmin;

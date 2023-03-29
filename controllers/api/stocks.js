@@ -13,10 +13,6 @@ async function getStock(req, res) {
         const startDate = req.body.startDate;
         const stock = await fetch(`https://api.twelvedata.com/time_series?apikey=${Twelve_Data_API_Key}&interval=${interval}&format=JSON&timezone=America/Los_Angeles&symbol=${symbol}&start_date=${startDate}&dp=2`)
         .then(res => res.json());
-        console.log(stock);
-        console.log('stock type', typeof(stock));
-        console.log('stock.value type', typeof(stock.values));
-        console.log(Array.isArray(stock.values));
         res.json(stock);
     } catch (err) {
         res.status(400).json(err);

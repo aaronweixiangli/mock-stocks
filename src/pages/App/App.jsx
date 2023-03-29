@@ -17,7 +17,7 @@ export default function App() {
             <NavBar user={user} setUser={setUser} />
             <Routes>
               {/* Route components in here */}
-              <Route path="/stocks/:symbol" element={<StockPage />} />
+              <Route path="/stocks/:symbol" element={<StockPage user={user}/>} />
               <Route path="/" element={<HomePage user={user} setUser={setUser}/>} />
             </Routes>
           </>

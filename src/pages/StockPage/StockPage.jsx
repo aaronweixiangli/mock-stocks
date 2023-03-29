@@ -4,8 +4,10 @@ import "./StockPage.css";
 import * as stocksAPI from "../../utilities/stocks-api";
 import StockChart from "../../components/StockChart/StockChart";
 import StockOverview from "../../components/StockOverview/StockOverview";
+import StockNews from "../../components/StockNews/StockNews";
+import StockOrder from "../../components/StockOrder/StockOrder";
 
-export default function StockPage() {
+export default function StockPage( {user} ) {
   const { symbol } = useParams();
   const [stockData, setStockData] = useState(null);
   const [dataStartDate, setDataStartDate] = useState(getStartDate_1D());
@@ -34,9 +36,13 @@ export default function StockPage() {
   // Get stock info data
   useEffect(function() {
     async function getStockInfo() {
-      const infoData = await stocksAPI.getStockInfo(symbol);
-      console.log("Overview", infoData)
-      setStockInfo(infoData);
+      try {
+        const infoData = await stocksAPI.getStockInfo(symbol);
+        console.log("Overview", infoData)
+        setStockInfo(infoData);
+      } catch {
+        setStockInfo(null);
+      }
     }
     getStockInfo();
   }, [symbol])
@@ -237,6 +243,8 @@ export default function StockPage() {
             <button className={ `chart-btn ${chartBtn === '5Y' ? 'active' : ''}` } onClick={handleFiveYears}>5Y</button>
           </div>
           <StockOverview stockInfo={stockInfo}/>
+          <StockNews symbol={symbol} />
+          <StockOrder symbol={symbol} marketPrice={stockData.values[0].open} user={user}/>
         </>
           :
           <p>Loading...</p>

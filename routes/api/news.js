@@ -7,4 +7,7 @@ const newsCtrl = require('../../controllers/api/news');
 // GET /api/news
 router.get('/', newsCtrl.getAllNews);
 
+// GET /api/news/:symbol
+router.get('/:symbol', newsCtrl.getStockNews);
+
 module.exports = router;
