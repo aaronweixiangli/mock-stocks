@@ -200,6 +200,35 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
     }
 
 
+    // Define reviewDetail variable to store html elements that display review details for each order type form
+    const [reviewDetail, setReviewDetail] = useState(<>
+        <span className="review-title">Order Summary</span>
+        <span className="review-content">You are placing an order .......</span>
+    </>);
+    // When the user clicks the review button, change the reviewDetail according to different order type
+    function handleReviewDetail(evt) {
+        evt.preventDefault();
+        if (orderType === 'market order') {
+            const reviewElement = (
+                <>
+                    <span className="review-title">Order Summary</span>
+                    <span className="review-content">You are placing an market order .......</span>
+                </>
+            );
+            setReviewDetail(reviewElement);
+        }
+        if (orderType === 'limit order') {
+            const reviewElement = (
+                <>
+                    <span className="review-title">Order Summary</span>
+                    <span className="review-content">You are placing a limit order .......</span>
+                </>
+            );
+            setReviewDetail(reviewElement);
+        }
+    }
+
+
     if (orderType === 'market order') {
         return (
             <section className="stock-order-container">
@@ -270,7 +299,8 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                                 </div>
                             </div>
                             <div className="review-order-container">
-                                <button disabled={!shares}>Review Order</button>
+                                <button disabled={!shares} onClick={handleReviewDetail}>Review Order</button>
+                                {reviewDetail}
                             </div>
                         </>
                         :
@@ -282,8 +312,9 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                                 </div>
                             </div>
                             <div className="review-order-container">
-                                <button disabled={!dollars}>Review Order</button>
+                                <button disabled={!dollars}  onClick={handleReviewDetail}>Review Order</button>
                             </div>
+                            {reviewDetail}
                         </>
                         }
                     </div>
@@ -739,9 +770,9 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                             <div className="order-detail-right">
                                 <select name="expires" id="order-expires" value={frequency} onChange={handleFrequencyChange}>
                                     <option value="every market day">Every market day (Monday to Friday)</option>
-                                    <option value="every week">Every week (On Wednesday)</option>
-                                    <option value="every two weeks">Every two weeks (On Wednesday)</option>
-                                    <option value="every month">Every Month (On the 29th)</option>
+                                    <option value="every week">Every week</option>
+                                    <option value="every two weeks">Every two weeks</option>
+                                    <option value="every month">Every Month</option>
                                 </select>
                             </div>
                         </div>

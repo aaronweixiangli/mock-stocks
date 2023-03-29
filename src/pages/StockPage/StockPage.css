@@ -255,6 +255,7 @@
 
 .review-order-container, .order-last-row {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
