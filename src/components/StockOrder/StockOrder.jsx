@@ -11,10 +11,12 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
     
     function handleBuyType() {
         if (buyOrSell === 'sell') setBuyOrSell('buy');
+        if (reviewDetail) setReviewDetail(null);
     }
 
     function handleSellType() {
         if (buyOrSell === 'buy') setBuyOrSell('sell');
+        if (reviewDetail) setReviewDetail(null);
     }
 
     function handleTypeChange(evt) {
@@ -31,16 +33,19 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
         setStarts(tomorrowDate());
         setAmount('');
         setFrequency('every market day');
+        setReviewDetail(null);
         setOrderType(evt.target.value);
     }
 
     function handleSharesOrDollars(evt) {
         if (sharesOrDollars === 'shares') setShares('');
         if (sharesOrDollars === 'dollars') setDollars('');
+        setReviewDetail(null);
         setSharesOrDollars(evt.target.value);
     }
 
     function handleSharesChange(evt) {
+        setReviewDetail(null);
         setShares(evt.target.value);
     }
 
@@ -54,6 +59,7 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
     }
 
     function handleDollarsChange(evt) {
+        setReviewDetail(null);
         setDollars(evt.target.value);
     }
 
@@ -71,6 +77,7 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
     const [expires, setExpires] = useState('good for day');
 
     function handleLimitPriceChange(evt) {
+        setReviewDetail(null);
         setLimitPrice(evt.target.value);
     }
 
@@ -83,6 +90,7 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
     }
 
     function handleExpiresChange(evt) {
+        setReviewDetail(null);
         setExpires(evt.target.value);
     }
 
@@ -100,6 +108,7 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
     const [stopPrice, setStopPrice] = useState('');
 
     function handleStopPriceChange(evt) {
+        setReviewDetail(null);
         setStopPrice(evt.target.value);
     }
 
@@ -121,10 +130,12 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
     const [trailAmount, setTrailAmount] = useState('');
 
     function handleTrailTypeChange(evt) {
+        setReviewDetail(null);
         setTrialType(evt.target.value);
     }
 
     function handleTrailPercentChange(evt) {
+        setReviewDetail(null);
         setTrailPercent(evt.target.value);
     }
 
@@ -137,6 +148,7 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
     }
     
     function handleTrailAmountChange(evt) {
+        setReviewDetail(null);
         setTrailAmount(evt.target.value);
     }
 
@@ -165,6 +177,7 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
     }
 
     function handleAmountChange(evt) {
+        setReviewDetail(null);
         setAmount(evt.target.value);
     }
 
@@ -177,11 +190,14 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
     }
 
     function handleFrequencyChange(evt) {
+        setReviewDetail(null);
         setFrequency(evt.target.value);
     }
 
     function handleStartsChange(evt) {
+        setReviewDetail(null);
         setStarts(evt.target.value);
+        console.log('onchange', new Date(evt.target.value))
     }
 
     function handleStartsBlur(evt) {
@@ -192,40 +208,118 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
             setStarts(tomorrowDate());
             return;
         }
-        const selectedDate = new Date(inputDate);
+        // Guard. Ensure input is greater than today's date. Specify timezone to be PDT
+        const selectedDate = new Date(inputDate + "T00:00:00-07:00");
         const minimumDate = new Date(tomorrowDate());
         if (selectedDate < minimumDate) {
             setStarts(tomorrowDate());
+            return;
         }
+        // Adjust selected date to next Monday if it is a Saturday or Sunday
+        const dayOfWeek = selectedDate.getDay();
+        if (dayOfWeek === 0) {
+            selectedDate.setDate(selectedDate.getDate() + 1);
+        } else if (dayOfWeek === 6) {
+            selectedDate.setDate(selectedDate.getDate() + 2);
+        }
+        const year = selectedDate.getFullYear();
+        const month = selectedDate.getMonth() + 1;
+        const day = selectedDate.getDate();
+        const nextMonday = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
+        setStarts(nextMonday);
     }
 
 
     // Define reviewDetail variable to store html elements that display review details for each order type form
-    const [reviewDetail, setReviewDetail] = useState(<>
-        <span className="review-title">Order Summary</span>
-        <span className="review-content">You are placing an order .......</span>
-    </>);
+    const [reviewDetail, setReviewDetail] = useState(null);
     // When the user clicks the review button, change the reviewDetail according to different order type
     function handleReviewDetail(evt) {
         evt.preventDefault();
         if (orderType === 'market order') {
             const reviewElement = (
-                <>
+                <div className="review-container">
                     <span className="review-title">Order Summary</span>
-                    <span className="review-content">You are placing an market order .......</span>
-                </>
+                    <span className="review-content">You are placing an market order to { buyOrSell === 'buy' ? 'buy' : 'sell' } { sharesOrDollars === 'shares' ? `${shares} shares of ${symbol} based on current market price of $${marketPrice}. You will pay approximately $${(marketPrice * shares).toFixed(2)}.` : `$${dollars} of ${symbol} based on the current market price of $${marketPrice}. You will receive approximately ${(dollars / marketPrice).toFixed(5)} shares.`} </span>
+                    <div className="order-summary-btn-container">
+                        <button className="order-summary-btn">Place Order</button>
+                        <button className="order-summary-btn order-edit-btn" onClick={handleCancel}>Edit</button>
+                    </div>
+                </div>
             );
             setReviewDetail(reviewElement);
         }
         if (orderType === 'limit order') {
             const reviewElement = (
-                <>
+                <div className="review-container">
                     <span className="review-title">Order Summary</span>
-                    <span className="review-content">You are placing a limit order .......</span>
-                </>
+                    <span className="review-content">You are placing a { expires } limit order to { buyOrSell === 'buy' ? 'buy' : 'sell' } {shares} shares of {symbol}. Your pending order, if executed, will execute at ${limitPrice} per share or { buyOrSell === 'buy' ? 'better' : 'higher' }.</span>
+                    <div className="order-summary-btn-container">
+                        <button className="order-summary-btn">Place Order</button>
+                        <button className="order-summary-btn order-edit-btn" onClick={handleCancel}>Edit</button>
+                    </div>
+                </div>
             );
             setReviewDetail(reviewElement);
         }
+        if (orderType === 'stop loss order') {
+            const reviewElement = (
+                <div className="review-container">
+                    <span className="review-title">Order Summary</span>
+                    <span className="review-content">You are placing a { expires } stop loss order to { buyOrSell === 'buy' ? 'buy' : 'sell' } {shares} shares of {symbol}. When the price of {symbol} {buyOrSell === 'buy' ? 'reaches' : 'drops to'} ${stopPrice}, your order will be converted to a market order.</span>
+                    <div className="order-summary-btn-container">
+                        <button className="order-summary-btn">Place Order</button>
+                        <button className="order-summary-btn order-edit-btn" onClick={handleCancel}>Edit</button>
+                    </div>
+                </div>
+            );
+            setReviewDetail(reviewElement);
+        }
+        if (orderType === 'stop limit order') {
+            const reviewElement = (
+                <div className="review-container">
+                    <span className="review-title">Order Summary</span>
+                    <span className="review-content">You are placing a { expires } stop limit order to { buyOrSell === 'buy' ? 'buy' : 'sell' } {shares} shares of {symbol}. When the price of {symbol} {buyOrSell === 'buy' ? 'reaches' : 'drops to'} ${stopPrice}, your order will be converted to a limit order at ${limitPrice} per share.</span>
+                    <div className="order-summary-btn-container">
+                        <button className="order-summary-btn">Place Order</button>
+                        <button className="order-summary-btn order-edit-btn" onClick={handleCancel}>Edit</button>
+                    </div>
+                </div>
+            );
+            setReviewDetail(reviewElement);
+        }
+        if (orderType === 'trailing stop order') {
+            const reviewElement = (
+                <div className="review-container">
+                    <span className="review-title">Order Summary</span>
+                    <span className="review-content">You are placing a { expires } trailing stop order to { buyOrSell === 'buy' ? 'buy' : 'sell' } {shares} shares of {symbol}. When the price of {symbol} {buyOrSell === 'buy' ? (` reaches ${ trailType === 'percentage' ? `$${(marketPrice * (1 + trailPercent/100)).toFixed(2)} or higher` : `$${(parseFloat(marketPrice) + parseFloat(trailAmount)).toFixed(2)} or higher`}`) : (`drops to ${ trailType === 'percentage' ? `$${(marketPrice * (1 - trailPercent/100)).toFixed(2)} or lower` : `$${(parseFloat(marketPrice) - parseFloat(trailAmount)).toFixed(2)}`} or lower`)}, your order will be converted to a market order.</span>
+                    <div className="order-summary-btn-container">
+                        <button className="order-summary-btn">Place Order</button>
+                        <button className="order-summary-btn order-edit-btn" onClick={handleCancel}>Edit</button>
+                    </div>
+                </div>
+            );
+            setReviewDetail(reviewElement);
+        }
+        if (orderType === 'recurring investment') {
+            const reviewElement = (
+                <div className="review-container">
+                    <span className="review-title">Order Summary</span>
+                    { frequency === 'every market day' && <span className="review-content">You'll buy ${amount} of {symbol} every market day. Your first order will be placed on {starts} at 11:00 AM ET (8:00 AM PDT) in a batch order with other MockStocks recurring investment orders for {symbol}.</span>}
+                    { frequency === 'every week' && <span className="review-content">You'll buy ${amount} of {symbol} every week on { (new Date(starts + "T00:00:00-07:00")).toLocaleString('en-US', { weekday: 'long'}) }. Your first order will be placed on {starts} at 11:00 AM ET (8:00 AM PDT) in a batch order with other MockStocks recurring investment orders for {symbol}.</span>}
+                    { frequency === 'every two weeks' && <span className="review-content">You'll buy ${amount} of {symbol} every two weeks on { (new Date(starts + "T00:00:00-07:00")).toLocaleString('en-US', { weekday: 'long'}) }. Your first order will be placed on {starts} at 11:00 AM ET (8:00 AM PDT) in a batch order with other MockStocks recurring investment orders for {symbol}.</span>}
+                    { frequency === 'every month' && <span className="review-content">You'll buy ${amount} of {symbol} every month on day { (new Date(starts + "T00:00:00-07:00")).toLocaleString('en-US', { day: 'numeric'}) }. Your first order will be placed on {starts} at 11:00 AM ET (8:00 AM PDT) in a batch order with other MockStocks recurring investment orders for {symbol}.</span>}
+                    <div className="order-summary-btn-container">
+                        <button className="order-summary-btn">Place Order</button>
+                        <button className="order-summary-btn order-edit-btn" onClick={handleCancel}>Edit</button>
+                    </div>
+                </div>
+            );
+            setReviewDetail(reviewElement);
+        }
+    }
+
+    function handleCancel() {
+        setReviewDetail(null);
     }
 
 
@@ -240,7 +334,7 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                         <div className={`sell-order ${ buyOrSell === 'sell' ? 'active' : ''}`} onClick={handleSellType}>
                             Sell {symbol}
                         </div>
-                        <select name="order-type" id="order-type" onChange={handleTypeChange}>
+                        <select name="order-type" id="order-type" value={orderType} onChange={handleTypeChange}>
                             <option value="market order">Market Order</option>
                             <option value="limit order">Limit Order</option>
                             <option value="stop loss order">Stop Loss Order</option>
@@ -298,10 +392,10 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                                     <span>${(marketPrice * shares).toFixed(2)}</span>
                                 </div>
                             </div>
-                            <div className="review-order-container">
+                            <div className="review-order-container" style={{display: reviewDetail ? "none" : "block" }} >
                                 <button disabled={!shares} onClick={handleReviewDetail}>Review Order</button>
-                                {reviewDetail}
                             </div>
+                            {reviewDetail}
                         </>
                         :
                         <>
@@ -311,8 +405,8 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                                     <span>{(dollars / marketPrice).toFixed(5)}</span>
                                 </div>
                             </div>
-                            <div className="review-order-container">
-                                <button disabled={!dollars}  onClick={handleReviewDetail}>Review Order</button>
+                            <div className="review-order-container" style={{display: reviewDetail ? "none" : "block" }}>
+                                <button disabled={!dollars} onClick={handleReviewDetail}>Review Order</button>
                             </div>
                             {reviewDetail}
                         </>
@@ -342,7 +436,7 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                         <div className={`sell-order ${ buyOrSell === 'sell' ? 'active' : ''}`} onClick={handleSellType}>
                             Sell {symbol}
                         </div>
-                        <select name="order-type" id="order-type" onChange={handleTypeChange}>
+                        <select name="order-type" id="order-type" value={orderType} onChange={handleTypeChange}>
                             <option value="market order">Market Order</option>
                             <option value="limit order">Limit Order</option>
                             <option value="stop loss order">Stop Loss Order</option>
@@ -391,9 +485,10 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                                 <span>${(limitPrice * shares).toFixed(2)}</span>
                             </div>
                         </div>
-                        <div className="review-order-container">
-                            <button disabled={true} >Review Order</button>
+                        <div className="review-order-container" style={{display: reviewDetail ? "none" : "block" }}>
+                            <button disabled={!limitPrice || !shares || !expires} onClick={handleReviewDetail}>Review Order</button>
                         </div>
+                        {reviewDetail}
                     </div>
                     <div className="order-last-row">
                     {
@@ -420,7 +515,7 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                         <div className={`sell-order ${ buyOrSell === 'sell' ? 'active' : ''}`} onClick={handleSellType}>
                             Sell {symbol}
                         </div>
-                        <select name="order-type" id="order-type" onChange={handleTypeChange}>
+                        <select name="order-type" id="order-type" value={orderType} onChange={handleTypeChange}>
                             <option value="market order">Market Order</option>
                             <option value="limit order">Limit Order</option>
                             <option value="stop loss order">Stop Loss Order</option>
@@ -469,9 +564,10 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                                 <span>${(stopPrice * shares).toFixed(2)}</span>
                             </div>
                         </div>
-                        <div className="review-order-container">
-                            <button disabled={true} >Review Order</button>
+                        <div className="review-order-container" style={{display: reviewDetail ? "none" : "block" }}>
+                            <button disabled={!stopPrice || !shares || !expires} onClick={handleReviewDetail}>Review Order</button>
                         </div>
+                        {reviewDetail}
                     </div>
                     <div className="order-last-row">
                     {
@@ -498,7 +594,7 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                         <div className={`sell-order ${ buyOrSell === 'sell' ? 'active' : ''}`} onClick={handleSellType}>
                             Sell {symbol}
                         </div>
-                        <select name="order-type" id="order-type" onChange={handleTypeChange}>
+                        <select name="order-type" id="order-type" value={orderType} onChange={handleTypeChange}>
                             <option value="market order">Market Order</option>
                             <option value="limit order">Limit Order</option>
                             <option value="stop loss order">Stop Loss Order</option>
@@ -553,9 +649,10 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                                 <span>${(limitPrice * shares).toFixed(2)}</span>
                             </div>
                         </div>
-                        <div className="review-order-container">
-                            <button disabled={true} >Review Order</button>
+                        <div className="review-order-container" style={{display: reviewDetail ? "none" : "block" }}>
+                            <button disabled={!stopPrice || !limitPrice || !shares || !expires} onClick={handleReviewDetail}>Review Order</button>
                         </div>
+                        {reviewDetail}
                     </div>
                     <div className="order-last-row">
                     {
@@ -581,7 +678,7 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                         <div className={`sell-order ${ buyOrSell === 'sell' ? 'active' : ''}`} onClick={handleSellType}>
                             Sell {symbol}
                         </div>
-                        <select name="order-type" id="order-type" onChange={handleTypeChange}>
+                        <select name="order-type" id="order-type" value={orderType} onChange={handleTypeChange}>
                             <option value="market order">Market Order</option>
                             <option value="limit order">Limit Order</option>
                             <option value="stop loss order">Stop Loss Order</option>
@@ -713,9 +810,10 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                                 </>
                             }
                         </div>
-                        <div className="review-order-container">
-                            <button disabled={true} >Review Order</button>
+                        <div className="review-order-container" style={{display: reviewDetail ? "none" : "block" }}>
+                            <button disabled={ !shares || !expires || (trailType === 'percentage' ? !trailPercent : !trailAmount) } onClick={handleReviewDetail}>Review Order</button>
                         </div>
+                        {reviewDetail}
                     </div>
                     <div className="order-last-row">
                     {
@@ -739,7 +837,7 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                         <div className="buy-order">
                             {symbol} recurring investment
                         </div>
-                        <select name="order-type" id="order-type" onChange={handleTypeChange}>
+                        <select name="order-type" id="order-type" value={orderType} onChange={handleTypeChange}>
                             <option value="market order">Market Order</option>
                             <option value="limit order">Limit Order</option>
                             <option value="stop loss order">Stop Loss Order</option>
@@ -762,7 +860,7 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                         <div className="order-detail-content-container">
                             <span>Starts</span>
                             <div className="order-detail-right">
-                                <input type="date" value={starts} min={starts} onChange={handleStartsChange} onBlur={handleStartsBlur}/>
+                                <input type="date" value={starts} min={tomorrowDate()} onChange={handleStartsChange} onBlur={handleStartsBlur}/>
                             </div>
                         </div>
                         <div className="order-detail-content-container">
@@ -778,9 +876,10 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                         </div>
                     </div>
                     <div className="order-detail-overview">
-                        <div className="review-order-container">
-                            <button disabled={true} >Review Order</button>
+                        <div className="review-order-container" style={{display: reviewDetail ? "none" : "block" }}>
+                            <button disabled={ !amount || !starts || !frequency } onClick={handleReviewDetail}>Review Order</button>
                         </div>
+                        {reviewDetail}
                     </div>
                     <div className="order-last-row">
                     {

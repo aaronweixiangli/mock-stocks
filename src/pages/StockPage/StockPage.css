@@ -159,7 +159,7 @@
 /* StockOrder Component */
 .stock-order-container {
     position: fixed;
-    top: 20vmin;
+    top: 16vmin;
     right: 25vmin;
     height: auto;
     width: 42vmin;
@@ -216,7 +216,7 @@
 .order-detail-container, .order-detail-overview {
     display: flex;
     flex-direction: column;
-    gap: 2.8vmin;
+    gap: 2.3vmin;
 }
 
 .order-detail-container input, .order-detail-container select {
@@ -285,6 +285,35 @@
 
 .initial-stop-price {
     width: 15vmin;
+}
+
+.review-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.review-title {
+    padding-bottom: 1vmin;
+    border-bottom: 0.1vmin solid rgba(255,255,255,0.2);
+}
+
+.review-content {
+    padding: 1vmin 0.5vmin 2vmin 0.5vmin;
+    font-size: 1.5vmin;
+    color: rgba(75, 192, 192);
+}
+
+.order-summary-btn-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.order-edit-btn {
+    background-color: black !important;
+}
+
+.order-edit-btn:hover {
+    background-color: rgba(75, 192, 192, 0.25) !important;
 }
 
 /* End StockOrder Component */
