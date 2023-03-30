@@ -29,6 +29,22 @@ app.use('/api/users', require('./routes/api/users'));
 app.use('/api/news', ensureLoggedIn, require('./routes/api/news'));
 app.use('/api/stocks', ensureLoggedIn, require('./routes/api/stocks'));
 
+const polling = require('./pollAPI');
+polling.start();
+app.get('/polling/start', function(req, res) {
+  polling.start();
+  res.send('Start polling');
+})
+app.get('/polling/stop', function(req, res) {
+  polling.stop();
+  res.send('Stop polling');
+})
+app.get('/polling/frequency/:min', function(req, res) {
+  polling.setFrequencyMinutes(parseInt(req.params.min));
+  res.send('Change frequency');
+})
+
+
 // The following "catch all" route (note the *) is necessary
 // to return the index.html on all non-AJAX/API requests
 app.get('/*', function(req, res) {
