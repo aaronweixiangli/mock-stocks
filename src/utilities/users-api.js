@@ -16,3 +16,11 @@ export async function deposit(amount) {
   console.log('API amount', amount)
   return sendRequest(`${BASE_URL}/deposit`, 'PUT', { amount });
 }
+
+export async function getBalance() {
+  return sendRequest(`${BASE_URL}/balance`);
+}
+
+export async function getSharesOwn(symbol) {
+  return sendRequest(`${BASE_URL}/stock_shares_own/${symbol}`);
+}

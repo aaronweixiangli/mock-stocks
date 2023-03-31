@@ -11,5 +11,9 @@ router.post('/', usersCtrl.create);
 router.post('/login', usersCtrl.login);
 // PUT /api/users/deposit
 router.put('/deposit', ensureLoggedIn, usersCtrl.deposit);
+// GET /api/users/balance
+router.get('/balance', ensureLoggedIn, usersCtrl.getBalance);
+// GET /api/users/stock_shares_own/:symbol
+router.get('/stock_shares_own/:symbol', ensureLoggedIn, usersCtrl.getSharesOwn);
 
 module.exports = router;

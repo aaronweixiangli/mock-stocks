@@ -2,12 +2,13 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./StockPage.css";
 import * as stocksAPI from "../../utilities/stocks-api";
+import * as usersAPI from "../../utilities/users-api";
 import StockChart from "../../components/StockChart/StockChart";
 import StockOverview from "../../components/StockOverview/StockOverview";
 import StockNews from "../../components/StockNews/StockNews";
 import StockOrder from "../../components/StockOrder/StockOrder";
 
-export default function StockPage( {user} ) {
+export default function StockPage( {user, balance} ) {
   const { symbol } = useParams();
   const [stockData, setStockData] = useState(null);
   const [dataStartDate, setDataStartDate] = useState(getStartDate_1D());
@@ -15,6 +16,8 @@ export default function StockPage( {user} ) {
   const [error, setError] = useState(false);
   const [chartBtn, setChartBtn] = useState('1D');
   const [stockInfo, setStockInfo] = useState(null);
+
+  const [sharesOwn, setSharesOwn] = useState(0);
 
   // Get stock price data
   useEffect(function() {
@@ -31,7 +34,7 @@ export default function StockPage( {user} ) {
       }
     }
     getData();
-  }, [symbol, dataStartDate])
+  }, [symbol, dataStartDate]);
 
   // Get stock info data
   useEffect(function() {
@@ -45,7 +48,18 @@ export default function StockPage( {user} ) {
       }
     }
     getStockInfo();
-  }, [symbol])
+  }, [symbol]);
+
+  // Get stock shares owned by the user for this stock
+  useEffect(function() {
+    async function getStockOwnShares() {
+      if (!user) return;
+      const sharesOwn = await usersAPI.getSharesOwn(symbol);
+      console.log('sharesOwn', sharesOwn);
+      setSharesOwn(sharesOwn);
+    }
+    getStockOwnShares();
+  }, [symbol, user]);
 
 
   function getStartDate_1D() {
@@ -219,6 +233,7 @@ export default function StockPage( {user} ) {
     <main className="StockPage">
       <h1>{symbol}</h1>
       <h2>Symbol not found. <br/><br/>Invalid input: {symbol}. <br/><br/>Please double-check and try again. <br/><br/>Remember to enter the stock symbol instead of the company name. For example, instead of searching for APPLE, use the stock symbol AAPL.</h2>
+      <h2>Sometimes it can be the network issue. If the input is valid, try refreshing the page later.</h2>
     </main>
   )
   return (
@@ -244,7 +259,7 @@ export default function StockPage( {user} ) {
           </div>
           <StockOverview stockInfo={stockInfo}/>
           <StockNews symbol={symbol} />
-          <StockOrder symbol={symbol} marketPrice={stockData.values[0].open} user={user}/>
+          <StockOrder symbol={symbol} marketPrice={stockData.values[0].open} user={user} sharesOwn={sharesOwn} setSharesOwn={setSharesOwn} balance={balance}/>
         </>
           :
           <p>Loading...</p>

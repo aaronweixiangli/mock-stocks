@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import * as usersAPI from "../../utilities/users-api";
 
-export default function BuyingPower({ user, setUser }) {
+export default function BuyingPower({ balance, setBalance }) {
     const amountRef = useRef('');
     const disableRef = useRef(true);
     const [amount, setAmount] = useState('');
@@ -58,8 +58,8 @@ export default function BuyingPower({ user, setUser }) {
             return;
         }
         // when the input is valid, update the user's balance
-        const updatedUser = await usersAPI.deposit(parseFloat(amountRef.current));
-        setUser(updatedUser);
+        const updatedBalance = await usersAPI.deposit(parseFloat(amountRef.current));
+        setBalance(updatedBalance);
         setAmount('');
         // remove show-modal class
         document.getElementsByClassName('modal')[0].classList.remove("show-modal");
@@ -69,15 +69,15 @@ export default function BuyingPower({ user, setUser }) {
         <>
             <div className="buying-power-container" onClick={toggleSection}>
                 <div className="buying-power-content">
-                    <p>Buying Power</p><p>${user.balance}</p>
+                    <p>Buying Power</p><p>${balance.toFixed(2)}</p>
                 </div>
                 <div id="buying-power-section">
                     <div className="left-section">
                         <div className="buying-power-content">
-                            <p>Brokerage Cash</p><p>${user.balance}</p>
+                            <p>Brokerage Cash</p><p>${balance.toFixed(2)}</p>
                         </div>
                         <div className="buying-power-content">
-                            <p>Buying Power</p><p className="bold-font">${user.balance}</p>
+                            <p>Buying Power</p><p className="bold-font">${balance.toFixed(2)}</p>
                         </div>
                         <button className="show-modal-btn" onClick={toggleModal}>Deposit Funds</button>
                     </div>

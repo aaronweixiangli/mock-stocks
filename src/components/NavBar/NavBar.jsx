@@ -26,6 +26,7 @@ export default function NavBar({ user, setUser }) {
   
   function handleSubmit(evt) {
     evt.preventDefault();
+    if (!symbol) return;
     navigate(`/stocks/${symbol}`);
     setSymbol('');
   }
