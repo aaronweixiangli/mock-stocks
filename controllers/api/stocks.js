@@ -97,7 +97,7 @@ async function placeMarketOrder(req, res) {
                             user: user._id
                         });
                         await Notification.create({
-                            text: `Your market order (buy in shares) to buy ${shares} of ${symbol} has been successfully executed at $${currentMarketPrice} per share.`,
+                            text: `Your market order (buy in shares) to buy ${shares} shares of ${symbol} has been successfully executed at $${currentMarketPrice} per share.`,
                             read: false,
                             user: user._id
                         });
@@ -105,11 +105,11 @@ async function placeMarketOrder(req, res) {
                         user.balance -= cost;
                         await user.save();
                         console.log('market order buy in shares executes');
-                        return res.json({success: `Market order (buy in shares) to buy ${shares} of ${symbol} has been successfully executed at $${currentMarketPrice} per share.`});
+                        return res.json({success: `Market order (buy in shares) to buy ${shares} shares of ${symbol} has been successfully executed at $${currentMarketPrice} per share.`});
                     } else {
                         // if user does not own this stock yet, create a stockOwn instance
                         await StockOwn.create({
-                            symbol: symbol,
+                            symbol,
                             qty: shares,
                             avgCost: (cost / shares),
                             user: user._id
@@ -123,7 +123,7 @@ async function placeMarketOrder(req, res) {
                             user: user._id
                         });
                         await Notification.create({
-                            text: `Your market order (buy in shares) to buy ${shares} of ${symbol} has been successfully executed at an average price of $${currentMarketPrice} per share.`,
+                            text: `Your market order (buy in shares) to buy ${shares} shares of ${symbol} has been successfully executed at an average price of $${currentMarketPrice} per share.`,
                             read: false,
                             user: user._id
                         });
@@ -131,14 +131,14 @@ async function placeMarketOrder(req, res) {
                         user.balance -= cost;
                         await user.save();
                         console.log('market order buy in shares (do not own previously) executes');
-                        return res.json({success: `Market order (buy in shares) to buy ${shares} of ${symbol} has been successfully executed at an average price of $${currentMarketPrice} per share.`})
+                        return res.json({success: `Market order (buy in shares) to buy ${shares} shares of ${symbol} has been successfully executed at an average price of $${currentMarketPrice} per share.`})
                     };
                     
                 } else {
                     // If user's balance is less than the cost
                     // create a notification instance for this user
                     await Notification.create({
-                        text: `Your market order (buy in shares) to buy ${shares} of ${symbol} has not been placed successfully due to insufficient funds.`,
+                        text: `Your market order (buy in shares) to buy ${shares} shares of ${symbol} has not been placed successfully due to insufficient funds.`,
                         read: false,
                         user: user._id
                     });
@@ -192,7 +192,7 @@ async function placeMarketOrder(req, res) {
                         // Otherwise, create a stockOwn instance
                         // Average cost per share = total cost of buying shares / number of shares bought
                         await StockOwn.create({
-                            symbol: symbol,
+                            symbol,
                             qty: buyInQuantity,
                             avgCost: (dollars / buyInQuantity),
                             user: user._id
@@ -259,7 +259,7 @@ async function placeMarketOrder(req, res) {
                         user: user._id
                     });
                     await Notification.create({
-                        text: `Your market order (sell in shares) to sell ${shares} of ${symbol} is complete at an average price of $${currentMarketPrice} per share.`,
+                        text: `Your market order (sell in shares) to sell ${shares} shares of ${symbol} is complete at an average price of $${currentMarketPrice} per share.`,
                         read: false,
                         user: user._id
                     });
@@ -271,11 +271,11 @@ async function placeMarketOrder(req, res) {
                         await StockOwn.deleteOne({ _id: stockOwn._id });
                     };
                     console.log('market order sell in shares executes');
-                    return res.json({success: `Market order (sell in shares) to sell ${shares} of ${symbol} has been successfully executed at an average price of $${currentMarketPrice} per share.`});
+                    return res.json({success: `Market order (sell in shares) to sell ${shares} shares of ${symbol} has been successfully executed at an average price of $${currentMarketPrice} per share.`});
                 // If user does not own the stock or does not have enought shares to sell, create notification instance
                 } else {
                     await Notification.create({
-                        text: `Your market order (sell in shares) to sell ${shares} of ${symbol} has not been placed successfully due to insufficient shares.`,
+                        text: `Your market order (sell in shares) to sell ${shares} shares of ${symbol} has not been placed successfully due to insufficient shares.`,
                         read: false,
                         user: user._id
                     });
@@ -353,7 +353,7 @@ async function placeMarketOrder(req, res) {
                 if (user.balance - cost >= 0) {
                     await Order.create({
                         user: user._id,
-                        symbol: symbol,
+                        symbol,
                         type: 'stock',
                         status: 'active',
                         buyOrSell: 'buy',
@@ -363,16 +363,16 @@ async function placeMarketOrder(req, res) {
                         dollars,
                     })
                     await Notification.create({
-                        text: `Your market order (buy in shares) to buy ${shares} of ${symbol} has been placed successfully. If this order isn't filled by the end of market hours (4:00pm ET) on the next trading day, it will expire.`,
+                        text: `Your market order (buy in shares) to buy ${shares} shares of ${symbol} has been placed successfully. If this order isn't filled by the end of market hours (4:00pm ET) on the next trading day, it will expire.`,
                         read: false,
                         user: user._id
                     });
-                    return res.json({success: `Your market order (buy in shares) to buy ${shares} of ${symbol} has been placed successfully but cannot be executed now since the market is closed. If this order isn't filled by the end of market hours (4:00pm ET) on the next trading day, it will expire.`});
+                    return res.json({success: `Your market order (buy in shares) to buy ${shares} shares of ${symbol} has been placed successfully but cannot be executed now since the market is closed. If this order isn't filled by the end of market hours (4:00pm ET) on the next trading day, it will expire.`});
                 } else {
                     // If user's balance is less than the cost
                     // create a notification instance for this user
                     await Notification.create({
-                        text: `Your market order (buy in shares) to buy ${shares} of ${symbol} has not been placed successfully due to insufficient funds.`,
+                        text: `Your market order (buy in shares) to buy ${shares} shares of ${symbol} has not been placed successfully due to insufficient funds.`,
                         read: false,
                         user: user._id
                     });
@@ -382,7 +382,118 @@ async function placeMarketOrder(req, res) {
                 // Something went wrong. Probably because of the API limit
                 return res.json({failure: "Network Error. Please try again later."});
             }
-        }; 
+        } else if (buyOrSell === 'buy' && sharesOrDollars === "dollars") {
+            // if market is closed and it's a buy order and buy in dollars
+            try {
+                // if user's balance is greater than buy in dollars, create the order and set status to be active
+                if (user.balance - dollars >= 0) {
+                    await Order.create({
+                        user: user._id,
+                        symbol,
+                        type: 'stock',
+                        status: 'active',
+                        buyOrSell: 'buy',
+                        orderType,
+                        sharesOrDollars,
+                        shares,
+                        dollars,
+                    })
+                    await Notification.create({
+                        text: `Your market order (buy in dollars) to buy $${dollars} of ${symbol} has been placed successfully. If this order isn't filled by the end of market hours (4:00pm ET) on the next trading day, it will expire.`,
+                        read: false,
+                        user: user._id
+                    });
+                    return res.json({success: `Your market order (buy in dollars) to buy $${dollars} of ${symbol} has been placed successfully but cannot be executed now since the market is closed. If this order isn't filled by the end of market hours (4:00pm ET) on the next trading day, it will expire.`});
+                } else {
+                    // If user's balance is less than the buy in dollars
+                    // create a notification instance for this user
+                    await Notification.create({
+                        text: `Your market order (buy in dollars) to buy ${shares} shares of ${symbol} has not been placed successfully due to insufficient funds.`,
+                        read: false,
+                        user: user._id
+                    });
+                    return res.json({failure: "Insufficient funds."});
+                }
+            } catch {
+                // Something went wrong.
+                return res.json({failure: "Network Error. Please try again later."});
+            }
+        } else if (buyOrSell === 'sell' && sharesOrDollars === "shares") {
+            // if market is closed and it's a sell order and sell in shares
+            try {
+                // if user owns the stock and the stock shares are greater than or equal to the sell in shares, create the order but do not execute yet
+                if (stockOwn && (stockOwn.qty - shares >= 0)) {
+                    await Order.create({
+                        user: user._id,
+                        symbol,
+                        type: 'stock',
+                        status: 'active',
+                        buyOrSell: 'sell',
+                        orderType,
+                        sharesOrDollars,
+                        shares,
+                        dollars,
+                    })
+                    await Notification.create({
+                        text: `Your market order (sell in shares) to sell ${shares} shares of ${symbol} has been placed successfully. If this order isn't filled by the end of market hours (4:00pm ET) on the next trading day, it will expire.`,
+                        read: false,
+                        user: user._id
+                    });
+                    return res.json({success: `Your market order (sell in shares) to sell ${shares} shares of ${symbol} has been placed successfully but cannot be executed now since the market is closed. If this order isn't filled by the end of market hours (4:00pm ET) on the next trading day, it will expire.`});
+                } else {
+                    // If user's balance is less than the buy in dollars
+                    // create a notification instance for this user
+                    await Notification.create({
+                        text: `Your market order (sell in shares) to sell ${shares} shares of ${symbol} has not been placed successfully due to insufficient funds.`,
+                        read: false,
+                        user: user._id
+                    });
+                    return res.json({failure: "Insufficient funds."});
+                }
+            } catch {
+                // Something went wrong.
+                return res.json({failure: "Network Error. Please try again later."});
+            }
+        } else if (buyOrSell === 'sell' && sharesOrDollars === "dollars") {
+            // if market is closed and it's a sell order and sell in dollars
+            try {
+                const stockData = await fetch(`https://api.twelvedata.com/time_series?apikey=${Twelve_Data_API_Key}&interval=1min&symbol=${symbol}&format=JSON&dp=2`).then(res => res.json());
+                const currentMarketPrice = Number(stockData.values[0].open);
+                const sellInQuantity = Number((dollars / currentMarketPrice).toFixed(5));
+                // if user owns the stock and the stock shares are greater than or equal to the sell in shares, create the order but do not execute yet
+                if (stockOwn && (stockOwn.qty - sellInQuantity >= 0)) {
+                    await Order.create({
+                        user: user._id,
+                        symbol,
+                        type: 'stock',
+                        status: 'active',
+                        buyOrSell: 'sell',
+                        orderType,
+                        sharesOrDollars,
+                        shares,
+                        dollars,
+                    })
+                    await Notification.create({
+                        text: `Your market order (sell in dollars) to sell $${dollars} of ${symbol} has been placed successfully. If this order isn't filled by the end of market hours (4:00pm ET) on the next trading day, it will expire.`,
+                        read: false,
+                        user: user._id
+                    });
+                    return res.json({success: `Your market order (sell in dollars) to sell $${dollars} of ${symbol} has been placed successfully but cannot be executed now since the market is closed. If this order isn't filled by the end of market hours (4:00pm ET) on the next trading day, it will expire.`});
+                } else {
+                    // If user's balance is less than the buy in dollars
+                    // create a notification instance for this user
+                    await Notification.create({
+                        text: `Your market order (sell in dollars) to sell $${dollars} of ${symbol} has not been placed successfully due to insufficient funds.`,
+                        read: false,
+                        user: user._id
+                    });
+                    return res.json({failure: "Insufficient funds."});
+                }
+            } catch {
+                // Something went wrong.
+                return res.json({failure: "Network Error. Please try again later."});
+            }
+        };
 
     }
 }

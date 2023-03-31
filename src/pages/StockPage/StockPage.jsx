@@ -8,11 +8,11 @@ import StockOverview from "../../components/StockOverview/StockOverview";
 import StockNews from "../../components/StockNews/StockNews";
 import StockOrder from "../../components/StockOrder/StockOrder";
 
-export default function StockPage( {user, balance} ) {
+export default function StockPage( {user, balance, setBalance} ) {
   const { symbol } = useParams();
   const [stockData, setStockData] = useState(null);
   const [dataStartDate, setDataStartDate] = useState(getStartDate_1D());
-  const [interval, setInterval] = useState('1min');
+  const [dataInterval, setDataInterval] = useState('1min');
   const [error, setError] = useState(false);
   const [chartBtn, setChartBtn] = useState('1D');
   const [stockInfo, setStockInfo] = useState(null);
@@ -23,7 +23,7 @@ export default function StockPage( {user, balance} ) {
   useEffect(function() {
     async function getData() {
       try {
-        const data = await stocksAPI.getStockData( symbol, dataStartDate, interval );
+        const data = await stocksAPI.getStockData( symbol, dataStartDate, dataInterval );
         console.log(data);
         console.log('labels', data.values.map((value) => value.datetime))
         console.log('data.close', data.values.map((value) => value.close))
@@ -181,8 +181,8 @@ export default function StockPage( {user, balance} ) {
 
   function handleOneDay() {
     setDataStartDate(getStartDate_1D());
-    setInterval('1min');
-    const chartBtns = document.getElementsByClassName('chart-btn');
+    setDataInterval('1min');
+    const chartBtns = [...document.getElementsByClassName('chart-btn')];
     // remove 'active' class for all chartBtns
     chartBtns.forEach(btn => btn.classList.remove('active'));
     chartBtns[0].classList.add('active');
@@ -190,7 +190,7 @@ export default function StockPage( {user, balance} ) {
 
   function handleOneWeek() {
     setDataStartDate(getStartDate_1W());
-    setInterval('5min');
+    setDataInterval('5min');
     const chartBtns = [...document.getElementsByClassName('chart-btn')];
     chartBtns.forEach(btn => btn.classList.remove('active'));
     chartBtns[1].classList.add('active');
@@ -198,7 +198,7 @@ export default function StockPage( {user, balance} ) {
 
   function handleOneMonth() {
     setDataStartDate(getStartDate_1M());
-    setInterval('1h');
+    setDataInterval('1h');
     const chartBtns = [...document.getElementsByClassName('chart-btn')];
     chartBtns.forEach(btn => btn.classList.remove('active'));
     chartBtns[2].classList.add('active');
@@ -206,7 +206,7 @@ export default function StockPage( {user, balance} ) {
 
   function handleThreeMonths() {
     setDataStartDate(getStartDate_3M());
-    setInterval('1day');
+    setDataInterval('1day');
     const chartBtns = [...document.getElementsByClassName('chart-btn')];
     chartBtns.forEach(btn => btn.classList.remove('active'));
     chartBtns[3].classList.add('active');
@@ -214,7 +214,7 @@ export default function StockPage( {user, balance} ) {
 
   function handleOneYear() {
     setDataStartDate(getStartDate_1Y());
-    setInterval('1day');
+    setDataInterval('1day');
     const chartBtns = [...document.getElementsByClassName('chart-btn')];
     chartBtns.forEach(btn => btn.classList.remove('active'));
     chartBtns[4].classList.add('active');
@@ -222,7 +222,7 @@ export default function StockPage( {user, balance} ) {
 
   function handleFiveYears() {
     setDataStartDate(getStartDate_5Y());
-    setInterval('1week');
+    setDataInterval('1week');
     const chartBtns = [...document.getElementsByClassName('chart-btn')];
     chartBtns.forEach(btn => btn.classList.remove('active'));
     chartBtns[5].classList.add('active');
@@ -259,7 +259,7 @@ export default function StockPage( {user, balance} ) {
           </div>
           <StockOverview stockInfo={stockInfo}/>
           <StockNews symbol={symbol} />
-          <StockOrder symbol={symbol} marketPrice={stockData.values[0].open} user={user} sharesOwn={sharesOwn} setSharesOwn={setSharesOwn} balance={balance}/>
+          <StockOrder symbol={symbol} marketPrice={stockData.values[0].open} user={user} sharesOwn={sharesOwn} setSharesOwn={setSharesOwn} balance={balance} setBalance={setBalance}/>
         </>
           :
           <p>Loading...</p>
