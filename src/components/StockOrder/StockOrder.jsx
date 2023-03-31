@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import * as stocksAPI from "../../utilities/stocks-api";
 
 export default function StockOrder( {symbol, marketPrice, user} ) {
     // MARKET ORDER
@@ -8,7 +9,18 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
     const [sharesOrDollars, setSharesOrDollars] = useState('shares');
     const [shares, setShares] = useState('');
     const [dollars, setDollars] = useState('');
+
+    const [stockOwn, setStockOwn] = useState(null);
     
+    // useEffect(()=>{
+    //     async function getStockOwn() {
+    //         // Fetch the stockOwn database to find the instance that matches 
+    //         const stock = await stocksAPI.getStockOwn(symbol);
+    //         setStockOwn(stock);
+    //     }
+    //     getStockOwn();
+    // }, [symbol]);
+
     function handleBuyType() {
         if (buyOrSell === 'sell') setBuyOrSell('buy');
         if (reviewDetail) setReviewDetail(null);
@@ -241,7 +253,7 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                     <span className="review-title">Order Summary</span>
                     <span className="review-content">You are placing an market order to { buyOrSell === 'buy' ? 'buy' : 'sell' } { sharesOrDollars === 'shares' ? `${shares} shares of ${symbol} based on current market price of $${marketPrice}. You will pay approximately $${(marketPrice * shares).toFixed(2)}.` : `$${dollars} of ${symbol} based on the current market price of $${marketPrice}. You will receive approximately ${(dollars / marketPrice).toFixed(5)} shares.`} </span>
                     <div className="order-summary-btn-container">
-                        <button className="order-summary-btn">Place Order</button>
+                        <button className="order-summary-btn" onClick={handleMarkerOrder}>Place Order</button>
                         <button className="order-summary-btn order-edit-btn" onClick={handleCancel}>Edit</button>
                     </div>
                 </div>
@@ -322,6 +334,17 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
         setReviewDetail(null);
     }
 
+    // PlaceOrder Functions for each order type
+    async function handleMarkerOrder(evt) {
+        evt.preventDefault();
+        const result = await stocksAPI.marketOrder(symbol, buyOrSell, orderType, sharesOrDollars, shares, dollars);
+        if (result.failure) {
+
+        } else {
+
+        }
+    }
+
 
     if (orderType === 'market order') {
         return (
@@ -387,7 +410,7 @@ export default function StockOrder( {symbol, marketPrice, user} ) {
                         sharesOrDollars === 'shares' ?
                         <>
                             <div className="order-detail-content-container">
-                                <span>Est. Cost</span>
+                                <span>{ buyOrSell === 'buy' ? 'Est. Cost' : 'Est. Credit'}</span>
                                 <div className="order-detail-right">
                                     <span>${(marketPrice * shares).toFixed(2)}</span>
                                 </div>

@@ -2,7 +2,7 @@
 const { Worker } = require("worker_threads");
 
 let isPolling = false;
-let frequencyInMinutes = 10;
+let frequencyInMinutes = 100;
 
 setInterval(function () {
   if (!isPolling) return;
