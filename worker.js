@@ -1,4 +1,5 @@
-import moment from "moment";
+// import moment from "moment";
+const moment = require('moment');
 const { parentPort } = require('worker_threads');
 
 const Twelve_Data_API_Key = process.env.Twelve_Data_API_Key;
@@ -14,6 +15,10 @@ console.log(Twelve_Data_API_Key);
     const History = require('./models/history');
     const Notification = require('./models/notification');
     console.log('orders', orders)
+    const history = await History.find({})
+    const notification = await Notification.find({}) 
+    console.log('history', history)
+    console.log('notification', notification)
     // if no active orders, return
     if (!orders.length) return;
     let symbols = new Set();
@@ -32,6 +37,8 @@ console.log(Twelve_Data_API_Key);
             prices[symbol] = null;
         }
     }
+    console.log('prices,', prices)
+
     for (let order of orders) {
         // Guard. If there is a fetch error, which means that there is no current market price for this stock, then skip this order, continue the loop
         const currentMarketPrice = prices[order.symbol];
@@ -39,7 +46,7 @@ console.log(Twelve_Data_API_Key);
             console.log(`No price data available for symbol ${order.symbol}`);
             continue; // move on to the next order
         }
-        if (order.typeOrder === 'market order') {
+        if (order.orderType === 'market order') {
             // For market order with status 'active' means that it's placed when market is closed
             // If such market order isn't filled by the end of market hours (4:00pm ET) on the next trading day, it will expire. 
             const today = moment().day();
@@ -53,8 +60,10 @@ console.log(Twelve_Data_API_Key);
             // for all other days, check if day difference is greater than 1
             if ( (orderDay === 5 && dayDiff > 3) || ( orderDay === 6 && dayDiff > 2) ) {
                 await Order.findByIdAndDelete(order._id);
+                continue; // delete order and move on to the next order
             } else if ( orderDay !== 5 && orderDay !== 6 && dayDiff > 1 ) {
                 await Order.findByIdAndDelete(order._id);
+                continue; // delete order and move on to the next order
             }
 
             // get the current balance of the order's buyer/seller
@@ -91,6 +100,7 @@ console.log(Twelve_Data_API_Key);
                             qty: shares,
                             user: user._id
                         });
+                        console.log(history);
                         await Notification.create({
                             text: `Your market order (buy in shares) to buy ${shares} shares of ${symbol} has been successfully executed at $${currentMarketPrice} per share.`,
                             read: false,
@@ -100,8 +110,11 @@ console.log(Twelve_Data_API_Key);
                         user.balance -= cost;
                         await user.save();
                         // order has been executed, delete it
-                        await order.deleteOne();
-                        console.log(`Buy order for ${shares} shares of ${symbol} executed and deleted.`);
+                        // await order.deleteOne();
+                        // console.log(`Buy order for ${shares} shares of ${symbol} executed and deleted.`);
+                        order.status = "inactive";
+                        order.save();
+                        continue;
                     } else {
                         // if user does not own this stock yet, create a stockOwn instance
                         await StockOwn.create({
@@ -127,8 +140,11 @@ console.log(Twelve_Data_API_Key);
                         user.balance -= cost;
                         await user.save();
                         // order has been executed, delete it
-                        await order.deleteOne();
-                        console.log(`Buy order for ${shares} shares of ${symbol} executed and deleted.`);
+                        // await order.deleteOne();
+                        // console.log(`Buy order for ${shares} shares of ${symbol} executed and deleted.`);
+                        order.status = "inactive";
+                        order.save();
+                        continue;
                     };
                 };
             } else if ( buyOrSell === 'buy' && sharesOrDollars === "dollars" ) {
@@ -164,8 +180,11 @@ console.log(Twelve_Data_API_Key);
                         user.balance -= dollars;
                         await user.save();
                         // order has been executed, delete it
-                        await order.deleteOne();
-                        console.log(`Buy order for $${dollars} of ${symbol} executed and deleted.`);
+                        // await order.deleteOne();
+                        // console.log(`Buy order for $${dollars} of ${symbol} executed and deleted.`);
+                        order.status = "inactive";
+                        order.save();
+                        continue;
                     };
                 };
             } else if (buyOrSell === 'sell' && sharesOrDollars === "shares") {
@@ -203,8 +222,11 @@ console.log(Twelve_Data_API_Key);
                         await StockOwn.deleteOne({ _id: stockOwn._id });
                     };
                     // order has been executed, delete it
-                    await order.deleteOne();
-                    console.log(`Sell order for ${shares} shares of ${symbol} executed and deleted.`);
+                    // await order.deleteOne();
+                    // console.log(`Sell order for ${shares} shares of ${symbol} executed and deleted.`);
+                    order.status = "inactive";
+                    order.save();
+                    continue;
                 };
             } else if (buyOrSell === 'sell' && sharesOrDollars === "dollars") {
                 const sellInQuantity = Number((dollars / currentMarketPrice).toFixed(5));
@@ -242,14 +264,17 @@ console.log(Twelve_Data_API_Key);
                         await StockOwn.deleteOne({ _id: stockOwn._id });
                     };
                     // order has been executed, delete it
-                    await order.deleteOne();
-                    console.log(`Sell order for $${dollars} of ${symbol} executed and deleted.`);
+                    // await order.deleteOne();
+                    // console.log(`Sell order for $${dollars} of ${symbol} executed and deleted.`);
+                    order.status = "inactive";
+                    order.save();
+                    continue;
                 };
             }
            
 
              
-        } else if (order.typeOrder === 'limit order') {
+        } else if (order.orderType === 'limit order') {
 
         }
     }
