@@ -15,3 +15,7 @@ export async function getStockInfo(symbol) {
 export async function marketOrder(symbol, buyOrSell, orderType, sharesOrDollars, shares, dollars) {
     return sendRequest(`${BASE_URL}/market_order`, 'POST', { symbol, buyOrSell, orderType, sharesOrDollars, shares, dollars });
 }
+
+export async function limitOrder(symbol, buyOrSell, orderType, limitPrice, shares, expires) {
+    return sendRequest(`${BASE_URL}/limit_order`, 'POST', { symbol, buyOrSell, orderType, limitPrice, shares, expires });
+}

@@ -10,6 +10,7 @@ module.exports = {
     getStock,
     getStockInfo,
     placeMarketOrder,
+    placeLimitOrder
 };
 
 async function getStock(req, res) {
@@ -361,7 +362,7 @@ async function placeMarketOrder(req, res) {
                         sharesOrDollars,
                         shares,
                         dollars,
-                    })
+                    });
                     await Notification.create({
                         text: `Your market order (buy in shares) to buy ${shares} shares of ${symbol} has been placed successfully. If this order isn't filled by the end of market hours (4:00pm ET) on the next trading day, it will expire.`,
                         read: false,
@@ -441,7 +442,6 @@ async function placeMarketOrder(req, res) {
                     });
                     return res.json({success: `Your market order (sell in shares) to sell ${shares} shares of ${symbol} has been placed successfully but cannot be executed now since the market is closed. If this order isn't filled by the end of market hours (4:00pm ET) on the next trading day, it will expire.`});
                 } else {
-                    // If user's balance is less than the buy in dollars
                     // create a notification instance for this user
                     await Notification.create({
                         text: `Your market order (sell in shares) to sell ${shares} shares of ${symbol} has not been placed successfully due to insufficient funds.`,
@@ -480,7 +480,6 @@ async function placeMarketOrder(req, res) {
                     });
                     return res.json({success: `Your market order (sell in dollars) to sell $${dollars} of ${symbol} has been placed successfully but cannot be executed now since the market is closed. If this order isn't filled by the end of market hours (4:00pm ET) on the next trading day, it will expire.`});
                 } else {
-                    // If user's balance is less than the buy in dollars
                     // create a notification instance for this user
                     await Notification.create({
                         text: `Your market order (sell in dollars) to sell $${dollars} of ${symbol} has not been placed successfully due to insufficient funds.`,
@@ -494,6 +493,100 @@ async function placeMarketOrder(req, res) {
                 return res.json({failure: "Network Error. Please try again later."});
             }
         };
+    };
+}
 
+
+async function placeLimitOrder(req, res) {
+    console.log('placelimitorder hits');
+    const user = await User.findById(req.user._id);
+    const symbol = req.body.symbol;
+    const stockOwn = await StockOwn.findOne({ user: user._id, symbol });
+    const buyOrSell = req.body.buyOrSell;
+    const orderType = req.body.orderType;
+    const limitPrice = req.body.limitPrice;
+    const shares = Number(req.body.shares);
+    const expires = req.body.expires;
+    let isMarketOpen = true;
+
+    // check for date and time
+    const now = new Date();
+    const day = now.getDay();
+    // if it's either Sunday or Saturday, set isMarketOpen to be false
+    if (day === 0 || day === 6) isMarketOpen = false;
+    // if it's not in between 6:30am to 1:00pm PDT, set isMarketOpen to be false
+    const hours = now.getUTCHours();
+    const minutes = now.getUTCMinutes();
+    if (hours < 13 || hours > 20)  isMarketOpen = false;
+    if (hours === 13 && minutes < 30)  isMarketOpen = false;
+
+    if (buyOrSell === 'buy') {
+        // for limit buy order
+        const cost = Number((shares * limitPrice).toFixed(2));
+        // if user's balance is greater than or equal to the cost, create the limit buy order
+        if (user.balance - cost >= 0) {
+            await Order.create({
+                user: user._id,
+                symbol,
+                type: 'stock',
+                status: 'active',
+                buyOrSell: 'buy',
+                orderType,
+                limitPrice,
+                shares,
+                expires,
+                isMarketOpen
+            });
+            await Notification.create({
+                text: `We've received your limit order to buy ${shares} shares of ${symbol} at a maximum of $${limitPrice} per share. ${ expires === 'good for day' ? (`If this order isn't filled by the end of merket hours (4:00pm ET) ${ isMarketOpen ? `today` : `on the next trading day` }, it will expire.`) 
+                : `If this order isn't filled within 90 days, it will expire.`} `,
+                read: false,
+                user: user._id
+            });
+            return res.json({success: `Your limit order to buy ${shares} shares of ${symbol} at a maximum of $${limitPrice} per share has been placed successfully. 
+                ${ expires === 'good for day' ? (`If this order isn't filled by the end of merket hours (4:00pm ET) ${ isMarketOpen ? `today` : `on the next trading day` }, it will expire.`) 
+                : `If this order isn't filled within 90 days, it will expire.`}`});
+        } else {
+            // if user's balance is lower than the cost
+            await Notification.create({
+                text: `Your limit order to buy ${shares} shares of ${symbol} at a maximum of ${limitPrice} per share has not been placed successfully due to insufficient funds.`,
+                read: false,
+                user: user._id
+            });
+            return res.json({failure: "Insufficient funds."});
+        }
+    } else {
+        // for limit sell order
+        // if user owns the stock and the stock shares are greater than or equal to the selling shares, create the limit order
+        if (stockOwn && (stockOwn.qty - shares >= 0)) {
+            await Order.create({
+                user: user._id,
+                symbol,
+                type: 'stock',
+                status: 'active',
+                buyOrSell: 'sell',
+                orderType,
+                limitPrice,
+                shares,
+                expires,
+                isMarketOpen
+            });
+            await Notification.create({
+                text: `We've received your limit order to sell ${shares} shares of ${symbol} at a minimum of $${limitPrice} per share. ${ expires === 'good for day' ? (`If this order isn't filled by the end of merket hours (4:00pm ET) ${ isMarketOpen ? `today` : `on the next trading day` }, it will expire.`) 
+                : `If this order isn't filled within 90 days, it will expire.`} `,
+                read: false,
+                user: user._id
+            });
+            return res.json({success: `Your limit order to sell ${shares} shares of ${symbol} at a minimum of $${limitPrice} per share has been placed successfully. ${ expires === 'good for day' ? (`If this order isn't filled by the end of merket hours (4:00pm ET) ${ isMarketOpen ? `today` : `on the next trading day` }, it will expire.`) 
+                : `If this order isn't filled within 90 days, it will expire.`}`});
+        } else {
+            // if user does not own the stock nor shares hold are less than selling shares
+            await Notification.create({
+                text: `Your limit order to sell ${shares} shares of ${symbol} at a minimum of ${limitPrice} per share has not been placed successfully due to insufficient shares.`,
+                read: false,
+                user: user._id
+            });
+            return res.json({failure: "Insufficient shares."});
+        }
     }
 }

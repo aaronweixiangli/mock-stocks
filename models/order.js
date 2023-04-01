@@ -40,6 +40,7 @@ const orderSchema = new Schema(
         "every month",
       ],
     },
+    isMarketOpen: { type: Boolean },
   },
   { timestamps: true }
 );

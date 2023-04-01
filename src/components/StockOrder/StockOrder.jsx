@@ -243,7 +243,7 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
                     <span className="review-title">Order Summary</span>
                     <span className="review-content">You are placing an market order to { buyOrSell === 'buy' ? 'buy' : 'sell' } { sharesOrDollars === 'shares' ? `${shares} shares of ${symbol} based on current market price of $${marketPrice}. You will pay approximately $${(marketPrice * shares).toFixed(2)}.` : `$${dollars} of ${symbol} based on the current market price of $${marketPrice}. You will receive approximately ${(dollars / marketPrice).toFixed(5)} shares.`} </span>
                     <div className="order-summary-btn-container">
-                        <button className="order-summary-btn" onClick={handleMarkerOrder}>Place Order</button>
+                        <button className="order-summary-btn" onClick={handlePlaceOrder}>Place Order</button>
                         <button className="order-summary-btn order-edit-btn" onClick={handleCancel}>Edit</button>
                     </div>
                 </div>
@@ -256,7 +256,7 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
                     <span className="review-title">Order Summary</span>
                     <span className="review-content">You are placing a { expires } limit order to { buyOrSell === 'buy' ? 'buy' : 'sell' } {shares} shares of {symbol}. Your pending order, if executed, will execute at ${limitPrice} per share or { buyOrSell === 'buy' ? 'better' : 'higher' }.</span>
                     <div className="order-summary-btn-container">
-                        <button className="order-summary-btn">Place Order</button>
+                        <button className="order-summary-btn" onClick={handlePlaceOrder}>Place Order</button>
                         <button className="order-summary-btn order-edit-btn" onClick={handleCancel}>Edit</button>
                     </div>
                 </div>
@@ -269,7 +269,7 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
                     <span className="review-title">Order Summary</span>
                     <span className="review-content">You are placing a { expires } stop loss order to { buyOrSell === 'buy' ? 'buy' : 'sell' } {shares} shares of {symbol}. When the price of {symbol} {buyOrSell === 'buy' ? 'reaches' : 'drops to'} ${stopPrice}, your order will be converted to a market order.</span>
                     <div className="order-summary-btn-container">
-                        <button className="order-summary-btn">Place Order</button>
+                        <button className="order-summary-btn" onClick={handlePlaceOrder}>Place Order</button>
                         <button className="order-summary-btn order-edit-btn" onClick={handleCancel}>Edit</button>
                     </div>
                 </div>
@@ -282,7 +282,7 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
                     <span className="review-title">Order Summary</span>
                     <span className="review-content">You are placing a { expires } stop limit order to { buyOrSell === 'buy' ? 'buy' : 'sell' } {shares} shares of {symbol}. When the price of {symbol} {buyOrSell === 'buy' ? 'reaches' : 'drops to'} ${stopPrice}, your order will be converted to a limit order at ${limitPrice} per share.</span>
                     <div className="order-summary-btn-container">
-                        <button className="order-summary-btn">Place Order</button>
+                        <button className="order-summary-btn" onClick={handlePlaceOrder}>Place Order</button>
                         <button className="order-summary-btn order-edit-btn" onClick={handleCancel}>Edit</button>
                     </div>
                 </div>
@@ -295,7 +295,7 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
                     <span className="review-title">Order Summary</span>
                     <span className="review-content">You are placing a { expires } trailing stop order to { buyOrSell === 'buy' ? 'buy' : 'sell' } {shares} shares of {symbol}. When the price of {symbol} {buyOrSell === 'buy' ? (` reaches ${ trailType === 'percentage' ? `$${(marketPrice * (1 + trailPercent/100)).toFixed(2)} or higher` : `$${(parseFloat(marketPrice) + parseFloat(trailAmount)).toFixed(2)} or higher`}`) : (`drops to ${ trailType === 'percentage' ? `$${(marketPrice * (1 - trailPercent/100)).toFixed(2)} or lower` : `$${(parseFloat(marketPrice) - parseFloat(trailAmount)).toFixed(2)}`} or lower`)}, your order will be converted to a market order.</span>
                     <div className="order-summary-btn-container">
-                        <button className="order-summary-btn">Place Order</button>
+                        <button className="order-summary-btn" onClick={handlePlaceOrder}>Place Order</button>
                         <button className="order-summary-btn order-edit-btn" onClick={handleCancel}>Edit</button>
                     </div>
                 </div>
@@ -311,7 +311,7 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
                     { frequency === 'every two weeks' && <span className="review-content">You'll buy ${amount} of {symbol} every two weeks on { (new Date(starts + "T00:00:00-07:00")).toLocaleString('en-US', { weekday: 'long'}) }. Your first order will be placed on {starts} at 11:00 AM ET (8:00 AM PDT) in a batch order with other MockStocks recurring investment orders for {symbol}.</span>}
                     { frequency === 'every month' && <span className="review-content">You'll buy ${amount} of {symbol} every month on day { (new Date(starts + "T00:00:00-07:00")).toLocaleString('en-US', { day: 'numeric'}) }. Your first order will be placed on {starts} at 11:00 AM ET (8:00 AM PDT) in a batch order with other MockStocks recurring investment orders for {symbol}.</span>}
                     <div className="order-summary-btn-container">
-                        <button className="order-summary-btn">Place Order</button>
+                        <button className="order-summary-btn" onClick={handlePlaceOrder}>Place Order</button>
                         <button className="order-summary-btn order-edit-btn" onClick={handleCancel}>Edit</button>
                     </div>
                 </div>
@@ -342,9 +342,14 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
     }
 
     // PlaceOrder Functions for each order type
-    async function handleMarkerOrder(evt) {
+    async function handlePlaceOrder(evt) {
         evt.preventDefault();
-        const result = await stocksAPI.marketOrder(symbol, buyOrSell, orderType, sharesOrDollars, shares, dollars);
+        let result;
+        if (orderType === 'market order') {
+            result = await stocksAPI.marketOrder(symbol, buyOrSell, orderType, sharesOrDollars, shares, dollars);
+        } else if (orderType === 'limit order') {
+            result = await stocksAPI.limitOrder(symbol, buyOrSell, orderType, limitPrice, shares, expires);
+        }
         console.log(result);
         if (result.failure) {
             console.log('order placing fails');

@@ -7,6 +7,9 @@ const stocksCtrl = require('../../controllers/api/stocks');
 // POST /api/stocks/market_order
 router.post('/market_order', stocksCtrl.placeMarketOrder);
 
+// POST /api/stocks/limit_order
+router.post('/limit_order', stocksCtrl.placeLimitOrder);
+
 // POST /api/stocks/:symbol
 router.post('/:symbol', stocksCtrl.getStock);
 

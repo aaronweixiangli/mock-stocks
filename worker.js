@@ -47,6 +47,16 @@ console.log(Twelve_Data_API_Key);
             continue; // move on to the next order
         }
         if (order.orderType === 'market order') {
+            // get the current balance of the order's buyer/seller
+            const user = await User.findById(order.user);
+            const balance = user.balance;
+            const symbol = order.symbol;
+            const stockOwn = await StockOwn.findOne({ user: user._id, symbol });
+            const buyOrSell = order.buyOrSell;
+            const sharesOrDollars = order.sharesOrDollars;
+            const shares = order.shares;
+            const dollars = order.dollars;
+
             // For market order with status 'active' means that it's placed when market is closed
             // If such market order isn't filled by the end of market hours (4:00pm ET) on the next trading day, it will expire. 
             const today = moment().day();
@@ -60,21 +70,39 @@ console.log(Twelve_Data_API_Key);
             // for all other days, check if day difference is greater than 1
             if ( (orderDay === 5 && dayDiff > 3) || ( orderDay === 6 && dayDiff > 2) ) {
                 await Order.findByIdAndDelete(order._id);
+                // Create notification for user that the order has expired
+                await Notification.create({
+                    text: `Your market order to ${buyOrSell === 'buy' ? 'buy' : 'sell'} ${shares ? `${shares} shares` : `$${dollars}`} of ${symbol} placed on 
+                    ${(new Date(order.createdAt)).toLocaleString("en-US", {
+                        timeZone: "America/Los_Angeles",
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "numeric"
+                    })} PDT has expired`,
+                    read: false,
+                    user: user._id
+                });
                 continue; // delete order and move on to the next order
             } else if ( orderDay !== 5 && orderDay !== 6 && dayDiff > 1 ) {
                 await Order.findByIdAndDelete(order._id);
+                // Create notification for user that the order has expired
+                await Notification.create({
+                    text: `Your market order to ${buyOrSell === 'buy' ? 'buy' : 'sell'} ${shares ? `${shares} shares` : `$${dollars}`} of ${symbol} placed on 
+                    ${(new Date(order.createdAt)).toLocaleString("en-US", {
+                        timeZone: "America/Los_Angeles",
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "numeric"
+                    })} PDT has expired`,
+                    read: false,
+                    user: user._id
+                });
                 continue; // delete order and move on to the next order
             }
-
-            // get the current balance of the order's buyer/seller
-            const user = await User.findById(order.user);
-            const balance = user.balance;
-            const symbol = order.symbol;
-            const stockOwn = await StockOwn.findOne({ user: user._id, symbol });
-            const buyOrSell = order.buyOrSell;
-            const sharesOrDollars = order.sharesOrDollars;
-            const shares = order.shares;
-            const dollars = order.dollars;
 
             if (buyOrSell === 'buy' && sharesOrDollars === "shares") {
                 const cost = Number((shares * currentMarketPrice).toFixed(2));
@@ -215,7 +243,7 @@ console.log(Twelve_Data_API_Key);
                         user: user._id
                     });
                     // Succesfully place the order, update user's balance
-                    user.balance += shares * currentMarketPrice;
+                    user.balance += Number((shares * currentMarketPrice).toFixed(2));
                     await user.save();
                     // if the stockOwn's qty is 0, delete the stockOwn instance
                     if (stockOwn.qty === 0) {
