@@ -310,6 +310,7 @@ console.log(Twelve_Data_API_Key);
             const limitPrice = order.limitPrice;
             const shares = order.shares;
             const expires = order.expires;
+            const orderDollarsOnHold = order.orderDollarsOnHold;
             const isMarketOpen = order.isMarketOpen;
 
             // check if the limit order has expired
@@ -341,6 +342,19 @@ console.log(Twelve_Data_API_Key);
             }
 
             if ( orderExpired ) {
+                // if it's a limit buy order, it has a hold on the estimated cost of the order, which is "orderDollarsOnHold".
+                // Hence before we delete the order, we need to update user's balanceOnHold (for pending orders) and balance (buying power)
+                if (buyOrSell === 'buy') {
+                    user.balanceOnHold = Number((user.balanceOnHold + orderDollarsOnHold).toFixed(2));
+                    user.balance = Number((user.balance - orderDollarsOnHold).toFixed(2));
+                    await user.save();
+                } else {
+                    // if it's a limit sell order, it has a hold on the selling amount of shares, which is "shares"
+                    // Hence before deleting the order, we need to update stockOwn's sharesOnHold, decrease it by shares on hold
+                    stockOwn.sharesOnHold -= shares;
+                    await stockOwn.save();
+                }
+                // delete order that's expired
                 await Order.findByIdAndDelete(order._id);
                 // Create notification for user that the order has expired
                 await Notification.create({
@@ -352,7 +366,7 @@ console.log(Twelve_Data_API_Key);
                         year: "numeric",
                         hour: "numeric",
                         minute: "numeric"
-                    })} PDT has expired`,
+                    })} PDT has expired.`,
                     read: false,
                     user: user._id
                 });
@@ -360,7 +374,9 @@ console.log(Twelve_Data_API_Key);
             }
             // For a limit buy order, the order will execute when the user's available balance >= the number of shares being purchased multiplied by the current market price
             // and the current market price is less than or equal to the limit price.
-            if ( buyOrSell === 'buy' && ( currentMarketPrice <= limitPrice ) && ( balance >= Number((shares * currentMarketPrice).toFixed(2)) ) ) {
+            // Note that balance is the user's buying power and for limit buy order, there is already a reserved orderDollarsOnHold when the order is placed.
+            // Hence we want balance + orderDollarsOnHold >= cost
+            if ( buyOrSell === 'buy' && ( currentMarketPrice <= limitPrice ) && ( balance + orderDollarsOnHold >= Number((shares * currentMarketPrice).toFixed(2)) ) ) {
                 // New total cost = (current average cost per share * current number of shares) + (number of new shares * purchase price per share)
                 const newTotalCost = (stockOwn.avgCost * stockOwn.qty + shares * currentMarketPrice);
                 // New total number of shares = current number of shares + number of new shares
@@ -384,13 +400,16 @@ console.log(Twelve_Data_API_Key);
                     read: false,
                     user: user._id
                 });
-                // Succesfully execute the order, update user's balance
-                user.balance = Number((user.balance - shares * currentMarketPrice).toFixed(2));
+                // Succesfully execute the order, update user's balance. Note that we need to add back the orderDollarsOnHold back to user's buying power
+                user.balance = Number((user.balance + orderDollarsOnHold - shares * currentMarketPrice).toFixed(2));
+                // also need to decrease user's balanceOnHold (for pending orders)
+                user.balanceOnHold = Number((user.balanceOnHold - orderDollarsOnHold).toFixed(2));
                 await user.save();
                 // order has been executed, delete it
                 // await order.deleteOne();
                 // console.log(`Buy order for ${shares} shares of ${symbol} executed and deleted.`);
                 order.status = "inactive";
+                order.orderDollarsOnHold = 0;
                 await order.save();
                 continue;
             //For a limit sell order, the order will execute when the user's number of shares owned of that stock >= the number of shares being sold 
@@ -404,6 +423,10 @@ console.log(Twelve_Data_API_Key);
                 const newAvgCost = newTotalCost / newQuantity;
                 stockOwn.qty = newQuantity;
                 stockOwn.avgCost = Number(newAvgCost.toFixed(2));
+                // Note that when limit sell order is placed, the stockOwn's sharesOnHold is increased by the selling shares
+                // user's shares available for sell = stockOwn.qty - stockOwn.sharesOnHold
+                // Hence when the limit sell order is executed, sharesOnHold should be decreased by selling shares
+                stockOwn.sharesOnHold -= shares;
                 await stockOwn.save();
                 // create history instance
                 await History.create({

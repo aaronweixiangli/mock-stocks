@@ -11,6 +11,8 @@ import StockPage from '../StockPage/StockPage';
 export default function App() {
   const [user, setUser] = useState(getUser());
   const [balance, setBalance] = useState(0);
+  const [balanceOnHold, setBalanceOnHold] = useState(0);
+
   
   // Get the current user's balance from database, depends on user
   useEffect(() => {
@@ -18,7 +20,10 @@ export default function App() {
     async function getUserBalance() {
       const balance = await usersAPI.getBalance();
       setBalance(balance);
+      const balanceOnHold = await usersAPI.getBalanceOnHold();
+      setBalanceOnHold(balanceOnHold);
       console.log('balance', balance)
+      console.log('balanceOnHold', balanceOnHold)
     }
     getUserBalance();
   }, [user])
@@ -30,8 +35,8 @@ export default function App() {
             <NavBar user={user} setUser={setUser} />
             <Routes>
               {/* Route components in here */}
-              <Route path="/stocks/:symbol" element={<StockPage user={user} balance={balance} setBalance={setBalance}/>} />
-              <Route path="/" element={<HomePage balance={balance} setBalance={setBalance}/>} />
+              <Route path="/stocks/:symbol" element={<StockPage user={user} balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold} setBalanceOnHold={setBalanceOnHold}/>} />
+              <Route path="/" element={<HomePage balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold}/>} />
             </Routes>
           </>
           :

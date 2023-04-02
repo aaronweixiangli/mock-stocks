@@ -41,6 +41,7 @@ const orderSchema = new Schema(
       ],
     },
     isMarketOpen: { type: Boolean },
+    orderDollarsOnHold: { type: Number },
   },
   { timestamps: true }
 );

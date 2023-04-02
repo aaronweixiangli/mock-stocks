@@ -21,6 +21,14 @@ export async function getBalance() {
   return sendRequest(`${BASE_URL}/balance`);
 }
 
+export async function getBalanceOnHold() {
+  return sendRequest(`${BASE_URL}/balance_on_hold`);
+}
+
 export async function getSharesOwn(symbol) {
   return sendRequest(`${BASE_URL}/stock_shares_own/${symbol}`);
+}
+
+export async function getSharesOnHold(symbol) {
+  return sendRequest(`${BASE_URL}/stock_shares_on_hold/${symbol}`);
 }

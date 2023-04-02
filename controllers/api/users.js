@@ -8,8 +8,18 @@ module.exports = {
   login,
   deposit,
   getBalance,
-  getSharesOwn
+  getBalanceOnHold,
+  getSharesOwn,
+  getSharesOnHold
 };
+
+async function getSharesOnHold(req, res) {
+  console.log('getSharesOnHold controller hits')
+  // get the user's sharesOwn for the symbol
+  const stockOwn = await StockOwn.findOne({user: req.user._id, symbol: req.params.symbol});
+  const sharesOnHold = stockOwn ? stockOwn.sharesOnHold : 0;
+  res.json(sharesOnHold);
+}
 
 async function getSharesOwn(req, res) {
   console.log('getSharesOwn controller hits')
@@ -25,6 +35,17 @@ async function getBalance(req, res) {
     const user = await User.findOne({_id: req.user._id});
     const balance = user.balance;
     res.json(balance);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+}
+
+async function getBalanceOnHold(req, res) {
+  try {
+    // get the user's balanceOnHold (for pending orders)
+    const user = await User.findOne({_id: req.user._id});
+    const balanceOnHold = user.balanceOnHold;
+    res.json(balanceOnHold);
   } catch (err) {
     res.status(400).json(err);
   }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import * as stocksAPI from "../../utilities/stocks-api";
 import * as usersAPI from "../../utilities/users-api";
 
-export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSharesOwn, balance, setBalance} ) {
+export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSharesOwn, sharesOnHold, setSharesOnHold, balance, setBalance, balanceOnHold, setBalanceOnHold} ) {
     // MARKET ORDER
     // const variables and functions for Market Order
     const [buyOrSell, setBuyOrSell] = useState('buy');
@@ -348,7 +348,9 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
         if (orderType === 'market order') {
             result = await stocksAPI.marketOrder(symbol, buyOrSell, orderType, sharesOrDollars, shares, dollars);
         } else if (orderType === 'limit order') {
-            result = await stocksAPI.limitOrder(symbol, buyOrSell, orderType, limitPrice, shares, expires);
+            // if it's limit buy order, save the dollars on hold for this order
+            const orderDollarsOnHold = buyOrSell === 'buy' ? Number((limitPrice * shares).toFixed(2)) : 0;
+            result = await stocksAPI.limitOrder(symbol, buyOrSell, orderType, limitPrice, shares, expires, orderDollarsOnHold);
         }
         console.log(result);
         if (result.failure) {
@@ -379,6 +381,8 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
             setBalance(userBalance);
             const userSharesOwn = await usersAPI.getSharesOwn(symbol);
             setSharesOwn(userSharesOwn);
+            const userSharesOnHold = await usersAPI.getSharesOnHold(symbol);
+            setSharesOnHold(userSharesOnHold);
         }
     }
 
@@ -453,7 +457,7 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
                                 </div>
                             </div>
                             <div className="review-order-container" style={{display: reviewDetail ? "none" : "flex" }} >
-                                <button disabled={!shares || (buyOrSell === 'buy' ? !(balance >= Number((marketPrice * shares).toFixed(2))) : !(sharesOwn >= shares))} onClick={handleReviewDetail}>Review Order</button>
+                                <button disabled={!shares || (buyOrSell === 'buy' ? !(balance >= Number((marketPrice * shares).toFixed(2))) : !(sharesOwn - sharesOnHold >= shares))} onClick={handleReviewDetail}>Review Order</button>
                             </div>
                             {reviewDetail}
                         </>
@@ -466,7 +470,7 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
                                 </div>
                             </div>
                             <div className="review-order-container" style={{display: reviewDetail ? "none" : "flex" }}>
-                                <button disabled={!dollars || (buyOrSell === 'buy' ?  !(balance >= dollars) : !(sharesOwn >= Number((dollars / marketPrice).toFixed(5))))} onClick={handleReviewDetail}>Review Order</button>
+                                <button disabled={!dollars || (buyOrSell === 'buy' ?  !(balance >= dollars) : !(sharesOwn - sharesOnHold >= Number((dollars / marketPrice).toFixed(5))))} onClick={handleReviewDetail}>Review Order</button>
                             </div>
                             {reviewDetail}
                         </>
@@ -477,7 +481,7 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
                         buyOrSell === 'buy' ?
                         `$${balance} buying power available`
                         :
-                        `${sharesOwn} Shares Available`
+                        `${sharesOwn - sharesOnHold} Shares Available`
                      }
                     </div>
                 </form>            
@@ -546,7 +550,7 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
                             </div>
                         </div>
                         <div className="review-order-container" style={{display: reviewDetail ? "none" : "flex" }}>
-                            <button disabled={!limitPrice || !shares || !expires || (buyOrSell === 'buy' ? !(balance >= Number((limitPrice * shares).toFixed(2))) : !(sharesOwn >= shares))} onClick={handleReviewDetail}>Review Order</button>
+                            <button disabled={!limitPrice || !shares || !expires || (buyOrSell === 'buy' ? !(balance >= Number((limitPrice * shares).toFixed(2))) : !(sharesOwn - sharesOnHold >= shares))} onClick={handleReviewDetail}>Review Order</button>
                         </div>
                         {reviewDetail}
                     </div>
@@ -555,7 +559,7 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
                         buyOrSell === 'buy' ?
                         `$${balance} buying power available`
                         :
-                        `${sharesOwn} Shares Available`
+                        `${sharesOwn - sharesOnHold} Shares Available`
                      }
                     </div>
                 </form>            
@@ -625,7 +629,7 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
                             </div>
                         </div>
                         <div className="review-order-container" style={{display: reviewDetail ? "none" : "flex" }}>
-                            <button disabled={!stopPrice || !shares || !expires || (buyOrSell === 'buy' ? !(balance >= Number((stopPrice * shares).toFixed(2))) : !(sharesOwn >= shares))} onClick={handleReviewDetail}>Review Order</button>
+                            <button disabled={!stopPrice || !shares || !expires || (buyOrSell === 'buy' ? !(balance >= Number((stopPrice * shares).toFixed(2))) : !(sharesOwn - sharesOnHold >= shares))} onClick={handleReviewDetail}>Review Order</button>
                         </div>
                         {reviewDetail}
                     </div>
@@ -634,7 +638,7 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
                         buyOrSell === 'buy' ?
                         `$${balance} buying power available`
                         :
-                        `${sharesOwn} Shares Available`
+                        `${sharesOwn - sharesOnHold} Shares Available`
                      }
                     </div>
                 </form>            
@@ -710,7 +714,7 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
                             </div>
                         </div>
                         <div className="review-order-container" style={{display: reviewDetail ? "none" : "flex" }}>
-                            <button disabled={!stopPrice || !limitPrice || !shares || !expires || (buyOrSell === 'buy' ? !(balance >= Number((limitPrice * shares).toFixed(2))) : !(sharesOwn >= shares))} onClick={handleReviewDetail}>Review Order</button>
+                            <button disabled={!stopPrice || !limitPrice || !shares || !expires || (buyOrSell === 'buy' ? !(balance >= Number((limitPrice * shares).toFixed(2))) : !(sharesOwn - sharesOnHold >= shares))} onClick={handleReviewDetail}>Review Order</button>
                         </div>
                         {reviewDetail}
                     </div>
@@ -719,7 +723,7 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
                         buyOrSell === 'buy' ?
                         `$${balance} buying power available`
                         :
-                        `${sharesOwn} Shares Available`
+                        `${sharesOwn - sharesOnHold} Shares Available`
                      }
                     </div>
                 </form>            
@@ -873,7 +877,7 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
                         <div className="review-order-container" style={{display: reviewDetail ? "none" : "flex" }}>
                             <button disabled={ !shares || !expires || (trailType === 'percentage' ? !trailPercent : !trailAmount) || 
                             (buyOrSell === 'buy' ? ( trailType === 'percentage' ? ( !(balance >= Number((marketPrice * (1 + trailPercent/100)).toFixed(2)) * shares) ) : ( !(balance >= Number((parseFloat(marketPrice) + parseFloat(trailAmount)).toFixed(2)) * shares) ) ) 
-                            : !(sharesOwn >= shares) )} onClick={handleReviewDetail}>Review Order</button>
+                            : !(sharesOwn - sharesOnHold >= shares) )} onClick={handleReviewDetail}>Review Order</button>
                         </div>
                         {reviewDetail}
                     </div>
@@ -882,7 +886,7 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
                         buyOrSell === 'buy' ?
                         `$${balance} buying power available`
                         :
-                        `${sharesOwn} Shares Available`
+                        `${sharesOwn - sharesOnHold} Shares Available`
                      }
                     </div>
                 </form>            

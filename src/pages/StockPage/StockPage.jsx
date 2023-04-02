@@ -8,7 +8,7 @@ import StockOverview from "../../components/StockOverview/StockOverview";
 import StockNews from "../../components/StockNews/StockNews";
 import StockOrder from "../../components/StockOrder/StockOrder";
 
-export default function StockPage( {user, balance, setBalance} ) {
+export default function StockPage( {user, balance, setBalance, balanceOnHold, setBalanceOnHold} ) {
   const { symbol } = useParams();
   const [stockData, setStockData] = useState(null);
   const [dataStartDate, setDataStartDate] = useState(getStartDate_1D());
@@ -18,6 +18,7 @@ export default function StockPage( {user, balance, setBalance} ) {
   const [stockInfo, setStockInfo] = useState(null);
 
   const [sharesOwn, setSharesOwn] = useState(0);
+  const [sharesOnHold, setSharesOnHold] = useState(0);
 
   // Get stock price data
   useEffect(function() {
@@ -50,13 +51,16 @@ export default function StockPage( {user, balance, setBalance} ) {
     getStockInfo();
   }, [symbol]);
 
-  // Get stock shares owned by the user for this stock
+  // Get stock shares owned and shares on hold by the user for this stock  
   useEffect(function() {
     async function getStockOwnShares() {
       if (!user) return;
       const sharesOwn = await usersAPI.getSharesOwn(symbol);
+      const sharesOnHold = await usersAPI.getSharesOnHold(symbol);
       console.log('sharesOwn', sharesOwn);
+      console.log('sharesOnHold', sharesOnHold);
       setSharesOwn(sharesOwn);
+      setSharesOnHold(sharesOnHold);
     }
     getStockOwnShares();
   }, [symbol, user]);
@@ -259,7 +263,7 @@ export default function StockPage( {user, balance, setBalance} ) {
           </div>
           <StockOverview stockInfo={stockInfo}/>
           <StockNews symbol={symbol} />
-          <StockOrder symbol={symbol} marketPrice={stockData.values[0].open} user={user} sharesOwn={sharesOwn} setSharesOwn={setSharesOwn} balance={balance} setBalance={setBalance}/>
+          <StockOrder symbol={symbol} marketPrice={stockData.values[0].open} user={user} sharesOwn={sharesOwn} setSharesOwn={setSharesOwn} sharesOnHold={sharesOnHold} setSharesOnHold={setSharesOnHold} balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold} setBalanceOnHold={setBalanceOnHold}/>
         </>
           :
           <p>Loading...</p>

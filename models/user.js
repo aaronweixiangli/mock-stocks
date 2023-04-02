@@ -20,6 +20,10 @@ const userSchema = new Schema({
   balance: {
     type: Number,
     default: 10000
+  },
+  balanceOnHold: {
+    type: Number,
+    default: 0
   }
 }, {
   timestamps: true,

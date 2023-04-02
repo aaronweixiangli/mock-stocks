@@ -507,6 +507,7 @@ async function placeLimitOrder(req, res) {
     const limitPrice = req.body.limitPrice;
     const shares = Number(req.body.shares);
     const expires = req.body.expires;
+    const orderDollarsOnHold = Number(req.body.orderDollarsOnHold);
     let isMarketOpen = true;
 
     // check for date and time
@@ -535,8 +536,13 @@ async function placeLimitOrder(req, res) {
                 limitPrice,
                 shares,
                 expires,
+                orderDollarsOnHold,
                 isMarketOpen
             });
+            // Limit buy order has created. Decrease the user's balance(buying power) and increase user's balanceOnHold (for pending orders) by orderDollarsOnHold
+            user.balance = Number((user.balance - orderDollarsOnHold).toFixed(2));
+            user.balanceOnHold = Number((user.balanceOnHold + orderDollarsOnHold).toFixed(2));
+            await user.save();
             await Notification.create({
                 text: `We've received your limit order to buy ${shares} shares of ${symbol} at a maximum of $${limitPrice} per share. ${ expires === 'good for day' ? (`If this order isn't filled by the end of merket hours (4:00pm ET) ${ isMarketOpen ? `today` : `on the next trading day` }, it will expire.`) 
                 : `If this order isn't filled within 90 days, it will expire.`} `,
@@ -569,8 +575,12 @@ async function placeLimitOrder(req, res) {
                 limitPrice,
                 shares,
                 expires,
+                orderDollarsOnHold,
                 isMarketOpen
             });
+            // limit sell order has created. Increase the shares on hold for this stock that the user owns by "shares" (the selling shares)
+            stockOwn.sharesOnHold += shares;
+            await stockOwn.save();
             await Notification.create({
                 text: `We've received your limit order to sell ${shares} shares of ${symbol} at a minimum of $${limitPrice} per share. ${ expires === 'good for day' ? (`If this order isn't filled by the end of merket hours (4:00pm ET) ${ isMarketOpen ? `today` : `on the next trading day` }, it will expire.`) 
                 : `If this order isn't filled within 90 days, it will expire.`} `,

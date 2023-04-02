@@ -13,7 +13,11 @@ router.post('/login', usersCtrl.login);
 router.put('/deposit', ensureLoggedIn, usersCtrl.deposit);
 // GET /api/users/balance
 router.get('/balance', ensureLoggedIn, usersCtrl.getBalance);
+// GET /api/users/balance_on_hold
+router.get('/balance_on_hold', ensureLoggedIn, usersCtrl.getBalanceOnHold);
 // GET /api/users/stock_shares_own/:symbol
 router.get('/stock_shares_own/:symbol', ensureLoggedIn, usersCtrl.getSharesOwn);
+// GET /api/users/stock_shares_own/:symbol
+router.get('/stock_shares_on_hold/:symbol', ensureLoggedIn, usersCtrl.getSharesOnHold);
 
 module.exports = router;

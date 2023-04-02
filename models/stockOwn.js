@@ -7,6 +7,7 @@ const stockOwnSchema = new Schema(
     qty: { type: Number, required: true },
     avgCost: {type: Number, required: true },
     user: { type: Schema.Types.ObjectId, required: true, ref: "User" },
+    sharesOnHold: {type: Number, default: 0 }
   },
   { timestamps: true }
 );

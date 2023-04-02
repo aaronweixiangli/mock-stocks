@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import * as usersAPI from "../../utilities/users-api";
 
-export default function BuyingPower({ balance, setBalance }) {
+export default function BuyingPower({ balance, setBalance, balanceOnHold, setBalanceOnHold }) {
     const amountRef = useRef('');
     const disableRef = useRef(true);
     const [amount, setAmount] = useState('');
@@ -74,7 +74,10 @@ export default function BuyingPower({ balance, setBalance }) {
                 <div id="buying-power-section">
                     <div className="left-section">
                         <div className="buying-power-content">
-                            <p>Brokerage Cash</p><p>${balance.toFixed(2)}</p>
+                            <p>Brokerage Cash</p><p>${(balance + balanceOnHold).toFixed(2)}</p>
+                        </div>
+                        <div className="buying-power-content">
+                            <p>Pending Orders</p><p>-${balanceOnHold.toFixed(2)}</p>
                         </div>
                         <div className="buying-power-content">
                             <p>Buying Power</p><p className="bold-font">${balance.toFixed(2)}</p>
