@@ -14,8 +14,8 @@ setInterval(function () {
   // if it's not in between 6:30am to 1:00pm PDT, return
   const hours = now.getUTCHours();
   const minutes = now.getUTCMinutes();
-  if (hours < 13 || hours > 20) return;
-  if (hours === 13 && minutes < 30) return;
+  // if (hours < 13 || hours > 20) return;
+  // if (hours === 13 && minutes < 30) return;
 
   console.log("Starting to poll API at", new Date());
 

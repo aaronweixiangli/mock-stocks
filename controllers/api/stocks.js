@@ -103,7 +103,7 @@ async function placeMarketOrder(req, res) {
                             user: user._id
                         });
                         // Succesfully place the order, update user's balance
-                        user.balance -= cost;
+                        user.balance = Number((user.balance - cost).toFixed(2));
                         await user.save();
                         console.log('market order buy in shares executes');
                         return res.json({success: `Market order (buy in shares) to buy ${shares} shares of ${symbol} has been successfully executed at $${currentMarketPrice} per share.`});
@@ -129,7 +129,7 @@ async function placeMarketOrder(req, res) {
                             user: user._id
                         });
                         // Succesfully place the order, update user's balance
-                        user.balance -= cost;
+                        user.balance = Number((user.balance - cost).toFixed(2));
                         await user.save();
                         console.log('market order buy in shares (do not own previously) executes');
                         return res.json({success: `Market order (buy in shares) to buy ${shares} shares of ${symbol} has been successfully executed at an average price of $${currentMarketPrice} per share.`})
@@ -185,7 +185,7 @@ async function placeMarketOrder(req, res) {
                             user: user._id
                         });
                         // Succesfully place the order, update user's balance
-                        user.balance -= dollars;
+                        user.balance = Number((user.balance - dollars).toFixed(2));
                         await user.save();
                         console.log('market order buy in dollars executes');
                         return res.json({success: `Market order (buy in dollars) to buy $${dollars} of ${symbol} has been successfully executed. You've received ${buyInQuantity} shares at an average price of $${currentMarketPrice} per share`})
@@ -212,7 +212,7 @@ async function placeMarketOrder(req, res) {
                             user: user._id
                         });
                         // Succesfully place the order, update user's balance
-                        user.balance -= dollars;
+                        user.balance = Number((user.balance - dollars).toFixed(2));
                         await user.save();
                         console.log('market order buy in dollars executes (do not own before)');
                         return res.json({success: `Market order (buy in dollars) to buy $${dollars} of ${symbol} has been successfully executed. You've received ${buyInQuantity} shares at an average price of $${currentMarketPrice} per share`})
@@ -265,7 +265,7 @@ async function placeMarketOrder(req, res) {
                         user: user._id
                     });
                     // Succesfully place the order, update user's balance
-                    user.balance += shares * currentMarketPrice;
+                    user.balance = Number((user.balance + shares * currentMarketPrice).toFixed(2));
                     await user.save();
                     // if the stockOwn's qty is 0, delete the stockOwn instance
                     if (stockOwn.qty === 0) {
@@ -319,7 +319,7 @@ async function placeMarketOrder(req, res) {
                         user: user._id
                     });
                     // Succesfully place the order, update user's balance
-                    user.balance += dollars;
+                    user.balance = Number((user.balance + dollars).toFixed(2));
                     await user.save();
                     // if the stockOwn's qty is 0, delete the stockOwn instance
                     if (stockOwn.qty === 0) {
