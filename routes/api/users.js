@@ -19,5 +19,7 @@ router.get('/balance_on_hold', ensureLoggedIn, usersCtrl.getBalanceOnHold);
 router.get('/stock_shares_own/:symbol', ensureLoggedIn, usersCtrl.getSharesOwn);
 // GET /api/users/stock_shares_own/:symbol
 router.get('/stock_shares_on_hold/:symbol', ensureLoggedIn, usersCtrl.getSharesOnHold);
+// GET /api/users/brokerage_holding
+router.get('/brokerage_holding', ensureLoggedIn, usersCtrl.getBrokerageHolding);
 
 module.exports = router;

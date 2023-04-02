@@ -7,13 +7,14 @@ import AuthPage from '../AuthPage/AuthPage';
 import HomePage from '../HomePage/HomePage';
 import NavBar from '../../components/NavBar/NavBar';
 import StockPage from '../StockPage/StockPage';
+import ProfilePage from '../ProfilePage/ProfilePage';
 
 export default function App() {
   const [user, setUser] = useState(getUser());
   const [balance, setBalance] = useState(0);
   const [balanceOnHold, setBalanceOnHold] = useState(0);
 
-  
+
   // Get the current user's balance from database, depends on user
   useEffect(() => {
     if (!user) return;
@@ -37,6 +38,7 @@ export default function App() {
               {/* Route components in here */}
               <Route path="/stocks/:symbol" element={<StockPage user={user} balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold} setBalanceOnHold={setBalanceOnHold}/>} />
               <Route path="/" element={<HomePage balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold}/>} />
+              <Route path="/profile" element={<ProfilePage user={user} balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold} setBalanceOnHold={setBalanceOnHold}/>} />
             </Routes>
           </>
           :

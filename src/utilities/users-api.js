@@ -32,3 +32,7 @@ export async function getSharesOwn(symbol) {
 export async function getSharesOnHold(symbol) {
   return sendRequest(`${BASE_URL}/stock_shares_on_hold/${symbol}`);
 }
+
+export async function getBrokerageHolding() {
+  return sendRequest(`${BASE_URL}/brokerage_holding`);
+}

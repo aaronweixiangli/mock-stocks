@@ -37,7 +37,11 @@ export default function NavBar({ user, setUser }) {
 
   return (
     <nav className="main-nav">
-      <div className="logo">LOGO</div>
+      <div className="logo">
+        <Link to="/">
+          <img src="https://i.imgur.com/GtqNrzK.png" alt="mockstock" />
+        </Link>
+      </div>
       <div className="search-bar-container">
         <form className="search-bar" onSubmit={handleSubmit}>
           <i className="material-icons">search</i>
@@ -53,7 +57,7 @@ export default function NavBar({ user, setUser }) {
           <button className="dropbtn" onClick={dropdownClick}>Account</button>
           <div id="dropdown" className="dropdown-content">
             <span>{user.name}</span>
-            <Link to="/"><div><i className="material-icons">person</i>Profile</div></Link>
+            <Link to="/profile"><div><i className="material-icons">person</i>Profile</div></Link>
             <Link to="/"><div><i className="material-icons">credit_card</i>Investing</div></Link>
             <Link to="/"><div><i className="material-icons">copyright</i>Crypto</div></Link>
             <Link to="/"><div><i className="material-icons">attach_money</i>Buy in</div></Link>

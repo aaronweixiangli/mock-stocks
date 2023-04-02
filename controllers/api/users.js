@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../../models/user');
 const StockOwn = require('../../models/stockOwn');
+const Twelve_Data_API_Key = process.env.Twelve_Data_API_Key;
 
 module.exports = {
   create,
@@ -10,8 +11,29 @@ module.exports = {
   getBalance,
   getBalanceOnHold,
   getSharesOwn,
-  getSharesOnHold
+  getSharesOnHold,
+  getBrokerageHolding
 };
+
+async function getBrokerageHolding(req, res) {
+  console.log('getBrokerageHolding controller hits')
+  // get the user's brokerage holdings
+  const stockOwn = await StockOwn.find({user: req.user._id});
+  let brokerageHolding = 0;
+  try {
+    for (let stock of stockOwn) {
+      const symbol = stock.symbol;
+      const qty = stock.qty;
+      const stockDataAPI = await fetch(`https://api.twelvedata.com/time_series?apikey=${Twelve_Data_API_Key}&interval=1min&symbol=${symbol}&format=JSON&dp=2`).then(res => res.json());
+      const currentMarketPrice = Number(stockDataAPI.values[0].open);
+      brokerageHolding += qty * currentMarketPrice
+    }
+    res.json(Number(brokerageHolding.toFixed(2)));
+  } catch {
+    // API issue
+    res.json('Unable to retrieve brokerage holdings due to a network issue.');
+  }
+}
 
 async function getSharesOnHold(req, res) {
   console.log('getSharesOnHold controller hits')

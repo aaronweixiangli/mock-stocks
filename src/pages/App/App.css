@@ -60,6 +60,15 @@ body {
   height: 8vmin;
 }
 
+.logo {
+  height: 5vmin;
+  width: 5vmin;
+}
+
+.logo:hover {
+  cursor: pointer;
+}
+
 .main-nav a {
   color: white;
   text-decoration: none;
