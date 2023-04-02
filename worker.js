@@ -298,9 +298,7 @@ console.log(Twelve_Data_API_Key);
                     continue;
                 };
             }
-           
-
-             
+        // if order is limit order
         } else if (order.orderType === 'limit order') {
             const user = await User.findById(order.user);
             const balance = user.balance;
@@ -340,13 +338,12 @@ console.log(Twelve_Data_API_Key);
                     orderExpired = true;
                 }
             }
-
             if ( orderExpired ) {
                 // if it's a limit buy order, it has a hold on the estimated cost of the order, which is "orderDollarsOnHold".
                 // Hence before we delete the order, we need to update user's balanceOnHold (for pending orders) and balance (buying power)
                 if (buyOrSell === 'buy') {
-                    user.balanceOnHold = Number((user.balanceOnHold + orderDollarsOnHold).toFixed(2));
-                    user.balance = Number((user.balance - orderDollarsOnHold).toFixed(2));
+                    user.balanceOnHold = Number((user.balanceOnHold - orderDollarsOnHold).toFixed(2));
+                    user.balance = Number((user.balance + orderDollarsOnHold).toFixed(2));
                     await user.save();
                 } else {
                     // if it's a limit sell order, it has a hold on the selling amount of shares, which is "shares"
