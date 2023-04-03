@@ -20,6 +20,8 @@ export default function StockPage( {user, balance, setBalance, balanceOnHold, se
   const [sharesOwn, setSharesOwn] = useState(0);
   const [sharesOnHold, setSharesOnHold] = useState(0);
 
+  const [stockWatch, setStockWatch] = useState(true);
+
   // Get stock price data
   useEffect(function() {
     async function getData() {
@@ -65,6 +67,16 @@ export default function StockPage( {user, balance, setBalance, balanceOnHold, se
     getStockOwnShares();
   }, [symbol, user]);
 
+  useEffect(function() {
+    async function getStockWatch() {
+      if (!user) return;
+      const stockWatch = await usersAPI.getStockWatch(symbol);
+      console.log('stockWatch', stockWatch);
+      console.log('type of stockWatch', typeof(stockWatch));
+      setStockWatch(stockWatch);
+    }
+    getStockWatch();
+  }, [symbol, user]);
 
   function getStartDate_1D() {
     const today = new Date();
@@ -232,6 +244,13 @@ export default function StockPage( {user, balance, setBalance, balanceOnHold, se
     chartBtns[5].classList.add('active');
   }
 
+  async function toggleStockWatch(symbol) {
+    if (!user) return;
+    const updatedStockWatchStatus = await usersAPI.toggleStockWatch(symbol);
+    console.log('updatedStockWatchStatus', updatedStockWatchStatus);
+    console.log('type of updatedStockWatchStatus', typeof(updatedStockWatchStatus));
+    setStockWatch(updatedStockWatchStatus);
+  }
 
   if (error) return (
     <main className="StockPage">
@@ -242,7 +261,7 @@ export default function StockPage( {user, balance, setBalance, balanceOnHold, se
   )
   return (
     <main className="StockPage">
-      <h1>{symbol}</h1>
+      <h1 className="stockpage-symbol-name">{symbol} <button className="add-to-list" onClick={() => toggleStockWatch(symbol)}>{stockWatch ? 'Remove from list' : 'Add to list'}</button> </h1>
       { stockData 
         ? 
         <>

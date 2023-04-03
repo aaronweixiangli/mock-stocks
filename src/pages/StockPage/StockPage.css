@@ -2,6 +2,26 @@
     padding: 6vmin 75vmin 10vmin 24vmin;
 }
 
+.stockpage-symbol-name {
+    display: flex;
+    justify-content: space-between;
+}
+
+.add-to-list {
+    margin: 0;
+    padding: 0;
+    width: 18%;
+    border: none;
+    font-size: 2vmin;
+    border-radius: 50vmin;
+    border-bottom: 0.01vmin groove rgba(75, 192, 192, 0.8);
+}
+
+.add-to-list:hover {
+    color:rgb(75, 192, 192, 1);
+    cursor: pointer;
+}
+
 /* StockChart Component */
 #stock-chart {
     height: 40vmin !important;

@@ -29,5 +29,9 @@ router.get('/history', ensureLoggedIn, usersCtrl.getHistory);
 router.get('/pending_order', ensureLoggedIn, usersCtrl.getPendingOrder);
 // DELETE /api/users/cancel_order/:id
 router.delete('/cancel_order/:id', ensureLoggedIn, usersCtrl.cancelOrder);
+// GET /api/users/stock_watch/:symbol
+router.get('/stock_watch/:symbol', ensureLoggedIn, usersCtrl.getStockWatch);
+// GET /api/users/toggle_stock_watch/:symbol
+router.get('/toggle_stock_watch/:symbol', ensureLoggedIn, usersCtrl.toggleStockWatch);
 
 module.exports = router;

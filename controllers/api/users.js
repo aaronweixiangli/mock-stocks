@@ -5,6 +5,7 @@ const StockOwn = require('../../models/stockOwn');
 const History = require('../../models/history');
 const Order = require('../../models/order');
 const Notification = require('../../models/notification');
+const StockWatch = require('../../models/stockWatch');
 const Twelve_Data_API_Key = process.env.Twelve_Data_API_Key;
 
 module.exports = {
@@ -19,8 +20,35 @@ module.exports = {
   getStocksHolding,
   getHistory,
   getPendingOrder,
-  cancelOrder
+  cancelOrder,
+  getStockWatch,
+  toggleStockWatch
 };
+
+async function toggleStockWatch(req, res) {
+  console.log('toggleStockWatch controller hits')
+  // check if this stock is in user's stockWatch list
+  const stockWatch = await StockWatch.findOne({user: req.user._id, symbol: req.params.symbol});
+  // it this stock is already in user's stockWatch list, remove it form stockWatch list. Otherwise, add it.
+  if (stockWatch) {
+    await stockWatch.deleteOne();
+  } else {
+    await StockWatch.create({
+      user: req.user._id,
+      symbol: req.params.symbol
+    })
+  }
+  // check if now the stock is still in user's stockWatch list
+  const isStockWatch = await StockWatch.findOne({user: req.user._id, symbol: req.params.symbol});
+  res.json(isStockWatch ? true : false);
+}
+
+async function getStockWatch(req, res) {
+  console.log('getStockWatch controller hits')
+  // check if this stock is in user's stockWatch list
+  const stockWatch = await StockWatch.findOne({user: req.user._id, symbol: req.params.symbol});
+  res.json(stockWatch ? true : false);
+}
 
 async function cancelOrder(req, res) {
   console.log('cancelOrder controller hits')

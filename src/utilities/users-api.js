@@ -52,3 +52,11 @@ export async function getPendingOrder() {
 export async function cancelOrder(id) {
   return sendRequest(`${BASE_URL}/cancel_order/${id}`, 'DELETE');
 }
+
+export async function getStockWatch(symbol) {
+  return sendRequest(`${BASE_URL}/stock_watch/${symbol}`);
+}
+
+export async function toggleStockWatch(symbol) {
+  return sendRequest(`${BASE_URL}/toggle_stock_watch/${symbol}`);
+}
