@@ -38,7 +38,7 @@ export default function InvestingPage( { user, balance, setBalance, balanceOnHol
                             <Link to="/account/investing" className='sub-nav-link'>Investing</Link>
                         </div>
                         <div className='sub-nav-link-container'>
-                            <Link to="/account/cryto" className='sub-nav-link'>Cryto</Link>
+                            <Link to="/account/crypto" className='sub-nav-link'>Crypto</Link>
                         </div>
                         <div className='sub-nav-link-container'>
                             <Link to="/account/recurring" className='sub-nav-link'>Recurring</Link>
@@ -117,7 +117,7 @@ export default function InvestingPage( { user, balance, setBalance, balanceOnHol
                         <Link to="/account/investing" className='sub-nav-link'>Investing</Link>
                     </div>
                     <div className='sub-nav-link-container'>
-                        <Link to="/account/cryto" className='sub-nav-link'>Cryto</Link>
+                        <Link to="/account/crypto" className='sub-nav-link'>Crypto</Link>
                     </div>
                     <div className='sub-nav-link-container'>
                         <Link to="/account/recurring" className='sub-nav-link'>Recurring</Link>

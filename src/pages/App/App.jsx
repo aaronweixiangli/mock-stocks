@@ -10,6 +10,11 @@ import StockPage from '../StockPage/StockPage';
 import ProfilePage from '../ProfilePage/ProfilePage';
 import InvestingPage from '../InvestingPage/InvestingPage';
 import HistoryPage from '../HistoryPage/HistoryPage';
+import CryptoPage from '../CryptoPage/CryptoPage';
+import RecurringPage from '../RecurringPage/RecurringPage';
+import ReportsPage from '../ReportsPage/ReportsPage';
+import SettingsPage from '../SettingsPage/SettingsPage';
+import HelpPage from '../HelpPage/HelpPage';
 
 export default function App() {
   const [user, setUser] = useState(getUser());
@@ -43,6 +48,11 @@ export default function App() {
               <Route path="/profile" element={<ProfilePage user={user} balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold} setBalanceOnHold={setBalanceOnHold}/>} />
               <Route path="/account/investing" element={<InvestingPage user={user} balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold} setBalanceOnHold={setBalanceOnHold}/>} />
               <Route path="/account/history" element={<HistoryPage user={user}/>} />
+              <Route path="/account/crypto" element={<CryptoPage user={user}/>} />
+              <Route path="/account/recurring" element={<RecurringPage user={user}/>} />
+              <Route path="/account/reports-statements" element={<ReportsPage user={user}/>} />
+              <Route path="/account/settings" element={<SettingsPage user={user}/>} />
+              <Route path="/account/help" element={<HelpPage user={user}/>} />
             </Routes>
           </>
           :

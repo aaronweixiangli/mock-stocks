@@ -59,7 +59,7 @@ export default function NavBar({ user, setUser }) {
             <span>{user.name}</span>
             <Link to="/profile"><div><i className="material-icons">person</i>Profile</div></Link>
             <Link to="/account/investing"><div><i className="material-icons">credit_card</i>Investing</div></Link>
-            <Link to="/account/cryto"><div><i className="material-icons">copyright</i>Crypto</div></Link>
+            <Link to="/account/crypto"><div><i className="material-icons">copyright</i>Crypto</div></Link>
             <Link to="/account/recurring"><div><i className="material-icons">event_repeat</i>Recurring</div></Link>
             <Link to="/account/reports-statements"><div><i className="material-icons">description</i>Statements</div></Link>
             <Link to="/account/history"><div><i className="material-icons">history</i>History</div></Link>

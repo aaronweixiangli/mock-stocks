@@ -8,7 +8,8 @@
 }
 
 .HistoryPage .pending-order-container .order-all-container:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    cursor: default;
 }
 
 .HistoryPage .pending {
@@ -69,6 +70,7 @@
 
 .HistoryPage .transaction-container .order-content:hover {
     background-color: rgba(255, 255, 255, 0.1);
+    cursor: default;
 }
 
 .HistoryPage .order-info {

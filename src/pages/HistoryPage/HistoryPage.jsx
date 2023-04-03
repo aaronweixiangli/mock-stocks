@@ -29,8 +29,10 @@ export default function HistoryPage({ user }) {
         // Toggle the child container's display style
         if (childContainer.style.display === 'flex') {
             childContainer.style.display = 'none';
+            parentContainer.style.backgroundColor = 'transparent';
         } else {
             childContainer.style.display = 'flex';
+            parentContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
         }
     }
 
@@ -151,78 +153,77 @@ export default function HistoryPage({ user }) {
 
     return (
         <main className="HistoryPage">
-        <section className="account-sub-nav-container">
-            <h2 className="user-name">{user.name}</h2>
-            <div className="account-sub-nav">
-            <div className="sub-nav-link-container">
-                <Link to="/account/investing" className="sub-nav-link">
-                Investing
-                </Link>
-            </div>
-            <div className="sub-nav-link-container">
-                <Link to="/account/cryto" className="sub-nav-link">
-                Cryto
-                </Link>
-            </div>
-            <div className="sub-nav-link-container">
-                <Link to="/account/recurring" className="sub-nav-link">
-                Recurring
-                </Link>
-            </div>
-            <div className="sub-nav-link-container">
-                <Link to="/account/reports-statements" className="sub-nav-link">
-                Reports and statements
-                </Link>
-            </div>
-            <div className="sub-nav-link-container active">
-                <Link to="/account/history" className="sub-nav-link">
-                History
-                </Link>
-            </div>
-            <div className="sub-nav-link-container">
-                <Link to="/account/settings" className="sub-nav-link">
-                Settings
-                </Link>
-            </div>
-            <div className="sub-nav-link-container">
-                <Link to="/account/help" className="sub-nav-link">
-                Help
-                </Link>
-            </div>
-            </div>
-        </section>
-        <div className="account-line"></div>
-        {(pendingOrder && pendingOrder.length) ?
-            <section className="pending-order-container">
-                <div className="orders-container">
-                    <div className="pending">Pending</div>
-                    {pending}
+            <section className="account-sub-nav-container">
+                <h2 className="user-name">{user.name}</h2>
+                <div className="account-sub-nav">
+                <div className="sub-nav-link-container">
+                    <Link to="/account/investing" className="sub-nav-link">
+                    Investing
+                    </Link>
+                </div>
+                <div className="sub-nav-link-container">
+                    <Link to="/account/crypto" className="sub-nav-link">
+                    Crypto
+                    </Link>
+                </div>
+                <div className="sub-nav-link-container">
+                    <Link to="/account/recurring" className="sub-nav-link">
+                    Recurring
+                    </Link>
+                </div>
+                <div className="sub-nav-link-container">
+                    <Link to="/account/reports-statements" className="sub-nav-link">
+                    Reports and statements
+                    </Link>
+                </div>
+                <div className="sub-nav-link-container active">
+                    <Link to="/account/history" className="sub-nav-link">
+                    History
+                    </Link>
+                </div>
+                <div className="sub-nav-link-container">
+                    <Link to="/account/settings" className="sub-nav-link">
+                    Settings
+                    </Link>
+                </div>
+                <div className="sub-nav-link-container">
+                    <Link to="/account/help" className="sub-nav-link">
+                    Help
+                    </Link>
+                </div>
                 </div>
             </section>
-            :
-            <section className="pending-order-container">
-                <div className="orders-container">
-                    <div className="pending">Pending</div>
-                    <p className="no-pending">No pending orders yet.</p>
-                </div>
-            </section>
-        }
-        {(history && history.length) ?
-            <section className="transaction-container">
-                <div className="orders-container">
-                    <div className="pending">Recent</div>
-                    {transaction}
-                </div>
-            </section>
-            :
-            <section className="transaction-container">
-                <div className="orders-container">
-                    <div className="pending">Recent</div>
-                    <p className="no-pending">No transactions nor deposits yet.</p>
-                </div>
-            </section>
-
-        }
+            <div className="account-line"></div>
+            {(pendingOrder && pendingOrder.length) ?
+                <section className="pending-order-container">
+                    <div className="orders-container">
+                        <div className="pending">Pending</div>
+                        {pending}
+                    </div>
+                </section>
+                :
+                <section className="pending-order-container">
+                    <div className="orders-container">
+                        <div className="pending">Pending</div>
+                        <p className="no-pending">No pending orders yet.</p>
+                    </div>
+                </section>
+            }
+            {(history && history.length) ?
+                <section className="transaction-container">
+                    <div className="orders-container">
+                        <div className="pending">Recent</div>
+                        {transaction}
+                    </div>
+                </section>
+                :
+                <section className="transaction-container">
+                    <div className="orders-container">
+                        <div className="pending">Recent</div>
+                        <p className="no-pending">No transactions nor deposits yet.</p>
+                    </div>
+                </section>
+            }
         </main>
     );
 }
