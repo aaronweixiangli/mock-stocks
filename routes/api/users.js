@@ -23,5 +23,9 @@ router.get('/stock_shares_on_hold/:symbol', ensureLoggedIn, usersCtrl.getSharesO
 router.get('/brokerage_holding', ensureLoggedIn, usersCtrl.getBrokerageHolding);
 // GET /api/users/stocks_holding
 router.get('/stocks_holding', ensureLoggedIn, usersCtrl.getStocksHolding);
+// GET /api/users/history
+router.get('/history', ensureLoggedIn, usersCtrl.getHistory);
+// GET /api/users/pending_order
+router.get('/pending_order', ensureLoggedIn, usersCtrl.getPendingOrder);
 
 module.exports = router;

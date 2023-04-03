@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../../models/user');
 const StockOwn = require('../../models/stockOwn');
+const History = require('../../models/history');
+const Order = require('../../models/order');
 const Twelve_Data_API_Key = process.env.Twelve_Data_API_Key;
 
 module.exports = {
@@ -13,8 +15,24 @@ module.exports = {
   getSharesOwn,
   getSharesOnHold,
   getBrokerageHolding,
-  getStocksHolding
+  getStocksHolding,
+  getHistory,
+  getPendingOrder
 };
+
+async function getPendingOrder(req, res) {
+  console.log('getPendingOrder controller hits')
+  // get the user's pending orders and sort by created date in descending order
+  const pendingOrder = await Order.find({user: req.user._id, status: 'active'}).sort({createdAt: -1});
+  res.json(pendingOrder)
+}
+
+async function getHistory(req, res) {
+  console.log('getHistory controller hits')
+  // get the user's transaction history and deposit history and sort by created date in descending order
+  const history = await History.find({user: req.user._id}).sort({createdAt: -1});
+  res.json(history)
+}
 
 async function getStocksHolding(req, res) {
   console.log('getStocksHolding controller hits')
@@ -107,6 +125,13 @@ async function deposit(req, res) {
     // round the balance up to two decimal digits
     user.balance = Number((user.balance + parseFloat(req.body.amount)).toFixed(2));
     user.save();
+    await History.create({
+      symbol: 'User Deposit',
+      type: 'stock',
+      category: 'deposit',
+      deposit: Number((parseFloat(req.body.amount)).toFixed(2)),
+      user
+    });
     res.json(user.balance);
   } catch (err) {
     res.status(400).json(err);

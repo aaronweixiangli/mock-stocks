@@ -72,8 +72,7 @@ console.log(Twelve_Data_API_Key);
                 await Order.findByIdAndDelete(order._id);
                 // Create notification for user that the order has expired
                 await Notification.create({
-                    text: `Your market order to ${buyOrSell === 'buy' ? 'buy' : 'sell'} ${shares ? `${shares} shares` : `$${dollars}`} of ${symbol} placed on 
-                    ${(new Date(order.createdAt)).toLocaleString("en-US", {
+                    text: `Your market order to ${buyOrSell === 'buy' ? 'buy' : 'sell'} ${shares ? `${shares} shares` : `$${dollars}`} of ${symbol} placed on ${(new Date(order.createdAt)).toLocaleString("en-US", {
                         timeZone: "America/Los_Angeles",
                         month: "short",
                         day: "numeric",
@@ -89,8 +88,7 @@ console.log(Twelve_Data_API_Key);
                 await Order.findByIdAndDelete(order._id);
                 // Create notification for user that the order has expired
                 await Notification.create({
-                    text: `Your market order to ${buyOrSell === 'buy' ? 'buy' : 'sell'} ${shares ? `${shares} shares` : `$${dollars}`} of ${symbol} placed on 
-                    ${(new Date(order.createdAt)).toLocaleString("en-US", {
+                    text: `Your market order to ${buyOrSell === 'buy' ? 'buy' : 'sell'} ${shares ? `${shares} shares` : `$${dollars}`} of ${symbol} placed on ${(new Date(order.createdAt)).toLocaleString("en-US", {
                         timeZone: "America/Los_Angeles",
                         month: "short",
                         day: "numeric",
@@ -355,8 +353,7 @@ console.log(Twelve_Data_API_Key);
                 await Order.findByIdAndDelete(order._id);
                 // Create notification for user that the order has expired
                 await Notification.create({
-                    text: `Your limit order to ${buyOrSell === 'buy' ? 'buy' : 'sell'} ${shares ? `${shares} shares` : `$${dollars}`} of ${symbol} at ${buyOrSell === 'buy' ? 'maximum' : 'minimum'} $${limitPrice} per share placed on 
-                    ${(new Date(order.createdAt)).toLocaleString("en-US", {
+                    text: `Your limit order to ${buyOrSell === 'buy' ? 'buy' : 'sell'} ${shares ? `${shares} shares` : `$${dollars}`} of ${symbol} at ${buyOrSell === 'buy' ? 'maximum' : 'minimum'} $${limitPrice} per share placed on ${(new Date(order.createdAt)).toLocaleString("en-US", {
                         timeZone: "America/Los_Angeles",
                         month: "short",
                         day: "numeric",

@@ -1,0 +1,131 @@
+.HistoryPage {
+    padding: 10vmin 0 10vmin 0;
+}
+
+.pending-order-container {
+    padding: 13vmin 75vmin 3vmin 45vmin;
+    margin-top: 3vmin;
+}
+
+.pending-order-container .order-all-container:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.pending {
+    font-size: 3vmin;
+    padding-bottom: 2vmin;
+    border-bottom: 0.01vmin solid rgba(255, 255, 255, 0.3);
+}
+
+.no-pending {
+    font-size: 2vmin;
+}
+
+.order-all-container {
+    border-bottom: 0.01vmin solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 2vmin;
+}
+
+.order-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 2vmin 2vmin 0 0.35vmin;
+}
+
+.order-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.order-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.order-type, .order-price {
+    font-size: 1.8vmin;
+}
+
+.order-date, .order-qty {
+    font-size: 1.5vmin;
+}
+
+.pending-order {
+    font-size: 2vmin;
+}
+
+.transaction-container {
+    padding: 0 75vmin 3vmin 45vmin;
+    margin-top: 3vmin;
+}
+
+.transaction-container .order-content {
+    padding: 2vmin 2vmin 2vmin 0.35vmin;
+    border-bottom: 0.01vmin solid rgba(255, 255, 255, 0.2);
+}
+
+.transaction-container .order-content:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.order-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.order-deposit {
+    color: rgb(4, 202, 4);
+    font-size: 1.8vmin;
+}
+
+.order-detail-container {
+    display: none;
+    flex-direction: column;
+    padding: 0.5vmin 1vmin 0 1vmin;
+    margin-top: 2vmin;
+    border-top: 0.01vmin solid rgba(255, 255, 255, 0.2);
+}
+
+.order-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.order-detail-card {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2vmin;
+}
+
+.green {
+    color: rgb(4, 202, 4);
+}
+
+.order-detail-title {
+    font-weight: bold;
+    font-size: 1.6vmin;
+}
+
+.order-detail-content {
+    margin-top: 0.5vmin;
+    font-size: 1.5vmin;
+}
+
+.cancel-order {
+    width: 20%;
+    font-size: 1.6vmin;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    border: none;
+    background-color: transparent;
+}
+
+.cancel-order:hover {
+    color: coral;
+}
+

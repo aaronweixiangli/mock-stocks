@@ -3,11 +3,22 @@
 }
 
 .account-sub-nav-container {
-    padding: 0vmin 65vmin 0 45vmin;
+    padding: 3vmin 65vmin 0 45vmin;
+    position: fixed;
+    top: 7vmin;
+    background-color: black;
+}
+
+.account-line {
+    border-bottom: 0.01vmin solid rgba(255, 255, 255, 0.2);
+    position: fixed;
+    width: 100%;
+    margin-top: 13.4vmin;
 }
 
 .user-name {
     font-size: 3.5vmin;
+    margin-top: 1vmin;
 }
 
 .account-sub-nav {
@@ -33,12 +44,8 @@
     border-bottom: 0.5vmin solid green;
 }
 
-.account-line {
-    border-bottom: 0.01vmin solid rgba(255, 255, 255, 0.2);
-}
-
 .investing-container {
-    padding: 0vmin 65vmin 3vmin 45vmin;
+    padding: 14vmin 65vmin 3vmin 45vmin;
     margin-top: 3vmin;
 }
 
@@ -129,14 +136,14 @@
 
 .portfolio-doughnut-chart {
     position: fixed;
-    top: 30vmin;
+    top: 27vmin;
     right: 25vmin;
     height: 30vmin;
 }
 
 .stocks-doughnut-chart {
     position: fixed;
-    bottom: 5vmin;
+    bottom: 7vmin;
     right: 25vmin;
     height: 30vmin;
 }

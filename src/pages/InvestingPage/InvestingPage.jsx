@@ -140,7 +140,7 @@ export default function InvestingPage( { user, balance, setBalance, balanceOnHol
             <section className='investing-container'>
                 <div className='investing-portfolio'>
                     <div className='total-portfolio-value'>Total Portfolio Value</div>
-                    <div className='total-portfolio-value-amount bold'>${(Number(stocksHolding.brokerageHolding) + Number(balance) + Number(balanceOnHold)).toFixed(2)}</div>
+                    <div className='total-portfolio-value-amount bold'>{stocksHolding ? `$${(Number(stocksHolding.brokerageHolding) + Number(balance) + Number(balanceOnHold)).toFixed(2)}` : 'loading...'}</div>
                     <ul className='total-portfolio-categories'>
                         <li className='total-portfolio-category'>
                             <div className='category-title'>Stocks & Options</div>
