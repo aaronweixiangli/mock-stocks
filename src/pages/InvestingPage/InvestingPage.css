@@ -127,4 +127,17 @@
 	height: 1.5vmin;
 }
 
+.portfolio-doughnut-chart {
+    position: fixed;
+    top: 30vmin;
+    right: 25vmin;
+    height: 30vmin;
+}
+
+.stocks-doughnut-chart {
+    position: fixed;
+    bottom: 5vmin;
+    right: 25vmin;
+    height: 30vmin;
+}
 

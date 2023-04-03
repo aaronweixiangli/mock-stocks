@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
 import "./InvestingPage.css";
 import * as usersAPI from "../../utilities/users-api";
 
 export default function InvestingPage( { user, balance, setBalance, balanceOnHold, setBalanceOnHold  } ) {
     const [stocksHolding, setStocksHolding] = useState(0);
     const navigate = useNavigate();
+    ChartJS.register(ArcElement, Tooltip, Legend);
     
     useEffect(() => {
         if (!user) return;
@@ -23,7 +26,7 @@ export default function InvestingPage( { user, balance, setBalance, balanceOnHol
         }
         getUserInfo(stocksHolding);
         }, [user])
-    
+
     // if stocksHolding returns a string, there is network error due to API requests
     if (typeof(stocksHolding) === 'string') {
         return (
@@ -74,6 +77,35 @@ export default function InvestingPage( { user, balance, setBalance, balanceOnHol
                 <td>${Number(s.qty * stocksHolding.currentMarketPrices[s.symbol]).toFixed(2)}</td>
             </tr>
         );
+    }
+
+    let portfolioData = null;
+    let stocksData = null;
+    if (typeof(stocksHolding) !== 'string' && Array.isArray(stocksHolding.stockOwn)) {
+        portfolioData = {
+            labels: ['Stocks & Options', 'Brokerage Cash'],
+            datasets: [
+                {
+                    label: 'value',
+                    data: [Number((stocksHolding.brokerageHolding).toFixed(2)), Number((Number(balance) + Number(balanceOnHold)).toFixed(2))],
+                    backgroundColor: [
+                        'coral',
+                        '#8BC34A',
+                    ],
+                    borderWidth: 1,
+                },
+            ],
+        };
+        stocksData = {
+            labels: stocksHolding.stockOwn.map((s) => s.symbol),
+            datasets: [
+                {
+                    label: 'equity',
+                    data: stocksHolding.stockOwn.map((s) => Number(s.qty * stocksHolding.currentMarketPrices[s.symbol]).toFixed(2)),
+                    borderWidth: 1
+                },
+            ],
+        };
     }
 
     return (
@@ -143,7 +175,8 @@ export default function InvestingPage( { user, balance, setBalance, balanceOnHol
                     </tbody>
                 </table>
             </section>
-
+            {portfolioData ? <div className="portfolio-doughnut-chart"><Doughnut data={portfolioData}/></div>: null}
+            {stocksData ? <div className="stocks-doughnut-chart"><Doughnut data={stocksData}/></div>: null}
         </main>
     );
 }
