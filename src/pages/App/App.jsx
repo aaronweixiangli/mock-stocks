@@ -15,6 +15,7 @@ import RecurringPage from '../RecurringPage/RecurringPage';
 import ReportsPage from '../ReportsPage/ReportsPage';
 import SettingsPage from '../SettingsPage/SettingsPage';
 import HelpPage from '../HelpPage/HelpPage';
+import NotificationPage from '../NotificationPage/NotificationPage';
 
 export default function App() {
   const [user, setUser] = useState(getUser());
@@ -53,6 +54,7 @@ export default function App() {
               <Route path="/account/reports-statements" element={<ReportsPage user={user}/>} />
               <Route path="/account/settings" element={<SettingsPage user={user}/>} />
               <Route path="/account/help" element={<HelpPage user={user}/>} />
+              <Route path="/account/notification" element={<NotificationPage user={user}/>} />
             </Routes>
           </>
           :

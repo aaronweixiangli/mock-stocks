@@ -35,5 +35,9 @@ router.get('/stock_watch/:symbol', ensureLoggedIn, usersCtrl.getStockWatch);
 router.get('/toggle_stock_watch/:symbol', ensureLoggedIn, usersCtrl.toggleStockWatch);
 // GET /api/users/stock_watch_list
 router.get('/stock_watch_list', ensureLoggedIn, usersCtrl.getStockWatchList);
+// GET /api/users/notification
+router.get('/notification', ensureLoggedIn, usersCtrl.getNotification);
+// GET /api/users/notification/:id
+router.get('/notification/:id', ensureLoggedIn, usersCtrl.getShowMessage);
 
 module.exports = router;

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function HelpPage( {user} ) {
   return (
-    <main className="HelpPage" style={{padding: "10vmin 0 10vmin 0;"}}>
+    <main className="HelpPage">
       <section className="account-sub-nav-container">
         <h2 className="user-name">{user.name}</h2>
         <div className="account-sub-nav">

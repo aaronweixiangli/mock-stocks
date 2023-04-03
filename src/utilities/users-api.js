@@ -64,3 +64,11 @@ export async function toggleStockWatch(symbol) {
 export async function getStockWatchList() {
   return sendRequest(`${BASE_URL}/stock_watch_list`);
 }
+
+export async function getNotification() {
+  return sendRequest(`${BASE_URL}/notification`);
+}
+
+export async function getShowMessage(id) {
+  return sendRequest(`${BASE_URL}/notification/${id}`);
+}

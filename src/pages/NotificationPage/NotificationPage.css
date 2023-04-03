@@ -1,0 +1,128 @@
+.NotificationPage {
+    padding: 7vmin 55vmin 0 35vmin;
+}
+
+.NotificationPage h1 {
+    margin-bottom: 0;
+    margin-top: 3.5vmin;
+    padding-bottom: 2.5vmin;
+}
+
+.message-container {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.message-container-left::-webkit-scrollbar { 
+    display: none !important; 
+}
+
+.message-container-left {
+    display: flex;
+    flex-direction: column;
+    height: 79vh;
+    overflow-y: scroll;
+    /* hide scrollbar */
+    scrollbar-width: none; /* For modern browsers */
+    -ms-overflow-style: none;  /* IE and Edge */
+    border-right: 0.1vmin solid rgba(255, 255, 255, 0.4);
+}
+
+.message-container-left .active {
+    border-left: 0.3vmin solid green;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.message-card {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    border-bottom: 0.1vmin solid rgba(255, 255, 255, 0.3);
+    padding: 2vmin 3vmin;
+}
+
+.message-card:hover {
+    cursor: default;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.message-symbol {
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    height: 7vmin;
+    width: 7vmin;
+    font-size: 2vmin;
+    padding: 1vmin;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.message-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.message-card-time {
+    font-size: 1.8vmin;
+    display: flex;
+    justify-content: space-between;
+}
+
+.unread-sign-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.unread-sign {
+    background-color: red;
+    height: 1vmin;
+    width: 1vmin;
+    border-radius: 50%;
+}
+
+.message-short div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis !important;
+    width: 30vmin;
+    font-size: 1.8vmin;
+    margin-top: 2vmin;
+}
+
+.message-container-right {
+    display: flex;
+    flex-direction: column;
+}
+
+.message-detail-time {
+    display: flex;
+    justify-content: center;
+    margin-top: 6vmin;
+}
+
+.message-detail-time div {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50vmin;
+    font-size: 2.8vmin;
+    padding: 1vmin 2vmin;
+}
+
+.message-detail {
+    margin-top: 6vmin;
+    display: flex;
+    justify-content: center;
+}
+
+.message-detail div {
+    width: 70%;
+    font-size: 3vmin;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5vmin;
+    padding: 2.5vmin 4.5vmin;
+    letter-spacing: 0.07vmin;
+    line-height: 5vmin;
+}
+

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function ReportsPage( {user} ) {
   return (
-    <main className="ReportsPage" style={{padding: "10vmin 0 10vmin 0;"}}>
+    <main className="ReportsPage">
       <section className="account-sub-nav-container">
         <h2 className="user-name">{user.name}</h2>
         <div className="account-sub-nav">

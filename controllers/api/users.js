@@ -23,8 +23,27 @@ module.exports = {
   cancelOrder,
   getStockWatch,
   toggleStockWatch,
-  getStockWatchList
+  getStockWatchList,
+  getNotification,
+  getShowMessage
 };
+
+async function getShowMessage(req, res) {
+  console.log('getShowMessage controller hits')
+  // get user's notification with specific id
+  const message = await Notification.findOne({_id: req.params.id});
+  // set read to be true
+  message.read = true;
+  await message.save();
+  res.json(message);
+}
+
+async function getNotification(req, res) {
+  console.log('getNotification controller hits')
+  // get user's notication messages
+  const notification = await Notification.find({user: req.user._id}).sort({createdAt: -1});
+  res.json(notification);
+}
 
 async function getStockWatchList(req, res) {
   console.log('getStockWatchList controller hits')
@@ -187,6 +206,11 @@ async function deposit(req, res) {
       deposit: Number((parseFloat(req.body.amount)).toFixed(2)),
       user
     });
+    await Notification.create({
+      text: `Congratulations! Your deposit of ${req.body.amount} has been initiated. The funds are expected to be reflected in your MockStocks brokerage account by the end of today.`,
+      read: false,
+      user,
+    })
     res.json(user.balance);
   } catch (err) {
     res.status(400).json(err);

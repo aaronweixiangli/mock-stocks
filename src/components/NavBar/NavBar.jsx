@@ -52,7 +52,7 @@ export default function NavBar({ user, setUser }) {
       <div className="nav-right">
         <Link to="/">About</Link>
         <Link to="/">Investing</Link>
-        <Link to="/">Notifications</Link>
+        <Link to="/account/notification">Notifications</Link>
         <div className="dropdown">
           <button className="dropbtn" onClick={dropdownClick}>Account</button>
           <div id="dropdown" className="dropdown-content">
