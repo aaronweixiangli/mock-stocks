@@ -36,3 +36,7 @@ export async function getSharesOnHold(symbol) {
 export async function getBrokerageHolding() {
   return sendRequest(`${BASE_URL}/brokerage_holding`);
 }
+
+export async function getStocksHolding() {
+  return sendRequest(`${BASE_URL}/stocks_holding`);
+}

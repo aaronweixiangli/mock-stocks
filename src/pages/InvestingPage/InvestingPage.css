@@ -1,0 +1,130 @@
+.InvestingPage {
+    padding: 10vmin 0 10vmin 0;
+}
+
+.account-sub-nav-container {
+    padding: 0vmin 65vmin 0 45vmin;
+}
+
+.user-name {
+    font-size: 3.5vmin;
+}
+
+.account-sub-nav {
+    display: flex;
+    gap: 4vmin;
+}
+
+.sub-nav-link-container {
+    padding: 0 0.5vmin 2vmin 0.5vmin;
+}
+
+.sub-nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 2vmin;
+}
+
+.sub-nav-link:hover {
+    color: rgb(4, 209, 4);
+}
+
+.account-sub-nav .active {
+    border-bottom: 0.5vmin solid green;
+}
+
+.account-line {
+    border-bottom: 0.01vmin solid rgba(255, 255, 255, 0.2);
+}
+
+.investing-container {
+    padding: 0vmin 65vmin 3vmin 45vmin;
+    margin-top: 3vmin;
+}
+
+.total-portfolio-value {
+    font-size: 1.8vmin;
+}
+
+.total-portfolio-value-amount {
+    margin-top: 1vmin;
+    margin-bottom: 3.5vmin;
+    font-size: 3.5vmin;
+}
+
+.total-portfolio-categories {
+    padding: 0;
+}
+
+.total-portfolio-category {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 2.5vmin 8vmin 2.5vmin 1vmin;
+    border-top: 0.01vmin solid rgba(255, 255, 255, 0.15);
+    border-bottom: 0.01vmin solid rgba(255, 255, 255, 0.15);
+    font-size: 1.8vmin;
+    border-collapse: collapse;
+}
+
+.total-portfolio-category:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.gray-color {
+    color: darkgray;
+    margin-right: 3vmin;
+}
+
+.investing-stocks-title {
+    font-size: 3vmin;
+    margin-top: 5vmin;
+    padding-bottom: 2vmin;
+    border-bottom: 0.01vmin solid rgba(255, 255, 255, 0.35);
+}
+
+.investing-stocks-table {
+    width: 100%;
+    font-size: 1.8vmin;
+    margin-top: 3vmin;
+    border-collapse: collapse;
+}
+
+.investing-stocks-table th {
+    padding: 0 0 2vmin 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.investing-stocks-table td {
+    padding: 2vmin;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+}
+
+.investing-stocks-body-container tr:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+
+.stock-total-return {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1vmin;
+}
+
+.return-indicator-up {
+    background-color: green;
+	clip-path: polygon(50% 0, 100% 100%, 0 100%);
+	width: 1.5vmin;
+	height: 1.5vmin;
+}
+
+.return-indicator-down {
+    background-color: red;
+	clip-path: polygon(0 0, 100% 0, 50% 100%);
+	width: 1.5vmin;
+	height: 1.5vmin;
+}
+
+

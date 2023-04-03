@@ -12,8 +12,35 @@ module.exports = {
   getBalanceOnHold,
   getSharesOwn,
   getSharesOnHold,
-  getBrokerageHolding
+  getBrokerageHolding,
+  getStocksHolding
 };
+
+async function getStocksHolding(req, res) {
+  console.log('getStocksHolding controller hits')
+  // get the user's stocks holdings and stock's current market price
+  const stockOwn = await StockOwn.find({user: req.user._id});
+  let brokerageHolding = 0;
+  let currentMarketPrices = {};
+  try {
+    for (let stock of stockOwn) {
+      const symbol = stock.symbol;
+      const qty = stock.qty;
+      const stockDataAPI = await fetch(`https://api.twelvedata.com/time_series?apikey=${Twelve_Data_API_Key}&interval=1min&symbol=${symbol}&format=JSON&dp=2`).then(res => res.json());
+      const currentMarketPrice = Number(stockDataAPI.values[0].open);
+      currentMarketPrices[symbol] = currentMarketPrice;
+      brokerageHolding += qty * currentMarketPrice
+    }
+    res.json({
+      brokerageHolding: Number(brokerageHolding.toFixed(2)),
+      stockOwn,
+      currentMarketPrices,
+    });
+  } catch {
+    // API issue
+    res.json('Network Error. Try refreshing the page later.');
+  }
+}
 
 async function getBrokerageHolding(req, res) {
   console.log('getBrokerageHolding controller hits')
@@ -31,7 +58,7 @@ async function getBrokerageHolding(req, res) {
     res.json(Number(brokerageHolding.toFixed(2)));
   } catch {
     // API issue
-    res.json('Unable to retrieve brokerage holdings due to a network issue.');
+    res.json('Unable to retrieve brokerage holdings due to a network error.');
   }
 }
 

@@ -8,6 +8,7 @@ import HomePage from '../HomePage/HomePage';
 import NavBar from '../../components/NavBar/NavBar';
 import StockPage from '../StockPage/StockPage';
 import ProfilePage from '../ProfilePage/ProfilePage';
+import InvestingPage from '../InvestingPage/InvestingPage';
 
 export default function App() {
   const [user, setUser] = useState(getUser());
@@ -39,6 +40,7 @@ export default function App() {
               <Route path="/stocks/:symbol" element={<StockPage user={user} balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold} setBalanceOnHold={setBalanceOnHold}/>} />
               <Route path="/" element={<HomePage balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold}/>} />
               <Route path="/profile" element={<ProfilePage user={user} balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold} setBalanceOnHold={setBalanceOnHold}/>} />
+              <Route path="/account/investing" element={<InvestingPage user={user} balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold} setBalanceOnHold={setBalanceOnHold}/>} />
             </Routes>
           </>
           :

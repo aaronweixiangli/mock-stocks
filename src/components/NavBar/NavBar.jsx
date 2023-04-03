@@ -58,11 +58,13 @@ export default function NavBar({ user, setUser }) {
           <div id="dropdown" className="dropdown-content">
             <span>{user.name}</span>
             <Link to="/profile"><div><i className="material-icons">person</i>Profile</div></Link>
-            <Link to="/"><div><i className="material-icons">credit_card</i>Investing</div></Link>
-            <Link to="/"><div><i className="material-icons">copyright</i>Crypto</div></Link>
-            <Link to="/"><div><i className="material-icons">attach_money</i>Buy in</div></Link>
-            <Link to="/"><div><i className="material-icons">history</i>History</div></Link>
-            <Link to="/"><div><i className="material-icons">info</i>Help</div></Link>
+            <Link to="/account/investing"><div><i className="material-icons">credit_card</i>Investing</div></Link>
+            <Link to="/account/cryto"><div><i className="material-icons">copyright</i>Crypto</div></Link>
+            <Link to="/account/recurring"><div><i className="material-icons">event_repeat</i>Recurring</div></Link>
+            <Link to="/account/reports-statements"><div><i className="material-icons">description</i>Statements</div></Link>
+            <Link to="/account/history"><div><i className="material-icons">history</i>History</div></Link>
+            <Link to="/account/settings"><div><i className="material-icons">settings</i>Settings</div></Link>
+            <Link to="/account/help"><div><i className="material-icons">info</i>Help</div></Link>
             <Link to="" onClick={handleLogOut}><div><i className="material-icons">logout</i>Log Out</div></Link>
           </div>
         </div>
