@@ -1,4 +1,14 @@
-export default function WatchList() {
+import { useNavigate } from 'react-router-dom';
+
+export default function WatchList( {stockWatchList} ) {
+    const navigate = useNavigate();
+    let stocksWatch = null;
+    if (Array.isArray(stockWatchList)) {
+        stocksWatch = stockWatchList.map((s) => 
+        <li key={s._id} onClick={() => navigate(`/stocks/${s.symbol}`)}>{s.symbol}</li>
+        )
+    }
+
     return (
         <section className="watchlist">
             <ul>
@@ -6,63 +16,16 @@ export default function WatchList() {
                 <li className="stock-watchlist">Stocks</li>
                 <li>
                     <ul className="watchlist-content">
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
-                        <li>AAPL</li>
+                        {stocksWatch}
                     </ul>
                 </li>
                 <li className="crypto-watchlist">Crypto</li>
                 <li>
                     <ul className="watchlist-content">
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
-                        <li>Bitcoin</li>
+                        <li>BTC</li>
+                        <li>ETH</li>
+                        <li>SOL</li>
+                        <li>DOGE</li>
                     </ul>
                 </li>
             </ul>

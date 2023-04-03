@@ -33,5 +33,7 @@ router.delete('/cancel_order/:id', ensureLoggedIn, usersCtrl.cancelOrder);
 router.get('/stock_watch/:symbol', ensureLoggedIn, usersCtrl.getStockWatch);
 // GET /api/users/toggle_stock_watch/:symbol
 router.get('/toggle_stock_watch/:symbol', ensureLoggedIn, usersCtrl.toggleStockWatch);
+// GET /api/users/stock_watch_list
+router.get('/stock_watch_list', ensureLoggedIn, usersCtrl.getStockWatchList);
 
 module.exports = router;

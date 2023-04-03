@@ -60,3 +60,7 @@ export async function getStockWatch(symbol) {
 export async function toggleStockWatch(symbol) {
   return sendRequest(`${BASE_URL}/toggle_stock_watch/${symbol}`);
 }
+
+export async function getStockWatchList() {
+  return sendRequest(`${BASE_URL}/stock_watch_list`);
+}

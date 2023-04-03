@@ -45,15 +45,19 @@
     font-size: 3vmin;
 }
 
-.stock-watchlist {
-    border-bottom: 0.1vmin solid white;
-    font-size: 2vmin;
-}
-
 .crypto-watchlist, .stock-watchlist {
     border-bottom: 0.1vmin solid rgba(255, 255, 255, 0.2);
     border-top: 0.1vmin solid rgba(255, 255, 255, 0.8);
     font-size: 2.5vmin;
+}
+
+.watchlist-content li {
+    font-size: 1.8vmin;
+    cursor: default;
+}
+
+.watchlist-content li:hover {
+    background-color: rgba(255, 255, 255, 0.15);
 }
 
 /* End WatchList Component */

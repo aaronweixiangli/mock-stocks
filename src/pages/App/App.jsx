@@ -39,7 +39,7 @@ export default function App() {
             <Routes>
               {/* Route components in here */}
               <Route path="/stocks/:symbol" element={<StockPage user={user} balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold} setBalanceOnHold={setBalanceOnHold}/>} />
-              <Route path="/" element={<HomePage balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold}/>} />
+              <Route path="/" element={<HomePage user={user} balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold}/>} />
               <Route path="/profile" element={<ProfilePage user={user} balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold} setBalanceOnHold={setBalanceOnHold}/>} />
               <Route path="/account/investing" element={<InvestingPage user={user} balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold} setBalanceOnHold={setBalanceOnHold}/>} />
               <Route path="/account/history" element={<HistoryPage user={user}/>} />

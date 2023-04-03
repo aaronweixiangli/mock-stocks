@@ -22,8 +22,16 @@ module.exports = {
   getPendingOrder,
   cancelOrder,
   getStockWatch,
-  toggleStockWatch
+  toggleStockWatch,
+  getStockWatchList
 };
+
+async function getStockWatchList(req, res) {
+  console.log('getStockWatchList controller hits')
+  // get user's stock watch list
+  const stockWatchList = await StockWatch.find({user: req.user._id});
+  res.json(stockWatchList);
+}
 
 async function toggleStockWatch(req, res) {
   console.log('toggleStockWatch controller hits')
