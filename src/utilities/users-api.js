@@ -48,3 +48,7 @@ export async function getHistory() {
 export async function getPendingOrder() {
   return sendRequest(`${BASE_URL}/pending_order`);
 }
+
+export async function cancelOrder(id) {
+  return sendRequest(`${BASE_URL}/cancel_order/${id}`, 'DELETE');
+}

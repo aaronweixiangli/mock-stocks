@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import * as usersAPI from "../../utilities/users-api";
 import "./HistoryPage.css";
 
@@ -34,10 +34,16 @@ export default function HistoryPage({ user }) {
         }
     }
 
+    async function handleCancelOrder(id) {
+        const updatedPendingOrder = await usersAPI.cancelOrder(id);
+        setPendingOrder(updatedPendingOrder);
+        console.log('updatedPendingOrder', updatedPendingOrder);
+    }
+
     let pending = null;
     if (pendingOrder && Array.isArray(pendingOrder)) {
-        pending = pendingOrder.map((order, idx) => 
-            <section className="order-all-container" onClick={toggleOrderDetails}>
+        pending = pendingOrder.map((order) => 
+            <section className="order-all-container" onClick={toggleOrderDetails} key={order._id}>
                 <div className="order-content">
                     <div className="order-left">
                         <div className="order-type bold">{order.symbol} {order.orderType === 'market order' ? 'Market' : 'Limit'} {order.buyOrSell === 'buy' ? 'Buy' : 'Sell'}</div>
@@ -106,7 +112,7 @@ export default function HistoryPage({ user }) {
                         </>
                         }
                     </div>
-                    <button className="cancel-order green">Cancel Order</button>
+                    <button className="cancel-order green" onClick={() => handleCancelOrder(order._id)}>Cancel Order</button>
                 </div>
             </section>
         )
@@ -115,8 +121,8 @@ export default function HistoryPage({ user }) {
 
     let transaction = null;
     if (history && Array.isArray(history)) {
-        transaction = history.map((h, idx) => 
-            <div className="order-content">
+        transaction = history.map((h) => 
+            <div className="order-content" key={h._id}>
                 <div className="order-left">
                     <div className="order-type bold">{h.category === 'buy' ? `${h.symbol} ${h.orderType === 'market order' ? 'Market' : 'Limit'} Buy` : h.category === 'sell' ? `${h.symbol} ${h.orderType === 'market order' ? 'Market' : 'Limit'} Sell` : 'Deposit to brokerage account'}</div>
                     <div className="order-date">{(new Date(h.createdAt)).toLocaleString("en-US", {

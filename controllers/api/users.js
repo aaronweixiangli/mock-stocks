@@ -4,6 +4,7 @@ const User = require('../../models/user');
 const StockOwn = require('../../models/stockOwn');
 const History = require('../../models/history');
 const Order = require('../../models/order');
+const Notification = require('../../models/notification');
 const Twelve_Data_API_Key = process.env.Twelve_Data_API_Key;
 
 module.exports = {
@@ -17,21 +18,39 @@ module.exports = {
   getBrokerageHolding,
   getStocksHolding,
   getHistory,
-  getPendingOrder
+  getPendingOrder,
+  cancelOrder
 };
+
+async function cancelOrder(req, res) {
+  console.log('cancelOrder controller hits')
+  // find the pending order with this id
+  const deletedOrder = await Order.findOne({_id: req.params.id, user: req.user._id, status: 'active'});
+  // create notification for user
+  await Notification.create({
+    text: `You have successfully canceled your ${deletedOrder.orderType} to ${deletedOrder.buyOrSell} ${deletedOrder.orderType === 'market order' ? 
+    (deletedOrder.sharesOrDollars === 'shares' ? `${deletedOrder.shares} shares of ${deletedOrder.symbol}` : `$${deletedOrder.dollars} of ${deletedOrder.symbol}`) 
+    : `${deletedOrder.shares} shares of ${deletedOrder.symbol} at ${deletedOrder.buyOrSell === 'buy' ? 'maximum' : 'minimum'} $${deletedOrder.limitPrice}.`}`,
+    read: false,
+    user: req.user._id
+  })
+  await deletedOrder.deleteOne();
+  const updatedPendingOrder = await Order.find({user: req.user._id, status: 'active'}).sort({createdAt: -1});
+  res.json(updatedPendingOrder);
+}
 
 async function getPendingOrder(req, res) {
   console.log('getPendingOrder controller hits')
   // get the user's pending orders and sort by created date in descending order
   const pendingOrder = await Order.find({user: req.user._id, status: 'active'}).sort({createdAt: -1});
-  res.json(pendingOrder)
+  res.json(pendingOrder);
 }
 
 async function getHistory(req, res) {
   console.log('getHistory controller hits')
   // get the user's transaction history and deposit history and sort by created date in descending order
   const history = await History.find({user: req.user._id}).sort({createdAt: -1});
-  res.json(history)
+  res.json(history);
 }
 
 async function getStocksHolding(req, res) {

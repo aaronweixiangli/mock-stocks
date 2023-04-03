@@ -27,5 +27,7 @@ router.get('/stocks_holding', ensureLoggedIn, usersCtrl.getStocksHolding);
 router.get('/history', ensureLoggedIn, usersCtrl.getHistory);
 // GET /api/users/pending_order
 router.get('/pending_order', ensureLoggedIn, usersCtrl.getPendingOrder);
+// DELETE /api/users/cancel_order/:id
+router.delete('/cancel_order/:id', ensureLoggedIn, usersCtrl.cancelOrder);
 
 module.exports = router;
