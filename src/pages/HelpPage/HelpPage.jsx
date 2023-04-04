@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function HelpPage( {user} ) {
+export default function HelpPage({ user }) {
   return (
     <main className="HelpPage">
       <section className="account-sub-nav-container">
@@ -44,7 +44,10 @@ export default function HelpPage( {user} ) {
         </div>
       </section>
       <div className="account-line"></div>
-      <h3 style={{padding: "18vmin 50vmin 0 42vmin", fontSize: "2.4vmin"}}>Sorry, this feature is not available at the moment. We will have it available in the future.</h3>
+      <h3 style={{ padding: "18vmin 50vmin 0 42vmin", fontSize: "2.4vmin" }}>
+        Sorry, this feature is not available at the moment. We will have it
+        available in the future.
+      </h3>
     </main>
   );
 }

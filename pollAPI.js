@@ -28,7 +28,6 @@ setInterval(function () {
   worker.on("online", function () {
     console.log("Worker thread has started");
   });
-
 }, frequencyInMinutes * 60 * 1000);
 
 module.exports = {

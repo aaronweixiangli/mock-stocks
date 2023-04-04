@@ -1,22 +1,22 @@
-import { useState, useEffect, useRef } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { getUser } from '../../utilities/users-service';
+import { useState, useEffect, useRef } from "react";
+import { Routes, Route } from "react-router-dom";
+import { getUser } from "../../utilities/users-service";
 import * as usersAPI from "../../utilities/users-api";
-import './App.css';
-import AuthPage from '../AuthPage/AuthPage';
-import HomePage from '../HomePage/HomePage';
-import NavBar from '../../components/NavBar/NavBar';
-import StockPage from '../StockPage/StockPage';
-import ProfilePage from '../ProfilePage/ProfilePage';
-import InvestingPage from '../InvestingPage/InvestingPage';
-import HistoryPage from '../HistoryPage/HistoryPage';
-import CryptoPage from '../CryptoPage/CryptoPage';
-import RecurringPage from '../RecurringPage/RecurringPage';
-import ReportsPage from '../ReportsPage/ReportsPage';
-import SettingsPage from '../SettingsPage/SettingsPage';
-import HelpPage from '../HelpPage/HelpPage';
-import NotificationPage from '../NotificationPage/NotificationPage';
-import AboutPage from '../AboutPage/AboutPage';
+import "./App.css";
+import AuthPage from "../AuthPage/AuthPage";
+import HomePage from "../HomePage/HomePage";
+import NavBar from "../../components/NavBar/NavBar";
+import StockPage from "../StockPage/StockPage";
+import ProfilePage from "../ProfilePage/ProfilePage";
+import InvestingPage from "../InvestingPage/InvestingPage";
+import HistoryPage from "../HistoryPage/HistoryPage";
+import CryptoPage from "../CryptoPage/CryptoPage";
+import RecurringPage from "../RecurringPage/RecurringPage";
+import ReportsPage from "../ReportsPage/ReportsPage";
+import SettingsPage from "../SettingsPage/SettingsPage";
+import HelpPage from "../HelpPage/HelpPage";
+import NotificationPage from "../NotificationPage/NotificationPage";
+import AboutPage from "../AboutPage/AboutPage";
 
 export default function App() {
   const [user, setUser] = useState(getUser());
@@ -36,14 +36,14 @@ export default function App() {
     }
     getUserBalance();
     checkUnReadNotification();
-  }, [user])
+  }, [user]);
 
   useEffect(() => {
-    timerRef.current = setInterval(function() {
+    timerRef.current = setInterval(function () {
       checkUnReadNotification();
     }, 5000);
     // clean up function
-    return function() {
+    return function () {
       clearInterval(timerRef.current);
     };
   }, []);
@@ -55,28 +55,91 @@ export default function App() {
 
   return (
     <main className="App">
-      { user ?
-          <>
-            <NavBar user={user} setUser={setUser} unreadExist={unreadExist}/>
-            <Routes>
-              {/* Route components in here */}
-              <Route path="/stocks/:symbol" element={<StockPage user={user} balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold} setBalanceOnHold={setBalanceOnHold}/>} />
-              <Route path="/" element={<HomePage user={user} balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold}/>} />
-              <Route path="/profile" element={<ProfilePage user={user} balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold} setBalanceOnHold={setBalanceOnHold}/>} />
-              <Route path="/account/investing" element={<InvestingPage user={user} balance={balance} setBalance={setBalance} balanceOnHold={balanceOnHold} setBalanceOnHold={setBalanceOnHold}/>} />
-              <Route path="/account/history" element={<HistoryPage user={user}/>} />
-              <Route path="/account/crypto" element={<CryptoPage user={user}/>} />
-              <Route path="/account/recurring" element={<RecurringPage user={user}/>} />
-              <Route path="/account/reports-statements" element={<ReportsPage user={user}/>} />
-              <Route path="/account/settings" element={<SettingsPage user={user}/>} />
-              <Route path="/account/help" element={<HelpPage user={user}/>} />
-              <Route path="/account/notification" element={<NotificationPage user={user} setUnreadExist={setUnreadExist}/>} />
-              <Route path="/about" element={<AboutPage/>} />
-            </Routes>
-          </>
-          :
-          <AuthPage setUser={setUser} />
-      }
+      {user ? (
+        <>
+          <NavBar user={user} setUser={setUser} unreadExist={unreadExist} />
+          <Routes>
+            {/* Route components in here */}
+            <Route
+              path="/stocks/:symbol"
+              element={
+                <StockPage
+                  user={user}
+                  balance={balance}
+                  setBalance={setBalance}
+                  balanceOnHold={balanceOnHold}
+                  setBalanceOnHold={setBalanceOnHold}
+                />
+              }
+            />
+            <Route
+              path="/"
+              element={
+                <HomePage
+                  user={user}
+                  balance={balance}
+                  setBalance={setBalance}
+                  balanceOnHold={balanceOnHold}
+                />
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProfilePage
+                  user={user}
+                  balance={balance}
+                  setBalance={setBalance}
+                  balanceOnHold={balanceOnHold}
+                  setBalanceOnHold={setBalanceOnHold}
+                />
+              }
+            />
+            <Route
+              path="/account/investing"
+              element={
+                <InvestingPage
+                  user={user}
+                  balance={balance}
+                  setBalance={setBalance}
+                  balanceOnHold={balanceOnHold}
+                  setBalanceOnHold={setBalanceOnHold}
+                />
+              }
+            />
+            <Route
+              path="/account/history"
+              element={<HistoryPage user={user} />}
+            />
+            <Route
+              path="/account/crypto"
+              element={<CryptoPage user={user} />}
+            />
+            <Route
+              path="/account/recurring"
+              element={<RecurringPage user={user} />}
+            />
+            <Route
+              path="/account/reports-statements"
+              element={<ReportsPage user={user} />}
+            />
+            <Route
+              path="/account/settings"
+              element={<SettingsPage user={user} />}
+            />
+            <Route path="/account/help" element={<HelpPage user={user} />} />
+            <Route
+              path="/account/notification"
+              element={
+                <NotificationPage user={user} setUnreadExist={setUnreadExist} />
+              }
+            />
+            <Route path="/about" element={<AboutPage />} />
+          </Routes>
+        </>
+      ) : (
+        <AuthPage setUser={setUser} />
+      )}
     </main>
   );
 }

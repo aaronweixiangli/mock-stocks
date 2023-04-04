@@ -18,7 +18,7 @@
 }
 
 .add-to-list:hover {
-    color:rgb(75, 192, 192, 1);
+    color: rgb(75, 192, 192, 1);
     cursor: pointer;
 }
 
@@ -34,6 +34,7 @@
 #chart-container p {
     font-size: 3.5vmin;
 }
+
 /* End StockChart Component */
 
 .stock-info {
@@ -45,7 +46,7 @@
     display: flex;
     gap: 3vmin;
     padding: 0.2vmin 3vmin;
-    border-bottom: 0.1vmin solid rgba(255,255,255,0.5);
+    border-bottom: 0.1vmin solid rgba(255, 255, 255, 0.5);
 }
 
 .chart-btn {
@@ -71,7 +72,7 @@
 
 .stock-overview-content span {
     margin-right: 0.5vmin;
-    color:rgb(75, 192, 192, 0.8);
+    color: rgb(75, 192, 192, 0.8);
 }
 
 .stock-overview-container {
@@ -103,7 +104,7 @@
 
 .stock-stats-content span {
     margin-bottom: 0.7vmin;
-    color:rgb(75, 192, 192, 0.8);
+    color: rgb(75, 192, 192, 0.8);
     font-size: 1.7vmin;
 }
 
@@ -161,11 +162,12 @@
     top: -2vmin;
     left: 200%;
 }
-  
+
 #right::before {
     top: 35%;
     left: -2%;
 }
+
 /*  End StockOverview Component */
 
 /* StockNews Component */
@@ -208,23 +210,26 @@
 }
 
 #order-type *:checked {
-    color: rgba(75, 192, 192, 1);;
+    color: rgba(75, 192, 192, 1);
+    ;
 }
 
 .order-title {
     font-size: 2vmin;
     display: flex;
     justify-content: space-around;
-    border-bottom: 0.1vmin solid rgba(255,255,255,0.5);
+    border-bottom: 0.1vmin solid rgba(255, 255, 255, 0.5);
 }
 
-.buy-order, .sell-order {
+.buy-order,
+.sell-order {
     padding-bottom: 3vmin;
     padding: 0 1.5vmin 3vmin 1.5vmin;
     cursor: default;
 }
 
-.buy-order:hover, .sell-order:hover {
+.buy-order:hover,
+.sell-order:hover {
     color: rgba(75, 192, 192, 1);
 }
 
@@ -233,19 +238,21 @@
     color: rgba(75, 192, 192, 1);
 }
 
-.order-detail-container, .order-detail-overview {
+.order-detail-container,
+.order-detail-overview {
     display: flex;
     flex-direction: column;
     gap: 2.3vmin;
 }
 
-.order-detail-container input, .order-detail-container select {
+.order-detail-container input,
+.order-detail-container select {
     height: 3.2vmin;
     width: 16vmin;
     background-color: black;
     color: white;
     font-size: 1.8vmin;
-    border: 0.05vmin solid rgba(255,255,255,0.8);
+    border: 0.05vmin solid rgba(255, 255, 255, 0.8);
     border-radius: 0.5vmin;
     padding: 0 0.5vmin
 }
@@ -256,7 +263,7 @@
 }
 
 .order-type-title {
-    color:rgba(75, 192, 192, 1);
+    color: rgba(75, 192, 192, 1);
 }
 
 .order-detail-right {
@@ -266,14 +273,15 @@
 }
 
 .order-detail-overview {
-    border-top: 0.1vmin solid rgba(255,255,255,0.5);
-    border-bottom: 0.1vmin solid rgba(255,255,255,0.5);
+    border-top: 0.1vmin solid rgba(255, 255, 255, 0.5);
+    border-bottom: 0.1vmin solid rgba(255, 255, 255, 0.5);
     padding-top: 2vmin;
     padding-bottom: 2vmin;
     margin-top: 1vmin;
 }
 
-.review-order-container, .order-last-row {
+.review-order-container,
+.order-last-row {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -314,7 +322,7 @@
 
 .review-title {
     padding-bottom: 1vmin;
-    border-bottom: 0.1vmin solid rgba(255,255,255,0.2);
+    border-bottom: 0.1vmin solid rgba(255, 255, 255, 0.2);
 }
 
 .review-content {

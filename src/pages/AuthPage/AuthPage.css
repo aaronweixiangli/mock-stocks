@@ -22,7 +22,9 @@ h3 {
     margin-top: 10vmin;
 }
 
-.auth-form-container, h3, .auth-switch-btn {
+.auth-form-container,
+h3,
+.auth-switch-btn {
     padding: 3vmin;
     margin-left: 3vmin;
 }

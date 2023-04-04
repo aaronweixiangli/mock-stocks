@@ -5,8 +5,8 @@
 /* WatchList Component */
 
 /* For Chrome and Safari */
-.watchlist::-webkit-scrollbar { 
-    display: none !important; 
+.watchlist::-webkit-scrollbar {
+    display: none !important;
 }
 
 .watchlist {
@@ -17,8 +17,10 @@
     width: 35vmin;
     overflow-y: scroll;
     /* hide scrollbar */
-    scrollbar-width: none; /* For modern browsers */
-    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;
+    /* For modern browsers */
+    -ms-overflow-style: none;
+    /* IE and Edge */
     box-shadow: 0px 0px 1vmin 0.5vmin rgba(255, 254, 254, 0.2);
     border: 0.1vmin solid white;
     display: flex;
@@ -45,7 +47,8 @@
     font-size: 3vmin;
 }
 
-.crypto-watchlist, .stock-watchlist {
+.crypto-watchlist,
+.stock-watchlist {
     border-bottom: 0.1vmin solid rgba(255, 255, 255, 0.2);
     border-top: 0.1vmin solid rgba(255, 255, 255, 0.8);
     font-size: 2.5vmin;
@@ -137,12 +140,12 @@ h1 {
     z-index: 2;
 }
 
-.modal > .deposit-form {
+.modal>.deposit-form {
     height: 52vmin;
     width: 50vmin;
     display: flex;
     flex-direction: column;
-    background-color:rgb(41, 40, 40);
+    background-color: rgb(41, 40, 40);
     padding: 4vmin;
     box-shadow: 0 0 3vmin 0.5vmin white;
     border-radius: 2vmin;
@@ -160,7 +163,8 @@ h1 {
     margin-top: 3vmin;
 }
 
-.deposit-form input, .deposit-form select {
+.deposit-form input,
+.deposit-form select {
     height: 4vmin;
     width: 28vmin;
     font-size: 2vmin;
@@ -221,7 +225,7 @@ h1 {
 
 .news-ticker span {
     color: white;
-    background-color:rgba(248, 246, 189, 0.5);
+    background-color: rgba(248, 246, 189, 0.5);
     height: 2.6vmin;
     padding: 0.2vmin 2.5vmin;
     border-radius: 50vmin;
@@ -231,12 +235,12 @@ h1 {
 }
 
 .news-ticker span:hover {
-    background-color:blanchedalmond;
+    background-color: blanchedalmond;
     color: black;
 }
 
 .topic {
-    background-color:rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.3);
     color: white;
     text-align: center;
     border-radius: 1vmin;
@@ -263,15 +267,17 @@ h1 {
     display: flex;
     overflow-x: scroll;
     scroll-behavior: smooth;
-    scrollbar-width: none; /* hide the scrollbar for modern browsers */
-    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;
+    /* hide the scrollbar for modern browsers */
+    -ms-overflow-style: none;
+    /* IE and Edge */
 }
 
 /* For Chrome and Safari */
-.cards-container::-webkit-scrollbar { 
-    display: none !important; 
+.cards-container::-webkit-scrollbar {
+    display: none !important;
 }
-  
+
 .card {
     flex: 0 0 22vmin;
     margin-right: 3vmin;
@@ -327,15 +333,16 @@ h1 {
 
 .card-scroll-left-btn:hover,
 .card-scroll-right-btn:hover {
-    background-color: #222121;;
+    background-color: #222121;
+    ;
 }
 
 .card-scroll-left-btn {
-  left: 22.5vmin;
+    left: 22.5vmin;
 }
 
 .card-scroll-right-btn {
-  right: 61.5vmin;
+    right: 61.5vmin;
 }
 
 .btn-move-down {

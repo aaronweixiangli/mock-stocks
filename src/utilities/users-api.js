@@ -1,19 +1,19 @@
 import sendRequest from "./send-request";
-const BASE_URL = '/api/users';
+const BASE_URL = "/api/users";
 
 export async function signUp(userData) {
-  return sendRequest(BASE_URL, 'POST', userData);
+  return sendRequest(BASE_URL, "POST", userData);
 }
 
 export async function login(credentials) {
-  return sendRequest(`${BASE_URL}/login`, 'POST', credentials);
+  return sendRequest(`${BASE_URL}/login`, "POST", credentials);
 }
 
-// when the payload is a float number, 
+// when the payload is a float number,
 // it cannot be directly stringified as JSON
 // Hence set payload to be an object
 export async function deposit(amount) {
-  return sendRequest(`${BASE_URL}/deposit`, 'PUT', { amount });
+  return sendRequest(`${BASE_URL}/deposit`, "PUT", { amount });
 }
 
 export async function getBalance() {
@@ -49,7 +49,7 @@ export async function getPendingOrder() {
 }
 
 export async function cancelOrder(id) {
-  return sendRequest(`${BASE_URL}/cancel_order/${id}`, 'DELETE');
+  return sendRequest(`${BASE_URL}/cancel_order/${id}`, "DELETE");
 }
 
 export async function getStockWatch(symbol) {

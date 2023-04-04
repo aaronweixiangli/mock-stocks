@@ -1,6 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import * as userService from '../../utilities/users-service';
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import * as userService from "../../utilities/users-service";
 
 export default function NavBar({ user, setUser, unreadExist }) {
   function handleLogOut() {
@@ -12,23 +12,23 @@ export default function NavBar({ user, setUser, unreadExist }) {
   }
 
   // if the clicked elemetn does not match dropbtn, remove show class
-  window.onclick = function(event) {
-    if (!event.target.matches('.dropbtn')) {
+  window.onclick = function (event) {
+    if (!event.target.matches(".dropbtn")) {
       var dropdown = document.getElementsByClassName("dropdown-content")[0];
-      if (dropdown.classList.contains('show')) {
-        dropdown.classList.remove('show');
+      if (dropdown.classList.contains("show")) {
+        dropdown.classList.remove("show");
       }
     }
-  }
+  };
 
-  const [symbol, setSymbol] = useState('');
+  const [symbol, setSymbol] = useState("");
   const navigate = useNavigate();
-  
+
   function handleSubmit(evt) {
     evt.preventDefault();
     if (!symbol) return;
     navigate(`/stocks/${symbol}`);
-    setSymbol('');
+    setSymbol("");
   }
 
   function handleChange(evt) {
@@ -45,27 +45,73 @@ export default function NavBar({ user, setUser, unreadExist }) {
       <div className="search-bar-container">
         <form className="search-bar" onSubmit={handleSubmit}>
           <i className="material-icons">search</i>
-          <input type="text" placeholder="symbol (example: AAPL)" name="symbol" value={symbol} onChange={handleChange}/>
-          <button type='submit'>Search</button>
+          <input
+            type="text"
+            placeholder="symbol (example: AAPL)"
+            name="symbol"
+            value={symbol}
+            onChange={handleChange}
+          />
+          <button type="submit">Search</button>
         </form>
       </div>
       <div className="nav-right">
         <Link to="/about">About</Link>
         <Link to="/">Investing</Link>
-        <Link to="/account/notification" className='notifications-link'>Notifications {unreadExist && <div className='unread-exist'></div>}</Link>
+        <Link to="/account/notification" className="notifications-link">
+          Notifications {unreadExist && <div className="unread-exist"></div>}
+        </Link>
         <div className="dropdown">
-          <button className="dropbtn" onClick={dropdownClick}>Account</button>
+          <button className="dropbtn" onClick={dropdownClick}>
+            Account
+          </button>
           <div id="dropdown" className="dropdown-content">
             <span>{user.name}</span>
-            <Link to="/profile"><div><i className="material-icons">person</i>Profile</div></Link>
-            <Link to="/account/investing"><div><i className="material-icons">credit_card</i>Investing</div></Link>
-            <Link to="/account/crypto"><div><i className="material-icons">copyright</i>Crypto</div></Link>
-            <Link to="/account/recurring"><div><i className="material-icons">event_repeat</i>Recurring</div></Link>
-            <Link to="/account/reports-statements"><div><i className="material-icons">description</i>Statements</div></Link>
-            <Link to="/account/history"><div><i className="material-icons">history</i>History</div></Link>
-            <Link to="/account/settings"><div><i className="material-icons">settings</i>Settings</div></Link>
-            <Link to="/account/help"><div><i className="material-icons">info</i>Help</div></Link>
-            <Link to="" onClick={handleLogOut}><div><i className="material-icons">logout</i>Log Out</div></Link>
+            <Link to="/profile">
+              <div>
+                <i className="material-icons">person</i>Profile
+              </div>
+            </Link>
+            <Link to="/account/investing">
+              <div>
+                <i className="material-icons">credit_card</i>Investing
+              </div>
+            </Link>
+            <Link to="/account/crypto">
+              <div>
+                <i className="material-icons">copyright</i>Crypto
+              </div>
+            </Link>
+            <Link to="/account/recurring">
+              <div>
+                <i className="material-icons">event_repeat</i>Recurring
+              </div>
+            </Link>
+            <Link to="/account/reports-statements">
+              <div>
+                <i className="material-icons">description</i>Statements
+              </div>
+            </Link>
+            <Link to="/account/history">
+              <div>
+                <i className="material-icons">history</i>History
+              </div>
+            </Link>
+            <Link to="/account/settings">
+              <div>
+                <i className="material-icons">settings</i>Settings
+              </div>
+            </Link>
+            <Link to="/account/help">
+              <div>
+                <i className="material-icons">info</i>Help
+              </div>
+            </Link>
+            <Link to="" onClick={handleLogOut}>
+              <div>
+                <i className="material-icons">logout</i>Log Out
+              </div>
+            </Link>
           </div>
         </div>
       </div>

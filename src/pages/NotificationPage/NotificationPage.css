@@ -15,8 +15,8 @@
     border-collapse: collapse;
 }
 
-.message-container-left::-webkit-scrollbar { 
-    display: none !important; 
+.message-container-left::-webkit-scrollbar {
+    display: none !important;
 }
 
 .message-container-left {
@@ -25,8 +25,10 @@
     height: 79vh;
     overflow-y: scroll;
     /* hide scrollbar */
-    scrollbar-width: none; /* For modern browsers */
-    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;
+    /* For modern browsers */
+    -ms-overflow-style: none;
+    /* IE and Edge */
     border-right: 0.1vmin solid rgba(255, 255, 255, 0.4);
 }
 
@@ -125,4 +127,3 @@
     letter-spacing: 0.07vmin;
     line-height: 5vmin;
 }
-

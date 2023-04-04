@@ -4,7 +4,9 @@ body {
   padding: 0;
 }
 
-.main-nav, .search-bar-container, .search-bar {
+.main-nav,
+.search-bar-container,
+.search-bar {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -118,7 +120,8 @@ a div {
   gap: 5vmin;
 }
 
-.nav-right > a:hover, .dropbtn:hover {
+.nav-right>a:hover,
+.dropbtn:hover {
   text-decoration: underline;
 }
 

@@ -46,11 +46,13 @@
     align-items: center;
 }
 
-.HistoryPage .order-type, .order-price {
+.HistoryPage .order-type,
+.order-price {
     font-size: 1.8vmin;
 }
 
-.HistoryPage .order-date, .order-qty {
+.HistoryPage .order-date,
+.order-qty {
     font-size: 1.5vmin;
 }
 
@@ -130,4 +132,3 @@
 .HistoryPage .cancel-order:hover {
     color: coral;
 }
-
