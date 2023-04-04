@@ -103,7 +103,7 @@ async function cancelOrder(req, res) {
     user: req.user._id,
     status: "active",
   });
-  if ((deletedOrder.orderType = "limit order")) {
+  if ((deletedOrder.orderType === "limit order")) {
     // if it's a limit buy order, it has a hold on the estimated cost of the order, which is "orderDollarsOnHold".
     // Hence before we delete the order, we need to update user's balanceOnHold (for pending orders) and balance (buying power)
     const user = await User.findById(deletedOrder.user);
