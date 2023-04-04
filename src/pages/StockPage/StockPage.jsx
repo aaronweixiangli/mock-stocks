@@ -38,8 +38,13 @@ export default function StockPage({
             dataStartDate,
             dataInterval
           );
+          console.log(data)
           setStockData(data);
-          setError(false);
+          if (data.status === "error") {
+            setError(true);
+          } else {
+            setError(false);
+          }
         } catch {
           setError(true);
         }
@@ -290,7 +295,7 @@ export default function StockPage({
     setStockWatch(updatedStockWatchStatus);
   }
 
-  if (error)
+  if (error) {
     return (
       <main className="StockPage">
         <h1>{symbol}</h1>
@@ -310,6 +315,7 @@ export default function StockPage({
         </h2>
       </main>
     );
+  }
   return (
     <main className="StockPage">
       <h1 className="stockpage-symbol-name">
@@ -321,7 +327,7 @@ export default function StockPage({
           {stockWatch ? "Remove from list" : "Add to list"}
         </button>{" "}
       </h1>
-      {stockData ? (
+      {stockData && Array.isArray(stockData.values) ? (
         <>
           <div className="stock-info">
             <span>Type: {stockData.meta.type}</span>
