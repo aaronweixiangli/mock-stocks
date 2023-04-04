@@ -145,7 +145,7 @@ const Twelve_Data_API_Key = process.env.Twelve_Data_API_Key;
             await StockOwn.create({
               symbol,
               qty: shares,
-              avgCost: cost / shares,
+              avgCost: Number(currentMarketPrice.toFixed(2)),
               user: user._id,
             });
             await History.create({
@@ -396,16 +396,25 @@ const Twelve_Data_API_Key = process.env.Twelve_Data_API_Key;
         balance + orderDollarsOnHold >=
           Number((shares * currentMarketPrice).toFixed(2))
       ) {
-        // New total cost = (current average cost per share * current number of shares) + (number of new shares * purchase price per share)
-        const newTotalCost =
-          stockOwn.avgCost * stockOwn.qty + shares * currentMarketPrice;
-        // New total number of shares = current number of shares + number of new shares
-        const newQuantity = Number((stockOwn.qty + shares).toFixed(5));
-        // New average cost per share = New total cost / New total number of shares
-        const newAvgCost = newTotalCost / newQuantity;
-        stockOwn.qty = newQuantity;
-        stockOwn.avgCost = Number(newAvgCost.toFixed(2));
-        await stockOwn.save();
+        if (stockOwn) {
+          // New total cost = (current average cost per share * current number of shares) + (number of new shares * purchase price per share)
+          const newTotalCost =
+            stockOwn.avgCost * stockOwn.qty + shares * currentMarketPrice;
+          // New total number of shares = current number of shares + number of new shares
+          const newQuantity = Number((stockOwn.qty + shares).toFixed(5));
+          // New average cost per share = New total cost / New total number of shares
+          const newAvgCost = newTotalCost / newQuantity;
+          stockOwn.qty = newQuantity;
+          stockOwn.avgCost = Number(newAvgCost.toFixed(2));
+          await stockOwn.save();
+        } else {
+          await StockOwn.create({
+            symbol,
+            qty: shares,
+            avgCost: Number(currentMarketPrice.toFixed(2)),
+            user: user._id,
+          });
+        }
         // create history instance
         await History.create({
           symbol,

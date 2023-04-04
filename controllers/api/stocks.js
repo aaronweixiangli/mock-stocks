@@ -82,7 +82,7 @@ async function placeMarketOrder(req, res) {
             // New average cost per share = New total cost / New total number of shares
             const newAvgCost = newTotalCost / newQuantity;
             stockOwn.qty = newQuantity;
-            stockOwn.avgCost = newAvgCost;
+            stockOwn.avgCost = Number(newAvgCost.toFixed(2));
             await stockOwn.save();
             // create history instance
             await History.create({
@@ -94,7 +94,7 @@ async function placeMarketOrder(req, res) {
               user: user._id,
             });
             await Notification.create({
-              text: `Your market order (buy in shares) to buy ${shares} shares of ${symbol} has been successfully executed at $${currentMarketPrice} per share.`,
+              text: `Your market order (buy in shares) to buy ${shares} shares of ${symbol} has been successfully executed at an average price of $${currentMarketPrice} per share.`,
               read: false,
               user: user._id,
             });
@@ -102,14 +102,14 @@ async function placeMarketOrder(req, res) {
             user.balance = Number((user.balance - cost).toFixed(2));
             await user.save();
             return res.json({
-              success: `Market order (buy in shares) to buy ${shares} shares of ${symbol} has been successfully executed at $${currentMarketPrice} per share.`,
+              success: `Market order (buy in shares) to buy ${shares} shares of ${symbol} has been successfully executed at an average price of $${currentMarketPrice} per share.`,
             });
           } else {
             // if user does not own this stock yet, create a stockOwn instance
             await StockOwn.create({
               symbol,
               qty: shares,
-              avgCost: cost / shares,
+              avgCost: Number((cost / shares).toFixed(2)),
               user: user._id,
             });
             await History.create({
@@ -170,7 +170,7 @@ async function placeMarketOrder(req, res) {
             // New average cost per share = New total cost / New total number of shares
             const newAvgCost = newTotalCost / newQuantity;
             stockOwn.qty = newQuantity;
-            stockOwn.avgCost = newAvgCost;
+            stockOwn.avgCost = Number(newAvgCost.toFixed(2));
             await stockOwn.save();
             // create history instance
             await History.create({
@@ -198,7 +198,7 @@ async function placeMarketOrder(req, res) {
             await StockOwn.create({
               symbol,
               qty: buyInQuantity,
-              avgCost: dollars / buyInQuantity,
+              avgCost: Number((dollars / buyInQuantity).toFixed(2)),
               user: user._id,
             });
             await History.create({
@@ -253,7 +253,7 @@ async function placeMarketOrder(req, res) {
           // New average cost per share = New total cost / New total number of shares
           const newAvgCost = newTotalCost / newQuantity;
           stockOwn.qty = newQuantity;
-          stockOwn.avgCost = newAvgCost;
+          stockOwn.avgCost = Number(newAvgCost.toFixed(2));
           await stockOwn.save();
           // create history instance
           await History.create({
@@ -318,7 +318,7 @@ async function placeMarketOrder(req, res) {
           // New average cost per share = New total cost / New total number of shares
           const newAvgCost = newTotalCost / newQuantity;
           stockOwn.qty = newQuantity;
-          stockOwn.avgCost = newAvgCost;
+          stockOwn.avgCost = Number(newAvgCost.toFixed(2));
           await stockOwn.save();
           // create history instance
           await History.create({
