@@ -103,6 +103,28 @@ async function cancelOrder(req, res) {
     user: req.user._id,
     status: "active",
   });
+  if ((deletedOrder.orderType = "limit order")) {
+    // if it's a limit buy order, it has a hold on the estimated cost of the order, which is "orderDollarsOnHold".
+    // Hence before we delete the order, we need to update user's balanceOnHold (for pending orders) and balance (buying power)
+    const user = await User.findById(deletedOrder.user);
+    const symbol = deletedOrder.symbol;
+    const stockOwn = await StockOwn.findOne({ user: user._id, symbol });
+    const buyOrSell = deletedOrder.buyOrSell;
+    const shares = deletedOrder.shares;
+    const orderDollarsOnHold = deletedOrder.orderDollarsOnHold;
+    if (buyOrSell === "buy") {
+      user.balanceOnHold = Number(
+        (user.balanceOnHold - orderDollarsOnHold).toFixed(2)
+      );
+      user.balance = Number((user.balance + orderDollarsOnHold).toFixed(2));
+      await user.save();
+    } else {
+      // if it's a limit sell order, it has a hold on the selling amount of shares, which is "shares"
+      // Hence before deleting the order, we need to update stockOwn's sharesOnHold, decrease it by shares on hold
+      stockOwn.sharesOnHold -= shares;
+      await stockOwn.save();
+    }
+  }
   // create notification for user
   await Notification.create({
     text: `You have successfully canceled your ${deletedOrder.orderType} to ${
