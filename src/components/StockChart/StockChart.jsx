@@ -9,7 +9,6 @@ export default function StockChart( { stockData } ) {
     
     useEffect(function() {
         if (stockData) {
-            console.log(stockData.values.map((value) => value.datetime))
             setChartData({
                 labels: stockData.values.slice().reverse().map((value) => value.datetime),
                 datasets: [{

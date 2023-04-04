@@ -7,9 +7,6 @@ export default function NewsHome() {
     useEffect(function() {
         async function getNews() {
             const news = await newsAPI.getAllNews();
-            console.log(news);
-            console.log(Array.isArray(news));
-            console.log(new Date(news[0].time_published));
             setNews(news);
         }
         getNews();

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./NotificationPage.css";
 import * as usersAPI from "../../utilities/users-api";
 
-export default function NotificationPage( {user} ) {
+export default function NotificationPage( {user, setUnreadExist} ) {
     const [messages, setMessages] = useState(null);
     const [messageDetail, setMessageDetail] = useState(null);
 
@@ -10,7 +10,6 @@ export default function NotificationPage( {user} ) {
         if (!user) return;
         async function getAllNotifications() {
             const messages = await usersAPI.getNotification();
-            console.log(messages);
             setMessages(messages);
         }
         getAllNotifications();
@@ -63,8 +62,7 @@ export default function NotificationPage( {user} ) {
         // Add the 'active' class on the message card element
         messageCardEl.classList.add('active');
 
-        const message = await usersAPI.getShowMessage(id);
-        console.log(message);
+        const {message, unreadExist} = await usersAPI.getShowMessage(id);
         setMessageDetail(
                 <div className="message-container-right">
                     <div className="message-detail-time">
@@ -83,7 +81,8 @@ export default function NotificationPage( {user} ) {
                         <div>{message.text}</div>
                     </div>
                 </div>
-        )
+        );
+        setUnreadExist(unreadExist);
     }
 
     return (

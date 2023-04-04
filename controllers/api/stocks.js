@@ -37,7 +37,6 @@ async function getStockInfo(req, res) {
 }
 
 async function placeMarketOrder(req, res) {
-    console.log('placemarketorder hits');
     const user = await User.findById(req.user._id);
     const symbol = req.body.symbol;
     const stockOwn = await StockOwn.findOne({ user: user._id, symbol });
@@ -59,19 +58,10 @@ async function placeMarketOrder(req, res) {
     if (hours < 13 || hours > 20)  isMarketOpen = false;
     if (hours === 13 && minutes < 30)  isMarketOpen = false;
 
-    console.log('symbol', symbol)
-    console.log('stockOwn', stockOwn)
-    console.log('buyOrSell', buyOrSell)
-    console.log('orderType', orderType)
-    console.log('sharesOrDollars', sharesOrDollars)
-    console.log('shares', shares)
-    console.log('dollars', dollars)
-
     if (isMarketOpen) {
         // if market is open and it's a buy order and buy in shares
         if (buyOrSell === 'buy' && sharesOrDollars === "shares") {
             try {
-                console.log('market order buy in shares function hits');
                 const stockData = await fetch(`https://api.twelvedata.com/time_series?apikey=${Twelve_Data_API_Key}&interval=1min&symbol=${symbol}&format=JSON&dp=2`).then(res => res.json());
                 const currentMarketPrice = Number(stockData.values[0].open);
                 const cost = Number((shares * currentMarketPrice).toFixed(2));
@@ -105,7 +95,6 @@ async function placeMarketOrder(req, res) {
                         // Succesfully place the order, update user's balance
                         user.balance = Number((user.balance - cost).toFixed(2));
                         await user.save();
-                        console.log('market order buy in shares executes');
                         return res.json({success: `Market order (buy in shares) to buy ${shares} shares of ${symbol} has been successfully executed at $${currentMarketPrice} per share.`});
                     } else {
                         // if user does not own this stock yet, create a stockOwn instance
@@ -131,7 +120,6 @@ async function placeMarketOrder(req, res) {
                         // Succesfully place the order, update user's balance
                         user.balance = Number((user.balance - cost).toFixed(2));
                         await user.save();
-                        console.log('market order buy in shares (do not own previously) executes');
                         return res.json({success: `Market order (buy in shares) to buy ${shares} shares of ${symbol} has been successfully executed at an average price of $${currentMarketPrice} per share.`})
                     };
                     
@@ -143,7 +131,6 @@ async function placeMarketOrder(req, res) {
                         read: false,
                         user: user._id
                     });
-                    console.log('market order buy in shares insufficient funds');
                     return res.json({failure: "Insufficient funds"});
                 }
             } catch {
@@ -187,7 +174,6 @@ async function placeMarketOrder(req, res) {
                         // Succesfully place the order, update user's balance
                         user.balance = Number((user.balance - dollars).toFixed(2));
                         await user.save();
-                        console.log('market order buy in dollars executes');
                         return res.json({success: `Market order (buy in dollars) to buy $${dollars} of ${symbol} has been successfully executed. You've received ${buyInQuantity} shares at an average price of $${currentMarketPrice} per share`})
                     } else {
                         // Otherwise, create a stockOwn instance
@@ -214,7 +200,6 @@ async function placeMarketOrder(req, res) {
                         // Succesfully place the order, update user's balance
                         user.balance = Number((user.balance - dollars).toFixed(2));
                         await user.save();
-                        console.log('market order buy in dollars executes (do not own before)');
                         return res.json({success: `Market order (buy in dollars) to buy $${dollars} of ${symbol} has been successfully executed. You've received ${buyInQuantity} shares at an average price of $${currentMarketPrice} per share`})
                     }
                     // If user's balance is less than buy in dollars
@@ -225,7 +210,6 @@ async function placeMarketOrder(req, res) {
                         read: false,
                         user: user._id
                     });
-                    console.log('market order buy in dollars fails (Insufficient funds)');
                     return res.json({failure: "Insufficient funds"});
                 }
             } catch {
@@ -235,7 +219,6 @@ async function placeMarketOrder(req, res) {
         } else if (buyOrSell === 'sell' && sharesOrDollars === "shares") {
             // if market is open and it's a sell order and sell in shares
             try {
-                console.log('market order sell in shares function hits');
                 const stockData = await fetch(`https://api.twelvedata.com/time_series?apikey=${Twelve_Data_API_Key}&interval=1min&symbol=${symbol}&format=JSON&dp=2`).then(res => res.json());
                 const currentMarketPrice = Number(stockData.values[0].open);
                 // if user owns the stock and the stock shares are greater than or equal to the sell in shares, execute the order
@@ -271,7 +254,6 @@ async function placeMarketOrder(req, res) {
                     if (stockOwn.qty === 0) {
                         await StockOwn.deleteOne({ _id: stockOwn._id });
                     };
-                    console.log('market order sell in shares executes');
                     return res.json({success: `Market order (sell in shares) to sell ${shares} shares of ${symbol} has been successfully executed at an average price of $${currentMarketPrice} per share.`});
                 // If user does not own the stock or does not have enought shares to sell, create notification instance
                 } else {
@@ -325,7 +307,6 @@ async function placeMarketOrder(req, res) {
                     if (stockOwn.qty === 0) {
                         await StockOwn.deleteOne({ _id: stockOwn._id });
                     };
-                    console.log('market order sell in dollars executes');
                     return res.json({success: `Market order (sell in dollars) to sell $${dollars} of ${symbol} has been successfully executed. You've sold ${sellInQuantity} shares at an average price of $${currentMarketPrice} per share`});
                 // If user does not own the stock or does not have enought shares to sell, create notification instance
                 } else {
@@ -498,7 +479,6 @@ async function placeMarketOrder(req, res) {
 
 
 async function placeLimitOrder(req, res) {
-    console.log('placelimitorder hits');
     const user = await User.findById(req.user._id);
     const symbol = req.body.symbol;
     const stockOwn = await StockOwn.findOne({ user: user._id, symbol });

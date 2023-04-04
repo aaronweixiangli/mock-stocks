@@ -19,10 +19,6 @@ export default function InvestingPage( { user, balance, setBalance, balanceOnHol
             setBalanceOnHold(balanceOnHold);
             const stocksHolding = await usersAPI.getStocksHolding();
             setStocksHolding(stocksHolding);
-            console.log('balance', balance)
-            console.log('balanceOnHold', balanceOnHold)
-            console.log('stocksHolding', stocksHolding)
-            console.log('stocksHolding type', typeof(stocksHolding))
         }
         getUserInfo(stocksHolding);
         }, [user])

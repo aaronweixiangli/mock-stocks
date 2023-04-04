@@ -6,10 +6,8 @@ export default function StockNews( {symbol} ) {
     const [news, setNews] = useState(null);
     useEffect(function() {
         async function getNews() {
-            console.log('stocknews symbol', symbol);
             try {
                 const news = await newsAPI.getStockNews(symbol);
-                console.log(news)
                 setNews(news);
             } catch {
                 setNews(null);

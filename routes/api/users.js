@@ -39,5 +39,7 @@ router.get('/stock_watch_list', ensureLoggedIn, usersCtrl.getStockWatchList);
 router.get('/notification', ensureLoggedIn, usersCtrl.getNotification);
 // GET /api/users/notification/:id
 router.get('/notification/:id', ensureLoggedIn, usersCtrl.getShowMessage);
+// GET /api/users/check_unread
+router.get('/check_unread', ensureLoggedIn, usersCtrl.checkUnreadNotification);
 
 module.exports = router;

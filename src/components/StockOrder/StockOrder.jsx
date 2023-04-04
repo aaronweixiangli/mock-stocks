@@ -199,7 +199,6 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
     function handleStartsChange(evt) {
         setReviewDetail(null);
         setStarts(evt.target.value);
-        console.log('onchange', new Date(evt.target.value))
     }
 
     function handleStartsBlur(evt) {
@@ -351,10 +350,21 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
             // if it's limit buy order, save the dollars on hold for this order
             const orderDollarsOnHold = buyOrSell === 'buy' ? Number((limitPrice * shares).toFixed(2)) : 0;
             result = await stocksAPI.limitOrder(symbol, buyOrSell, orderType, limitPrice, shares, expires, orderDollarsOnHold);
+        } else {
+            const reviewElement = (
+                <div className="review-container">
+                    <span className="review-title">Order Fails</span>
+                    <span className="review-content">
+                        We apologize for the inconvenience, but only limit and market orders are currently available. Stop loss, stop limit, trailing stop, and recurring investment orders will be added in the future. Please check back for updates or choose one of the available order types.
+                    </span>
+                    <div className="review-order-container">
+                        <button onClick={handleDone}>Done </button>
+                    </div>
+                </div>
+            );
+            setReviewDetail(reviewElement);
         }
-        console.log(result);
         if (result.failure) {
-            console.log('order placing fails');
             const reviewElement = (
                 <div className="review-container">
                     <span className="review-title">Order Fails</span>
@@ -366,7 +376,6 @@ export default function StockOrder( {symbol, marketPrice, user, sharesOwn, setSh
             );
             setReviewDetail(reviewElement);
         } else {
-            console.log('order placing succeeds');
             const reviewElement = (
                 <div className="review-container">
                     <span className="review-title">Order Succeeds</span>

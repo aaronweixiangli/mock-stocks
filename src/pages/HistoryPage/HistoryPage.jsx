@@ -14,8 +14,6 @@ export default function HistoryPage({ user }) {
             const pendingOrder = await usersAPI.getPendingOrder();
             setHistory(history);
             setPendingOrder(pendingOrder);
-            console.log('history', history);
-            console.log('pendingOrder', pendingOrder);
         }
         getHistoryAndPendingOrders();
     }, [user]);
@@ -39,7 +37,6 @@ export default function HistoryPage({ user }) {
     async function handleCancelOrder(id) {
         const updatedPendingOrder = await usersAPI.cancelOrder(id);
         setPendingOrder(updatedPendingOrder);
-        console.log('updatedPendingOrder', updatedPendingOrder);
     }
 
     let pending = null;
@@ -119,7 +116,6 @@ export default function HistoryPage({ user }) {
             </section>
         )
     }
-    console.log('pending', pending)
 
     let transaction = null;
     if (history && Array.isArray(history)) {

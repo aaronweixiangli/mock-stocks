@@ -14,9 +14,6 @@ export default function ProfilePage( { user, balance, setBalance, balanceOnHold,
             setBalanceOnHold(balanceOnHold);
             const brokerageHolding = await usersAPI.getBrokerageHolding();
             setBrokerageHolding(brokerageHolding);
-            console.log('balance', balance)
-            console.log('balanceOnHold', balanceOnHold)
-            console.log('brokerageHolding', brokerageHolding)
         }
         getUserBalance();
         }, [user])

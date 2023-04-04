@@ -1,10 +1,7 @@
-// import moment from "moment";
 const moment = require('moment');
-const { parentPort } = require('worker_threads');
+// const { parentPort } = require('worker_threads');
 
 const Twelve_Data_API_Key = process.env.Twelve_Data_API_Key;
-
-console.log(Twelve_Data_API_Key);
 
 (async function () {
     await require('./config/database');
@@ -14,11 +11,8 @@ console.log(Twelve_Data_API_Key);
     const StockOwn = require('./models/stockOwn');
     const History = require('./models/history');
     const Notification = require('./models/notification');
-    console.log('orders', orders)
     const history = await History.find({})
     const notification = await Notification.find({}) 
-    console.log('history', history)
-    console.log('notification', notification)
     // if no active orders, return
     if (!orders.length) return;
     let symbols = new Set();
@@ -29,21 +23,17 @@ console.log(Twelve_Data_API_Key);
         try {
             const stock = await fetch(`https://api.twelvedata.com/time_series?apikey=${Twelve_Data_API_Key}&interval=1min&symbol=${symbol}&format=JSON&dp=2`).then(res => res.json());
             const price = Number(stock.values[0].open);
-            console.log(price);
             prices[symbol] = price;
         } catch (e) {
             // if fetch error for any symbol (probably due to API limit requests), set prices[symbol] to be null
-            console.log(e);
             prices[symbol] = null;
         }
     }
-    console.log('prices,', prices)
 
     for (let order of orders) {
         // Guard. If there is a fetch error, which means that there is no current market price for this stock, then skip this order, continue the loop
         const currentMarketPrice = prices[order.symbol];
         if (!currentMarketPrice) {
-            console.log(`No price data available for symbol ${order.symbol}`);
             continue; // move on to the next order
         }
         if (order.orderType === 'market order') {
@@ -61,8 +51,6 @@ console.log(Twelve_Data_API_Key);
             // If such market order isn't filled by the end of market hours (4:00pm ET) on the next trading day, it will expire. 
             const today = moment().day();
             const orderDay = moment(order.createdAt).day();
-            console.log(`today is ${today}`);
-            console.log(`order created day is ${orderDay}`);
             const dayDiff = Math.abs(today - orderDay);
             // check if the order should be deleted based on its placement day and the current day
             // if order placed on Friday at market closed, then delete the order if today is Tuesday. Day difference is greater than 3
@@ -136,7 +124,6 @@ console.log(Twelve_Data_API_Key);
                         await user.save();
                         // order has been executed, delete it
                         // await order.deleteOne();
-                        // console.log(`Buy order for ${shares} shares of ${symbol} executed and deleted.`);
                         order.status = "inactive";
                         await order.save();
                         continue;
@@ -166,7 +153,6 @@ console.log(Twelve_Data_API_Key);
                         await user.save();
                         // order has been executed, delete it
                         // await order.deleteOne();
-                        // console.log(`Buy order for ${shares} shares of ${symbol} executed and deleted.`);
                         order.status = "inactive";
                         await order.save();
                         continue;
@@ -206,7 +192,6 @@ console.log(Twelve_Data_API_Key);
                         await user.save();
                         // order has been executed, delete it
                         // await order.deleteOne();
-                        // console.log(`Buy order for $${dollars} of ${symbol} executed and deleted.`);
                         order.status = "inactive";
                         await order.save();
                         continue;
@@ -248,7 +233,6 @@ console.log(Twelve_Data_API_Key);
                     };
                     // order has been executed, delete it
                     // await order.deleteOne();
-                    // console.log(`Sell order for ${shares} shares of ${symbol} executed and deleted.`);
                     order.status = "inactive";
                     await order.save();
                     continue;
@@ -290,7 +274,6 @@ console.log(Twelve_Data_API_Key);
                     };
                     // order has been executed, delete it
                     // await order.deleteOne();
-                    // console.log(`Sell order for $${dollars} of ${symbol} executed and deleted.`);
                     order.status = "inactive";
                     await order.save();
                     continue;
@@ -401,7 +384,6 @@ console.log(Twelve_Data_API_Key);
                 await user.save();
                 // order has been executed, delete it
                 // await order.deleteOne();
-                // console.log(`Buy order for ${shares} shares of ${symbol} executed and deleted.`);
                 order.status = "inactive";
                 order.orderDollarsOnHold = 0;
                 await order.save();
@@ -445,7 +427,6 @@ console.log(Twelve_Data_API_Key);
                 };
                 // order has been executed, delete it
                 // await order.deleteOne();
-                // console.log(`Sell order for ${shares} shares of ${symbol} executed and deleted.`);
                 order.status = "inactive";
                 await order.save();
                 continue;

@@ -39,7 +39,6 @@ export default function BuyingPower({ balance, setBalance, balanceOnHold, setBal
 
     function handleChange(evt) {
         amountRef.current = (evt.target.value);
-        console.log(disableRef.current)
         setAmount(evt.target.value);
     }
 
@@ -47,8 +46,6 @@ export default function BuyingPower({ balance, setBalance, balanceOnHold, setBal
         evt.preventDefault();
         // check if the amount input is valid (cannot be empty and cannot be more than 3 digits)
         disableRef.current = !/^\d+(\.\d{1,2})?$/.test(amountRef.current);
-        console.log("Amount entered:", amountRef.current);
-        console.log("Dsiable:", disableRef.current);
         if (!amountRef.current) {
             alert('Amount cannot be empty');
             return;

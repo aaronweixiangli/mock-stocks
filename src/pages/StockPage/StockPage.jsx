@@ -27,9 +27,6 @@ export default function StockPage( {user, balance, setBalance, balanceOnHold, se
     async function getData() {
       try {
         const data = await stocksAPI.getStockData( symbol, dataStartDate, dataInterval );
-        console.log(data);
-        console.log('labels', data.values.map((value) => value.datetime))
-        console.log('data.close', data.values.map((value) => value.close))
         setStockData(data);
         setError(false);
       } catch {
@@ -44,7 +41,6 @@ export default function StockPage( {user, balance, setBalance, balanceOnHold, se
     async function getStockInfo() {
       try {
         const infoData = await stocksAPI.getStockInfo(symbol);
-        console.log("Overview", infoData)
         setStockInfo(infoData);
       } catch {
         setStockInfo(null);
@@ -59,8 +55,6 @@ export default function StockPage( {user, balance, setBalance, balanceOnHold, se
       if (!user) return;
       const sharesOwn = await usersAPI.getSharesOwn(symbol);
       const sharesOnHold = await usersAPI.getSharesOnHold(symbol);
-      console.log('sharesOwn', sharesOwn);
-      console.log('sharesOnHold', sharesOnHold);
       setSharesOwn(sharesOwn);
       setSharesOnHold(sharesOnHold);
     }
@@ -71,8 +65,6 @@ export default function StockPage( {user, balance, setBalance, balanceOnHold, se
     async function getStockWatch() {
       if (!user) return;
       const stockWatch = await usersAPI.getStockWatch(symbol);
-      console.log('stockWatch', stockWatch);
-      console.log('type of stockWatch', typeof(stockWatch));
       setStockWatch(stockWatch);
     }
     getStockWatch();
@@ -247,8 +239,6 @@ export default function StockPage( {user, balance, setBalance, balanceOnHold, se
   async function toggleStockWatch(symbol) {
     if (!user) return;
     const updatedStockWatchStatus = await usersAPI.toggleStockWatch(symbol);
-    console.log('updatedStockWatchStatus', updatedStockWatchStatus);
-    console.log('type of updatedStockWatchStatus', typeof(updatedStockWatchStatus));
     setStockWatch(updatedStockWatchStatus);
   }
 

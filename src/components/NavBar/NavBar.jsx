@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import * as userService from '../../utilities/users-service';
 
-export default function NavBar({ user, setUser }) {
+export default function NavBar({ user, setUser, unreadExist }) {
   function handleLogOut() {
     userService.logOut();
     setUser(null);
@@ -50,9 +50,9 @@ export default function NavBar({ user, setUser }) {
         </form>
       </div>
       <div className="nav-right">
-        <Link to="/">About</Link>
+        <Link to="/about">About</Link>
         <Link to="/">Investing</Link>
-        <Link to="/account/notification">Notifications</Link>
+        <Link to="/account/notification" className='notifications-link'>Notifications {unreadExist && <div className='unread-exist'></div>}</Link>
         <div className="dropdown">
           <button className="dropbtn" onClick={dropdownClick}>Account</button>
           <div id="dropdown" className="dropdown-content">

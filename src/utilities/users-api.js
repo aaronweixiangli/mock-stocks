@@ -13,7 +13,6 @@ export async function login(credentials) {
 // it cannot be directly stringified as JSON
 // Hence set payload to be an object
 export async function deposit(amount) {
-  console.log('API amount', amount)
   return sendRequest(`${BASE_URL}/deposit`, 'PUT', { amount });
 }
 
@@ -71,4 +70,8 @@ export async function getNotification() {
 
 export async function getShowMessage(id) {
   return sendRequest(`${BASE_URL}/notification/${id}`);
+}
+
+export async function checkUnReadNotification() {
+  return sendRequest(`${BASE_URL}/check_unread`);
 }

@@ -25,35 +25,38 @@ module.exports = {
   toggleStockWatch,
   getStockWatchList,
   getNotification,
-  getShowMessage
+  getShowMessage,
+  checkUnreadNotification
 };
 
+async function checkUnreadNotification(req, res) {
+  const unreadExist = await Notification.exists({user: req.user._id, read: false});
+  res.json(unreadExist);
+}
+
 async function getShowMessage(req, res) {
-  console.log('getShowMessage controller hits')
   // get user's notification with specific id
   const message = await Notification.findOne({_id: req.params.id});
   // set read to be true
   message.read = true;
   await message.save();
-  res.json(message);
+  const unreadExist = await Notification.exists({user: req.user._id, read: false});
+  res.json({message, unreadExist});
 }
 
 async function getNotification(req, res) {
-  console.log('getNotification controller hits')
   // get user's notication messages
   const notification = await Notification.find({user: req.user._id}).sort({createdAt: -1});
   res.json(notification);
 }
 
 async function getStockWatchList(req, res) {
-  console.log('getStockWatchList controller hits')
   // get user's stock watch list
   const stockWatchList = await StockWatch.find({user: req.user._id});
   res.json(stockWatchList);
 }
 
 async function toggleStockWatch(req, res) {
-  console.log('toggleStockWatch controller hits')
   // check if this stock is in user's stockWatch list
   const stockWatch = await StockWatch.findOne({user: req.user._id, symbol: req.params.symbol});
   // it this stock is already in user's stockWatch list, remove it form stockWatch list. Otherwise, add it.
@@ -71,14 +74,12 @@ async function toggleStockWatch(req, res) {
 }
 
 async function getStockWatch(req, res) {
-  console.log('getStockWatch controller hits')
   // check if this stock is in user's stockWatch list
   const stockWatch = await StockWatch.findOne({user: req.user._id, symbol: req.params.symbol});
   res.json(stockWatch ? true : false);
 }
 
 async function cancelOrder(req, res) {
-  console.log('cancelOrder controller hits')
   // find the pending order with this id
   const deletedOrder = await Order.findOne({_id: req.params.id, user: req.user._id, status: 'active'});
   // create notification for user
@@ -95,21 +96,18 @@ async function cancelOrder(req, res) {
 }
 
 async function getPendingOrder(req, res) {
-  console.log('getPendingOrder controller hits')
   // get the user's pending orders and sort by created date in descending order
   const pendingOrder = await Order.find({user: req.user._id, status: 'active'}).sort({createdAt: -1});
   res.json(pendingOrder);
 }
 
 async function getHistory(req, res) {
-  console.log('getHistory controller hits')
   // get the user's transaction history and deposit history and sort by created date in descending order
   const history = await History.find({user: req.user._id}).sort({createdAt: -1});
   res.json(history);
 }
 
 async function getStocksHolding(req, res) {
-  console.log('getStocksHolding controller hits')
   // get the user's stocks holdings and stock's current market price
   const stockOwn = await StockOwn.find({user: req.user._id});
   let brokerageHolding = 0;
@@ -135,7 +133,6 @@ async function getStocksHolding(req, res) {
 }
 
 async function getBrokerageHolding(req, res) {
-  console.log('getBrokerageHolding controller hits')
   // get the user's brokerage holdings
   const stockOwn = await StockOwn.find({user: req.user._id});
   let brokerageHolding = 0;
@@ -155,7 +152,6 @@ async function getBrokerageHolding(req, res) {
 }
 
 async function getSharesOnHold(req, res) {
-  console.log('getSharesOnHold controller hits')
   // get the user's sharesOwn for the symbol
   const stockOwn = await StockOwn.findOne({user: req.user._id, symbol: req.params.symbol});
   const sharesOnHold = stockOwn ? stockOwn.sharesOnHold : 0;
@@ -163,7 +159,6 @@ async function getSharesOnHold(req, res) {
 }
 
 async function getSharesOwn(req, res) {
-  console.log('getSharesOwn controller hits')
   // get the user's sharesOwn for the symbol
   const stockOwn = await StockOwn.findOne({user: req.user._id, symbol: req.params.symbol});
   const sharesOwn = stockOwn ? stockOwn.qty : 0;

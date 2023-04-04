@@ -13,8 +13,6 @@ export default function HomePage({ user, balance, setBalance, balanceOnHold }) {
     if (!user) return;
     async function getUserStockWatchList() {
       const stockWatchList = await usersAPI.getStockWatchList();
-      console.log('stockWatchList',stockWatchList);
-      console.log('is array stockWatchList', Array.isArray(stockWatchList));
       setStockWatchList(stockWatchList);
     }
     getUserStockWatchList();
