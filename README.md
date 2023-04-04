@@ -1,5 +1,5 @@
 <div align="center" id="mockstocks">
-   <img width="302" alt="mockstocks" src="https://i.imgur.com/GtqNrzK.png">
+   <img width="302" alt="mockstocks" src="https://i.imgur.com/mSyRgSe.png">
 </div>
 
 <div align="center" id="header">
