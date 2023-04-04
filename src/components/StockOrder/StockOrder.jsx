@@ -63,13 +63,13 @@ export default function StockOrder({
     setShares(evt.target.value);
   }
 
-  // Once the user leaves the input field, round shares to 4 decimal digits
+  // Once the user leaves the input field, round shares to 5 decimal digits
   function handleSharesBlur() {
     if (shares <= 0) {
       setShares("");
       return;
     }
-    if (shares) setShares(parseFloat(shares).toFixed(4));
+    if (shares) setShares(parseFloat(shares).toFixed(5));
   }
 
   function handleDollarsChange(evt) {
@@ -613,7 +613,7 @@ export default function StockOrder({
                   <div className="order-detail-right">
                     <input
                       name="shares"
-                      placeholder="0.0000"
+                      placeholder="0.00000"
                       type="number"
                       value={shares}
                       onChange={handleSharesChange}
@@ -667,7 +667,7 @@ export default function StockOrder({
                         ? !(
                             balance >= Number((marketPrice * shares).toFixed(2))
                           )
-                        : !(sharesOwn - sharesOnHold >= shares))
+                        : !(Number(sharesOwn - sharesOnHold).toFixed(5) >= shares))
                     }
                     onClick={handleReviewDetail}
                   >
@@ -694,7 +694,7 @@ export default function StockOrder({
                       (buyOrSell === "buy"
                         ? !(balance >= dollars)
                         : !(
-                            sharesOwn - sharesOnHold >=
+                            Number(sharesOwn - sharesOnHold).toFixed(5) >=
                             Number((dollars / marketPrice).toFixed(5))
                           ))
                     }
@@ -710,7 +710,7 @@ export default function StockOrder({
           <div className="order-last-row">
             {buyOrSell === "buy"
               ? `$${balance} buying power available`
-              : `${sharesOwn - sharesOnHold} Shares Available`}
+              : `${Number(sharesOwn - sharesOnHold).toFixed(5)} Shares Available`}
           </div>
         </form>
       </section>
@@ -822,7 +822,7 @@ export default function StockOrder({
                   !expires ||
                   (buyOrSell === "buy"
                     ? !(balance >= Number((limitPrice * shares).toFixed(2)))
-                    : !(sharesOwn - sharesOnHold >= shares))
+                    : !(Number(sharesOwn - sharesOnHold).toFixed(5) >= shares))
                 }
                 onClick={handleReviewDetail}
               >
@@ -834,7 +834,7 @@ export default function StockOrder({
           <div className="order-last-row">
             {buyOrSell === "buy"
               ? `$${balance} buying power available`
-              : `${sharesOwn - sharesOnHold} Shares Available`}
+              : `${Number(sharesOwn - sharesOnHold).toFixed(5)} Shares Available`}
           </div>
         </form>
       </section>
@@ -946,7 +946,7 @@ export default function StockOrder({
                   !expires ||
                   (buyOrSell === "buy"
                     ? !(balance >= Number((stopPrice * shares).toFixed(2)))
-                    : !(sharesOwn - sharesOnHold >= shares))
+                    : !(Number(sharesOwn - sharesOnHold).toFixed(5) >= shares))
                 }
                 onClick={handleReviewDetail}
               >
@@ -958,7 +958,7 @@ export default function StockOrder({
           <div className="order-last-row">
             {buyOrSell === "buy"
               ? `$${balance} buying power available`
-              : `${sharesOwn - sharesOnHold} Shares Available`}
+              : `${Number(sharesOwn - sharesOnHold).toFixed(5)} Shares Available`}
           </div>
         </form>
       </section>
@@ -1085,7 +1085,7 @@ export default function StockOrder({
                   !expires ||
                   (buyOrSell === "buy"
                     ? !(balance >= Number((limitPrice * shares).toFixed(2)))
-                    : !(sharesOwn - sharesOnHold >= shares))
+                    : !(Number(sharesOwn - sharesOnHold).toFixed(5) >= shares))
                 }
                 onClick={handleReviewDetail}
               >
@@ -1097,7 +1097,7 @@ export default function StockOrder({
           <div className="order-last-row">
             {buyOrSell === "buy"
               ? `$${balance} buying power available`
-              : `${sharesOwn - sharesOnHold} Shares Available`}
+              : `${Number(sharesOwn - sharesOnHold).toFixed(5)} Shares Available`}
           </div>
         </form>
       </section>
@@ -1330,7 +1330,7 @@ export default function StockOrder({
                           ) *
                             shares
                         )
-                    : !(sharesOwn - sharesOnHold >= shares))
+                    : !(Number(sharesOwn - sharesOnHold).toFixed(5) >= shares))
                 }
                 onClick={handleReviewDetail}
               >
@@ -1342,7 +1342,7 @@ export default function StockOrder({
           <div className="order-last-row">
             {buyOrSell === "buy"
               ? `$${balance} buying power available`
-              : `${sharesOwn - sharesOnHold} Shares Available`}
+              : `${Number(sharesOwn - sharesOnHold).toFixed(5)} Shares Available`}
           </div>
         </form>
       </section>
